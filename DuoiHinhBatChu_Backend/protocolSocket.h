@@ -1,0 +1,14 @@
+
+#ifndef PROTOCOLSOCKET_H
+#define PROTOCOLSOCKET_H
+
+enum SocketType {
+    CREATE_ROOM,
+    JOIN_ROOM,
+    LEAVE_ROOM,
+    START_ROOM,
+    NEXT_QUESTION,
+    BAD_RESPONSE,
+};
+
+#endif // PROTOCOLSOCKET_H

@@ -22,6 +22,7 @@ add_executable(DuoiHinhBatChu_Backend
   user.h
   question.cpp
   question.h
+  protocolSocket.h
 )
 target_link_libraries(DuoiHinhBatChu_Backend Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::HttpServer Qt${QT_VERSION_MAJOR}::Sql)
 

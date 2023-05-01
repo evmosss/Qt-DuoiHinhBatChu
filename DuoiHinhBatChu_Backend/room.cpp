@@ -27,10 +27,16 @@ bool validateSession(QString sessionId) {
 }
 
 // Apis that will be change to Tcp logic in the future
-QHttpServerResponse Room::createRoom(int userId, QMap<QString, QJsonObject> *roomData, QString *roomId, QMap<int, QString> * userToRoomId)
+QJsonObject Room::createRoom(int userId, QMap<QString, QJsonObject> *roomData, QString *roomId, QMap<int, QString> * userToRoomId)
 {
+    QJsonObject response;
+
     if (userToRoomId->contains(userId)) {
-        return QHttpServerResponse(QJsonObject{ {"message", "User has create a room before" } }, QHttpServerResponder::StatusCode::Ok);
+        response["message"] = "User has create a room before";
+        response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::BadRequest);
+        response["data"] = QJsonValue::Null;
+        response["type"] = SocketType::CREATE_ROOM;
+        return response;
     }
 
     QJsonObject roomDataObject;
@@ -43,25 +49,43 @@ QHttpServerResponse Room::createRoom(int userId, QMap<QString, QJsonObject> *roo
     roomDataObject["questionAnswer"] = "";
     roomDataObject["questionLevel"] = 0;
     roomDataObject["maxQuestions"] = 10;
+    roomDataObject["roomId"] = *roomId;
 
     roomData->insert(*roomId, roomDataObject);
     userToRoomId->insert(userId, *roomId);
 
-    return QHttpServerResponse(QJsonObject{ {"message", "Create Room successfully"} }, QHttpServerResponder::StatusCode::Ok);
+    response["message"] = "Create Room successfully";
+    response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::Ok);
+    response["data"] = roomDataObject;
+    response["type"] = SocketType::CREATE_ROOM;
+    return response;
 }
 
-QHttpServerResponse Room::joinRoom(int userId, QMap<QString, QJsonObject> *roomData, QString *roomId, QMap<int, QString> *userToRoomId)
+QJsonObject Room::joinRoom(int userId, QMap<QString, QJsonObject> *roomData, QString *roomId, QMap<int, QString> *userToRoomId)
 {
+    QJsonObject response;
     if (!roomData->contains(*roomId)) {
-        return QHttpServerResponse(QJsonObject{ {"message", "Room does not exist"} }, QHttpServerResponder::StatusCode::BadRequest);
+        response["message"] = "Room does not exist";
+        response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::BadRequest);
+        response["data"] = QJsonValue::Null;
+        response["type"] = SocketType::JOIN_ROOM;
+        return response;
     }
     QJsonObject value = roomData->take(*roomId);
     if (value["status"].toString() == "FULL") {
         roomData->insert(*roomId, value);
-        return QHttpServerResponse(QJsonObject{ {"message", "Room is full"} }, QHttpServerResponder::StatusCode::BadRequest);
+        response["message"] = "Room is full";
+        response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::Forbidden);
+        response["data"] = QJsonValue::Null;
+        response["type"] = SocketType::JOIN_ROOM;
+        return response;
     }
     if (value["ownerId"].toInt() == userId) {
-        return QHttpServerResponse(QJsonObject{ {"message", "You are owner of this room"} }, QHttpServerResponder::StatusCode::BadRequest);
+        response["message"] = "You are owner of this room";
+        response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::Forbidden);
+        response["data"] = QJsonValue::Null;
+        response["type"] = SocketType::JOIN_ROOM;
+        return response;
     }
 
     QJsonArray players = value["players"].toArray();
@@ -73,13 +97,22 @@ QHttpServerResponse Room::joinRoom(int userId, QMap<QString, QJsonObject> *roomD
     value["status"] = "FULL";
 
     roomData->insert(*roomId, value);
-    return QHttpServerResponse(QJsonObject{ {"message", "Join room successfully"} }, QHttpServerResponder::StatusCode::Ok);
+    response["message"] = "Join room successfully";
+    response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::Ok);
+    response["data"] = value;
+    response["type"] = SocketType::JOIN_ROOM;
+    return response;
 }
 
-QHttpServerResponse Room::leaveRoom(int userId, QMap<QString, QJsonObject> *roomData, QString *roomId, QMap<int, QString> *userToRoomId)
+QJsonObject Room::leaveRoom(int userId, QMap<QString, QJsonObject> *roomData, QString *roomId, QMap<int, QString> *userToRoomId)
 {
+    QJsonObject response;
     if (!roomData->contains(*roomId)) {
-        return QHttpServerResponse(QJsonObject{ {"message", "Room does not exist"} }, QHttpServerResponder::StatusCode::BadRequest);
+        response["message"] = "Room does not exist";
+        response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::BadRequest);
+        response["data"] = QJsonValue::Null;
+        response["type"] = SocketType::LEAVE_ROOM;
+        return response;
     }
 
     if (userToRoomId->contains(userId)) {
@@ -102,7 +135,12 @@ QHttpServerResponse Room::leaveRoom(int userId, QMap<QString, QJsonObject> *room
 
         roomData->insert(*roomId, json);
     }
-    return QHttpServerResponse(QJsonObject{ {"message", "Leave room successfully"} }, QHttpServerResponder::StatusCode::Ok);
+
+    response["message"] = "Leave room successfully";
+    response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::Ok);
+    response["data"] = QJsonValue::Null;
+    response["type"] = SocketType::LEAVE_ROOM;
+    return response;
 }
 
 QHttpServerResponse Room::startGame(int userId, QMap<QString, QJsonObject> *roomData, QString *roomId, QMap<int, QString> *userToRoomId)

@@ -16,18 +16,56 @@
 #include <QJsonArray>
 #include <QStringList>
 #include <QRandomGenerator>
+#include <QtNetwork/QTcpServer>
+#include <QtNetwork/QTcpSocket>
+#include <QVector>
+#include <QMetaObject>
 
 // Components
 #include "auth.h"
 #include "room.h"
 #include "user.h"
+#include "protocolSocket.h"
+
+#define _DATABASE_NAME "SP2"
 
 QMap<QString, QJsonObject> roomDataMap;
 QMap<int, QString> userToRoomId;
+QMap<QString, QList<QTcpSocket*>> connectionTable;
+
+Auth* authService;
+Room* roomService;
+User* userService;
+
+void handleIncomingData(QTcpSocket *socket);
+int getUserIdFromSessionId(QString *sessionId);
+QByteArray convertJsonToByteArray(QJsonObject val);
+
+void connectToSocket() {
+    QTcpServer *server = new QTcpServer();  // Tạo đối tượng QTcpServer
+
+    if (!server->listen(QHostAddress::LocalHost, 9454)) {  // Khởi động server và liên kết đến port 1234
+        qInfo() << "Server could not start";
+        return;
+    }
+
+    qInfo() << "Server socket started on" << server->serverAddress().toString() << ":" << server->serverPort();
+
+    QObject::connect(server, &QTcpServer::newConnection, [=]() {
+        QTcpSocket* socket = server->nextPendingConnection();
+
+        if (socket != nullptr) {
+            QObject::connect(socket, &QTcpSocket::readyRead, [=]() {
+                handleIncomingData(socket);
+            });
+        }
+
+    });
+}
 
 void createDBConnection(QCoreApplication *a) {
-    QSqlDatabase database = QSqlDatabase::addDatabase("QSQLITE", "SP2");
-    database.setDatabaseName("D:/Qt-Dev/altp.db");
+    QSqlDatabase database = QSqlDatabase::addDatabase("QSQLITE", _DATABASE_NAME);
+    database.setDatabaseName("D:/Qt-Dev/DuoiHinhBatChu/altp.db");
 
     if(!database.open()) {
         qDebug() << "Error: Unable to open database..";
@@ -76,14 +114,14 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    Auth* authService = new Auth;
-    Room* roomService = new Room;
-    User* userService = new User;
+    authService = new Auth;
+    roomService = new Room;
+    userService = new User;
 
     createDBConnection(&a);
+    connectToSocket();
 
     QHttpServer server;
-
 
     // Auth Apis
     server.route("/api/auth/login", QHttpServerRequest::Method::Post, [authService](const QHttpServerRequest &req) {
@@ -111,86 +149,6 @@ int main(int argc, char *argv[])
     });
 
     // Room Apis
-    server.route("/api/room/create", QHttpServerRequest::Method::Post, [roomService, userService](const QHttpServerRequest &req) {
-        QByteArray requestData = req.body();
-
-        QString sessionId = getSessionIdFromHeader(req);
-
-        if (sessionId == nullptr) {
-            return QHttpServerResponse(QJsonObject{ {"message", "Lack of session id"} }, QHttpServerResponder::StatusCode::BadRequest);
-        }
-
-        int userId = userService->getUserFromSessionId(&sessionId);
-        if (userId == 0) {
-            return QHttpServerResponse(QJsonObject{ {"message", "Please login again to get correct session id"} }, QHttpServerResponder::StatusCode::Forbidden);
-        }
-
-        QString roomId = nullptr;
-        do {
-            roomId = generateRoomId();
-        } while (roomDataMap.contains(roomId));
-
-        return roomService->createRoom(userId, &roomDataMap, &roomId, &userToRoomId);
-    });
-    server.route("/api/room/join", QHttpServerRequest::Method::Post, [roomService, userService](const QHttpServerRequest &req) {
-        QByteArray requestData = req.body();
-        QJsonObject json = QJsonDocument::fromJson(requestData).object();
-
-        QString sessionId = getSessionIdFromHeader(req);
-
-        if (sessionId == nullptr) {
-            return QHttpServerResponse(QJsonObject{ {"message", "Lack of session id"} }, QHttpServerResponder::StatusCode::BadRequest);
-        }
-
-        int userId = userService->getUserFromSessionId(&sessionId);
-        if (userId == 0) {
-            return QHttpServerResponse(QJsonObject{ {"message", "Please login again to get correct session id"} }, QHttpServerResponder::StatusCode::Forbidden);
-        }
-
-        QString roomId = json.value("roomId").toString();
-
-        return roomService->joinRoom(userId, &roomDataMap, &roomId, &userToRoomId);
-    });
-    server.route("/api/room/leave", QHttpServerRequest::Method::Post, [roomService, userService](const QHttpServerRequest &req) {
-        QByteArray requestData = req.body();
-        QJsonObject json = QJsonDocument::fromJson(requestData).object();
-
-        QString sessionId = getSessionIdFromHeader(req);
-
-        if (sessionId == nullptr) {
-            return QHttpServerResponse(QJsonObject{ {"message", "Lack of session id"} }, QHttpServerResponder::StatusCode::BadRequest);
-        }
-
-        int userId = userService->getUserFromSessionId(&sessionId);
-        if (userId == 0) {
-            return QHttpServerResponse(QJsonObject{ {"message", "Please login again to get correct session id"} }, QHttpServerResponder::StatusCode::Forbidden);
-        }
-
-        QString roomId = json.value("roomId").toString();
-
-        return roomService->leaveRoom(userId, &roomDataMap, &roomId, &userToRoomId);
-    });
-    server.route("/api/room/start", QHttpServerRequest::Method::Post, [roomService, userService](const QHttpServerRequest &req) {
-        QByteArray requestData = req.body();
-        QJsonObject json = QJsonDocument::fromJson(requestData).object();
-
-        QString sessionId = getSessionIdFromHeader(req);
-
-        if (sessionId == nullptr) {
-            return QHttpServerResponse(QJsonObject{ {"message", "Lack of session id"} }, QHttpServerResponder::StatusCode::BadRequest);
-        }
-
-        int userId = userService->getUserFromSessionId(&sessionId);
-        if (userId == 0) {
-            return QHttpServerResponse(QJsonObject{ {"message", "Please login again to get correct session id"} }, QHttpServerResponder::StatusCode::Forbidden);
-        }
-
-        QString roomId = json.value("roomId").toString();
-
-        return roomService->startGame(userId, &roomDataMap, &roomId, &userToRoomId);
-    });
-
-
     server.route("/api/room/all", QHttpServerRequest::Method::Get, [roomService](const QHttpServerRequest &req) {
         QByteArray requestData = req.body();
 
@@ -202,4 +160,73 @@ int main(int argc, char *argv[])
 
 
     return a.exec();
+}
+
+void handleIncomingData(QTcpSocket * socket) {
+    QByteArray clientData = socket->readAll();
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(clientData);
+    QJsonObject jsonObj = jsonDoc.object();
+    QString sessionId = jsonObj["sessionId"].toString();
+
+    QJsonObject data;
+    QString roomId;
+    QList<QTcpSocket*> tableData;
+    int userId = userService->getUserFromSessionId(&sessionId);
+
+    switch(jsonObj["type"].toInt()) {
+    case static_cast<int>(SocketType::CREATE_ROOM):
+        roomId = nullptr;
+        do {
+            roomId = generateRoomId();
+        } while (roomDataMap.contains(roomId));
+
+        tableData = connectionTable.take(roomId);
+        tableData.append(socket);
+        connectionTable.insert(roomId, tableData);
+
+        data = roomService->createRoom(userId, &roomDataMap, &roomId, &userToRoomId);
+
+        socket->write(convertJsonToByteArray(data));
+        break;
+
+    case static_cast<int>(SocketType::LEAVE_ROOM):
+        roomId = jsonObj["roomId"].toString();
+
+        data = roomService->leaveRoom(userId, &roomDataMap, &roomId, &userToRoomId);
+
+        tableData = connectionTable.take(roomId);
+        tableData.removeAt(tableData.indexOf(socket));
+        connectionTable.insert(roomId, tableData);
+
+
+        socket->write(convertJsonToByteArray(data));
+        break;
+    case static_cast<int>(SocketType::JOIN_ROOM):
+        roomId = jsonObj["roomId"].toString();
+
+        data = roomService->joinRoom(userId, &roomDataMap, &roomId, &userToRoomId);
+
+        tableData = connectionTable.take(roomId);
+        tableData.append(socket);
+
+        for (int i = 0; i < tableData.length(); i++) {
+            QTcpSocket* _socket = tableData.at(i);
+
+            // Sử dụng socket ở đây
+            _socket->write(convertJsonToByteArray(data));
+            _socket->flush();
+        }
+
+        connectionTable.insert(roomId, tableData);
+
+        break;
+    }
+
+    qInfo() << socket->readAll();
+}
+
+QByteArray convertJsonToByteArray(QJsonObject val) {
+    QJsonDocument jsonDoc(val);
+    QByteArray byteArray = jsonDoc.toJson(QJsonDocument::Compact);
+    return byteArray;
 }

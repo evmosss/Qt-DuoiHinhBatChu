@@ -42,14 +42,12 @@ void Register::on_registerButton_clicked()
     manager->post(request, data);
 
     connect(manager, &QNetworkAccessManager::finished, [&](QNetworkReply *reply) {
-        qInfo() << "Run here";
         if (reply->error() == QNetworkReply::NoError) {
             QByteArray response = reply->readAll();
             QJsonDocument jsonDoc(QJsonDocument::fromJson(response));
             QJsonObject jsonObj = jsonDoc.object();
             // Xử lý dữ liệu JSON ở đây
             QString sessionId = jsonObj.value("sessionId").toString();
-            qInfo() << this->parent();
             emit registerSuccessfully();
         } else {
             emit registerFailed(reply->errorString());

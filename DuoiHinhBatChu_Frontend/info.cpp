@@ -15,6 +15,5 @@ Info::~Info()
 
 void Info::storeSessionId(QString sessionId)
 {
-    qInfo() << "Session" << sessionId;
     this->sessionId = sessionId;
 }

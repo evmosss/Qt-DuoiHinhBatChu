@@ -26,7 +26,11 @@ set(PROJECT_SOURCES
         register.ui
         register.cpp
         register.h
+        room.ui
+        room.cpp
+        room.h
         config.h
+        protocolSocket.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

@@ -24,7 +24,7 @@ public:
     ~MainWindow();
     void showRegisterWidget();
     void showLoginWidget();
-    void showInfoWidget(QString sessionId);
+    void showRoomWidget(QString sessionId);
     QString sessionId;
 
 signals:
