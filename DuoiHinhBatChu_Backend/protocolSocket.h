@@ -8,6 +8,7 @@ enum SocketType {
     LEAVE_ROOM,
     START_ROOM,
     NEXT_QUESTION,
+    SEND_ANSWER,
     BAD_RESPONSE,
 };
 

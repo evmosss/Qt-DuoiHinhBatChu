@@ -31,6 +31,7 @@ QHttpServerResponse  Auth::login(QString *username, QString *password)
 
     if (query.next()) {
         QString userId = query.value("id").toString();
+        int userIdInteger = query.value("id").toInt();
         QString hashedPassword = query.value("password").toString();
         if (Auth::checkPassword(*password, hashedPassword)) {
             QString sessionToken = QUuid::createUuid().toString().mid(1, 36);
@@ -70,9 +71,9 @@ QHttpServerResponse  Auth::login(QString *username, QString *password)
                 }
             }
 
-            return QHttpServerResponse(QJsonObject {{"message", "Login Succesffully"}, {"sessionId", sessionToken }}, QHttpServerResponder::StatusCode::Ok);
+            return QHttpServerResponse(QJsonObject {{"message", "Login Succesffully"}, {"sessionId", sessionToken }, {"userId", userIdInteger}}, QHttpServerResponder::StatusCode::Ok);
         } else {
-
+            return QHttpServerResponse(QJsonObject {{"message", "Wrong password"}}, QHttpServerResponder::StatusCode::BadRequest);
         }
     }
     else {

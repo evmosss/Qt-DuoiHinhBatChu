@@ -170,6 +170,7 @@ void handleIncomingData(QTcpSocket * socket) {
 
     QJsonObject data;
     QString roomId;
+    QString content;
     QList<QTcpSocket*> tableData;
     int userId = userService->getUserFromSessionId(&sessionId);
 
@@ -195,11 +196,17 @@ void handleIncomingData(QTcpSocket * socket) {
         data = roomService->leaveRoom(userId, &roomDataMap, &roomId, &userToRoomId);
 
         tableData = connectionTable.take(roomId);
+
+        for (int i = 0; i < tableData.length(); i++) {
+            QTcpSocket* _socket = tableData.at(i);
+
+            // Sử dụng socket ở đây
+            _socket->write(convertJsonToByteArray(data));
+            _socket->flush();
+        }
+
         tableData.removeAt(tableData.indexOf(socket));
         connectionTable.insert(roomId, tableData);
-
-
-        socket->write(convertJsonToByteArray(data));
         break;
     case static_cast<int>(SocketType::JOIN_ROOM):
         roomId = jsonObj["roomId"].toString();
@@ -218,7 +225,25 @@ void handleIncomingData(QTcpSocket * socket) {
         }
 
         connectionTable.insert(roomId, tableData);
+        break;
+    case static_cast<int>(SocketType::SEND_ANSWER):
+        roomId = jsonObj["roomId"].toString();
+        content = jsonObj["content"].toString();
 
+        data = roomService->sendAnswer(userId, &roomDataMap, &roomId, &userToRoomId, content);
+
+        tableData = connectionTable.take(roomId);
+
+        qInfo() << "Sending data..." << data;
+        for (int i = 0; i < tableData.length(); i++) {
+            QTcpSocket* _socket = tableData.at(i);
+
+            // Sử dụng socket ở đây
+            _socket->write(convertJsonToByteArray(data));
+            _socket->flush();
+        }
+
+        connectionTable.insert(roomId, tableData);
         break;
     }
 

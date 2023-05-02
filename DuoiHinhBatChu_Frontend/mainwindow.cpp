@@ -28,7 +28,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(roomWidget, &Room::logOutSuccessfully, this, &MainWindow::showLoginWidget);
 
     // Chuyển session id từ widget này sang widget khác
-    connect(this, &MainWindow::dispatchSessionId, roomWidget, &Room::storeSessionId);
+    connect(this, &MainWindow::dispatchSessionId, roomWidget, &Room::storeData);
+
+    // Xử lí đóng close window
+    connect(this, &MainWindow::closeWindow, roomWidget, &Room::closeWindow);
 
     // Hiển thị màn hình đăng nhập ban đầu
     ui->stackedWidget->setCurrentIndex(0);
@@ -51,10 +54,23 @@ void MainWindow::showLoginWidget()
     ui->stackedWidget->setCurrentIndex(0);
 }
 
-void MainWindow::showRoomWidget(QString sessionId)
+void MainWindow::showRoomWidget(QString sessionId, int userId)
 {
-    emit dispatchSessionId(sessionId);
+    emit dispatchSessionId(sessionId, userId);
     ui->stackedWidget->setCurrentIndex(2);
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    QMessageBox::StandardButton resBtn = QMessageBox::question(this, "Title", "Bạn có muốn đóng cửa sổ?",
+                                                               QMessageBox::No | QMessageBox::Yes,
+                                                               QMessageBox::Yes);
+    if (resBtn != QMessageBox::Yes) {
+        event->ignore();
+    } else {
+        emit closeWindow();
+        event->accept();
+    }
 }
 
 

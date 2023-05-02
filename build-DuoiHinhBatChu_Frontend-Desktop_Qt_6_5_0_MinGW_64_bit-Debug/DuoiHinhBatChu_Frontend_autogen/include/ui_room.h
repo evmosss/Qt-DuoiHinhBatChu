@@ -85,6 +85,7 @@ public:
         leaveRoom->setGeometry(QRect(0, 10, 83, 29));
         chatView = new QTextEdit(RoomDetail);
         chatView->setObjectName("chatView");
+        chatView->setEnabled(false);
         chatView->setGeometry(QRect(120, 330, 571, 211));
         timer = new QLabel(RoomDetail);
         timer->setObjectName("timer");
@@ -132,6 +133,7 @@ public:
         questionIndex->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
         startButton = new QPushButton(RoomDetail);
         startButton->setObjectName("startButton");
+        startButton->setEnabled(false);
         startButton->setGeometry(QRect(10, 330, 101, 41));
         roomId = new QLabel(RoomDetail);
         roomId->setObjectName("roomId");

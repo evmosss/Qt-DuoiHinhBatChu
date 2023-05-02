@@ -13,6 +13,7 @@ class User
 {
 public:
     int getUserFromSessionId(QString *sessionId);
+    QString getSessionIdByUser(int userId);
     User();
 };
 

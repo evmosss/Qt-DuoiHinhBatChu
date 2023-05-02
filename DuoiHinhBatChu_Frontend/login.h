@@ -32,7 +32,7 @@ private:
 
 signals:
     void changeToRegisterPage();
-    void loginSuccessfully(QString sessionId);
+    void loginSuccessfully(QString sessionId, int userId);
     void loginFailed(QString message);
 
 private slots:

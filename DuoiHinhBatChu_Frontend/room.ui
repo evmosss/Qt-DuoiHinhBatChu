@@ -114,6 +114,9 @@
      </property>
     </widget>
     <widget class="QTextEdit" name="chatView">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>120</x>
@@ -296,6 +299,9 @@
      </property>
     </widget>
     <widget class="QPushButton" name="startButton">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>10</x>

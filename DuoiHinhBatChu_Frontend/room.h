@@ -25,12 +25,15 @@ public:
     ~Room();
     QString sessionId;
     QString roomId;
-    void storeSessionId(QString sessionId);
+    int userId;
+    void storeData(QString sessionId, int userId);
+    void closeWindow();
 
 private:
     void handleCreateRoom(QJsonObject data);
     void handleLeaveRoom(QJsonObject data);
     void handleJoinRoom(QJsonObject data);
+    void handleSendAnswer(QJsonObject data);
 
     Ui::Room *ui;
     QTcpSocket *socket;
@@ -45,6 +48,7 @@ private slots:
     void on_leaveRoom_clicked();
     void on_logoutButton_clicked();
     void on_joinRoom_clicked();
+    void on_submitAnswer_clicked();
 
     void alertConnected();
     void handleDataFromServer();

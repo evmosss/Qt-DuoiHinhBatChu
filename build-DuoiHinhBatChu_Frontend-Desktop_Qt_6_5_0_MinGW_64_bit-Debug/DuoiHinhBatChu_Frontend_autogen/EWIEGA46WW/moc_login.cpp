@@ -44,6 +44,7 @@ static constexpr auto qt_meta_stringdata_CLASSLoginENDCLASS = QtMocHelpers::stri
     "",
     "loginSuccessfully",
     "sessionId",
+    "userId",
     "loginFailed",
     "message",
     "on_registerButton_clicked",
@@ -51,16 +52,17 @@ static constexpr auto qt_meta_stringdata_CLASSLoginENDCLASS = QtMocHelpers::stri
 );
 #else  // !QT_MOC_HAS_STRING_DATA
 struct qt_meta_stringdata_CLASSLoginENDCLASS_t {
-    uint offsetsAndSizes[18];
+    uint offsetsAndSizes[20];
     char stringdata0[6];
     char stringdata1[21];
     char stringdata2[1];
     char stringdata3[18];
     char stringdata4[10];
-    char stringdata5[12];
-    char stringdata6[8];
-    char stringdata7[26];
-    char stringdata8[23];
+    char stringdata5[7];
+    char stringdata6[12];
+    char stringdata7[8];
+    char stringdata8[26];
+    char stringdata9[23];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_CLASSLoginENDCLASS_t::offsetsAndSizes) + ofs), len 
@@ -71,16 +73,18 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSLoginENDCLASS_t qt_meta_stringd
         QT_MOC_LITERAL(27, 0),  // ""
         QT_MOC_LITERAL(28, 17),  // "loginSuccessfully"
         QT_MOC_LITERAL(46, 9),  // "sessionId"
-        QT_MOC_LITERAL(56, 11),  // "loginFailed"
-        QT_MOC_LITERAL(68, 7),  // "message"
-        QT_MOC_LITERAL(76, 25),  // "on_registerButton_clicked"
-        QT_MOC_LITERAL(102, 22)   // "on_loginButton_clicked"
+        QT_MOC_LITERAL(56, 6),  // "userId"
+        QT_MOC_LITERAL(63, 11),  // "loginFailed"
+        QT_MOC_LITERAL(75, 7),  // "message"
+        QT_MOC_LITERAL(83, 25),  // "on_registerButton_clicked"
+        QT_MOC_LITERAL(109, 22)   // "on_loginButton_clicked"
     },
     "Login",
     "changeToRegisterPage",
     "",
     "loginSuccessfully",
     "sessionId",
+    "userId",
     "loginFailed",
     "message",
     "on_registerButton_clicked",
@@ -105,17 +109,17 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSLoginENDCLASS[] = {
 
  // signals: name, argc, parameters, tag, flags, initial metatype offsets
        1,    0,   44,    2, 0x06,    1 /* Public */,
-       3,    1,   45,    2, 0x06,    2 /* Public */,
-       5,    1,   48,    2, 0x06,    4 /* Public */,
+       3,    2,   45,    2, 0x06,    2 /* Public */,
+       6,    1,   50,    2, 0x06,    5 /* Public */,
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       7,    0,   51,    2, 0x08,    6 /* Private */,
-       8,    0,   52,    2, 0x08,    7 /* Private */,
+       8,    0,   53,    2, 0x08,    7 /* Private */,
+       9,    0,   54,    2, 0x08,    8 /* Private */,
 
  // signals: parameters
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QString,    4,
-    QMetaType::Void, QMetaType::QString,    6,
+    QMetaType::Void, QMetaType::QString, QMetaType::Int,    4,    5,
+    QMetaType::Void, QMetaType::QString,    7,
 
  // slots: parameters
     QMetaType::Void,
@@ -138,6 +142,7 @@ Q_CONSTINIT const QMetaObject Login::staticMetaObject = { {
         // method 'loginSuccessfully'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         QtPrivate::TypeAndForceComplete<QString, std::false_type>,
+        QtPrivate::TypeAndForceComplete<int, std::false_type>,
         // method 'loginFailed'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         QtPrivate::TypeAndForceComplete<QString, std::false_type>,
@@ -156,7 +161,7 @@ void Login::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
         (void)_t;
         switch (_id) {
         case 0: _t->changeToRegisterPage(); break;
-        case 1: _t->loginSuccessfully((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 1: _t->loginSuccessfully((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2]))); break;
         case 2: _t->loginFailed((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
         case 3: _t->on_registerButton_clicked(); break;
         case 4: _t->on_loginButton_clicked(); break;
@@ -172,7 +177,7 @@ void Login::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
             }
         }
         {
-            using _t = void (Login::*)(QString );
+            using _t = void (Login::*)(QString , int );
             if (_t _q_method = &Login::loginSuccessfully; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
                 *result = 1;
                 return;
@@ -225,9 +230,9 @@ void Login::changeToRegisterPage()
 }
 
 // SIGNAL 1
-void Login::loginSuccessfully(QString _t1)
+void Login::loginSuccessfully(QString _t1, int _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 

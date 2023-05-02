@@ -53,8 +53,9 @@ void Login::on_loginButton_clicked()
             QJsonObject jsonObj = jsonDoc.object();
             // Xử lý dữ liệu JSON ở đây
             QString sessionId = jsonObj.value("sessionId").toString();
-            qInfo() << this->parent();
-            emit loginSuccessfully(sessionId);
+            int userId = jsonObj.value("userId").toInt();
+
+            emit loginSuccessfully(sessionId, userId);
         } else {
             emit loginFailed(reply->errorString());
         }

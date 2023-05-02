@@ -118,12 +118,22 @@ QJsonObject Room::leaveRoom(int userId, QMap<QString, QJsonObject> *roomData, QS
     if (userToRoomId->contains(userId)) {
         userToRoomId->remove(userId);
         roomData->remove(*roomId);
+        response["data"] = QJsonValue::Null;
     }
     else {
         QJsonObject json = roomData->take(*roomId);
         QJsonArray players = json.value("players").toArray();
         QJsonArray points = json.value("points").toArray();
 
+        if (players.size() == 1) {
+            response["message"] = "You already leave room!";
+            response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::Forbidden);
+            response["data"] = QJsonValue::Null;
+            response["type"] = SocketType::LEAVE_ROOM;
+            return response;
+        }
+
+        int leavePlayerId = players.at(1).toInt();
         points[0] = 0;
         points.pop_back();
         players.pop_back();
@@ -133,13 +143,38 @@ QJsonObject Room::leaveRoom(int userId, QMap<QString, QJsonObject> *roomData, QS
         json["questionId"] = 0;
         json["status"] = "PENDING";
 
+        QJsonObject resData;
+        resData["leavePlayerId"] = leavePlayerId;
+        response["data"] = resData;
+
         roomData->insert(*roomId, json);
     }
 
     response["message"] = "Leave room successfully";
     response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::Ok);
-    response["data"] = QJsonValue::Null;
     response["type"] = SocketType::LEAVE_ROOM;
+    return response;
+}
+
+QJsonObject Room::sendAnswer(int userId, QMap<QString, QJsonObject> *roomData, QString *roomId, QMap<int, QString> *userToRoomId, QString content)
+{
+    QJsonObject response;
+    if (!roomData->contains(*roomId)) {
+        response["message"] = "Room does not exist";
+        response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::BadRequest);
+        response["data"] = QJsonValue::Null;
+        response["type"] = SocketType::SEND_ANSWER;
+        return response;
+    }
+
+    QJsonObject returnData;
+    returnData["isTrue"] = false;
+    returnData["content"] = "User " + QString::number(userId) + ": " + content + ".";
+
+    response["message"] = "Join room successfully";
+    response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::Ok);
+    response["data"] = returnData;
+    response["type"] = SocketType::SEND_ANSWER;
     return response;
 }
 

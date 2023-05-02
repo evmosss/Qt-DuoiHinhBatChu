@@ -25,9 +25,17 @@ Room::~Room()
     delete ui;
 }
 
-void Room::storeSessionId(QString sessionId)
+void Room::storeData(QString sessionId, int userId)
 {
     this->sessionId = sessionId;
+    this->userId = userId;
+}
+
+void Room::closeWindow()
+{
+    if (roomId != nullptr) {
+        Room::on_leaveRoom_clicked();
+    }
 }
 
 void Room::handleCreateRoom(QJsonObject data)
@@ -51,25 +59,46 @@ void Room::handleCreateRoom(QJsonObject data)
     ui->userOne->setText(userStr);
     ui->questionIndex->setText("Question: " + QString::number(userData.value("questionIndex").toInt()));
     ui->roomId->setText("Room id: " + roomId);
-    ui->startButton->setDisabled(false);
+
+    ui->stackedWidget->setCurrentWidget(ui->RoomDetail);
+    ui->pointTwo->setText("Point: 0");
+    ui->userTwo->setText("Waiting...");
+
+    ui->startButton->setEnabled(false);
+    ui->chatView->clear();
 }
 
 void Room::handleLeaveRoom(QJsonObject data)
 {
+    qInfo() << "Leave Room" << data;
     if (data["code"].toInt() != 200) {
         emit interactError(data["message"].toString());
         return;
     }
     else {
         qInfo() << "Touch here";
-        ui->stackedWidget->setCurrentIndex(0);
-        // Room::disconnect();
+        if (data.value("data") == QJsonValue::Null) {
+            ui->stackedWidget->setCurrentIndex(0);
+        }
+        else {
+            QJsonObject responseData = data.value("data").toObject();
+            int playerId = responseData.value("leavePlayerId").toInt();
+            qInfo() << playerId << "-----" << userId;
+            if (playerId != userId) {
+                ui->pointTwo->setText("Point: 0");
+                ui->userTwo->setText("Waiting...");
+                ui->startButton->setEnabled(false);
+            }
+            else {
+                ui->stackedWidget->setCurrentIndex(0);
+            }
+        }
     }
+    ui->chatView->clear();
 }
 
 void Room::handleJoinRoom(QJsonObject data)
 {
-    qInfo() << "This is data for join room" << data;
     if (data["code"].toInt() != 200) {
         emit interactError(data["message"].toString());
         return;
@@ -95,7 +124,24 @@ void Room::handleJoinRoom(QJsonObject data)
     ui->pointTwo->setText("Point: " + QString::number(pointData.at(1).toDouble()));
     ui->userTwo->setText("User: " + QString::number(playerData.at(1).toDouble()));
 
-    ui->startButton->setDisabled(false);
+    ui->startButton->setEnabled(true);
+    ui->chatView->clear();
+}
+
+void Room::handleSendAnswer(QJsonObject data)
+{
+    qInfo() << "CHATTING" << data;
+    if (data["code"].toInt() != 200) {
+        emit interactError(data["message"].toString());
+        return;
+    }
+
+    QJsonObject userData = data.value("data").toObject();
+    QString content = userData.value("content").toString();
+
+    ui->chatView->append(content);
+    ui->inputAnswer->clear();
+    ui->inputAnswer->focusWidget();
 }
 
 void Room::handleInteractError(QString message)
@@ -161,6 +207,26 @@ void Room::on_joinRoom_clicked()
     }
 }
 
+void Room::on_submitAnswer_clicked()
+{
+    QString text = ui->inputAnswer->text();
+
+    if (text != "") {
+        // Send message to server
+        QJsonObject json;
+        json["sessionId"] = sessionId;
+        json["type"] = static_cast<int>(SocketType::SEND_ANSWER);
+        json["roomId"] = roomId;
+        json["content"] = text;
+
+        QJsonDocument jsonDoc(json);
+        QString jsonString = jsonDoc.toJson(QJsonDocument::Compact);
+
+        socket->write(jsonString.toUtf8());
+        socket->flush();
+    }
+}
+
 void Room::alertConnected()
 {
     qInfo() << "Connect to socket server successfully";
@@ -170,6 +236,7 @@ void Room::handleDataFromServer()
 {
     QByteArray data = socket->readAll();
     QJsonObject jsonData = QJsonDocument::fromJson(data).object();
+    qInfo() << "DATA FROM SERVER" << jsonData;
 
     switch (jsonData["type"].toInt()) {
         case static_cast<int>(SocketType::CREATE_ROOM):
@@ -180,6 +247,9 @@ void Room::handleDataFromServer()
         break;
         case static_cast<int>(SocketType::JOIN_ROOM):
         Room::handleJoinRoom(jsonData);
+        break;
+        case static_cast<int>(SocketType::SEND_ANSWER):
+        Room::handleSendAnswer(jsonData);
         break;
     }
 }

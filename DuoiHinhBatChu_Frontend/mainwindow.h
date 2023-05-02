@@ -9,6 +9,7 @@
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QDebug>
+#include <QCloseEvent>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -24,11 +25,15 @@ public:
     ~MainWindow();
     void showRegisterWidget();
     void showLoginWidget();
-    void showRoomWidget(QString sessionId);
+    void showRoomWidget(QString sessionId, int userId);
     QString sessionId;
 
+protected:
+    void closeEvent(QCloseEvent *event) override;
+
 signals:
-    void dispatchSessionId(QString sessionId);
+    void dispatchSessionId(QString sessionId, int userId);
+    void closeWindow();
 
 private:
     Ui::MainWindow *ui;

@@ -37,6 +37,11 @@ int User::getUserFromSessionId(QString *sessionId)
     return 0;
 }
 
+QString User::getSessionIdByUser(int userId)
+{
+
+}
+
 User::User()
 {
 
