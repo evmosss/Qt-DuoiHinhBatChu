@@ -7,7 +7,7 @@
 				{
 					"build" : ".",
 					"hasInstallRule" : true,
-					"jsonFile" : "directory-.-Debug-c7f5a16888740572d654.json",
+					"jsonFile" : "directory-.-Debug-37d55ab2c8c1e7a2c80b.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.16"
@@ -44,7 +44,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "DuoiHinhBatChu_Backend::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-DuoiHinhBatChu_Backend-Debug-c390ffe3404103fac8bc.json",
+					"jsonFile" : "target-DuoiHinhBatChu_Backend-Debug-dede44d5fbf2917e3c40.json",
 					"name" : "DuoiHinhBatChu_Backend",
 					"projectIndex" : 0
 				},

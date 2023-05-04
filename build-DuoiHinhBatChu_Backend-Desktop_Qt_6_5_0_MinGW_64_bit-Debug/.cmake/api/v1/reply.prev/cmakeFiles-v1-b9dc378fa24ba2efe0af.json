@@ -823,6 +823,43 @@
 		{
 			"isExternal" : true,
 			"path" : "D:/Qt/6.5.0/mingw_64/lib/cmake/Qt6Sql/Qt6QSQLiteDriverPluginAdditionalTargetInfo.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "D:/Qt/6.5.0/mingw_64/lib/cmake/Qt6Concurrent/Qt6ConcurrentConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "D:/Qt/6.5.0/mingw_64/lib/cmake/Qt6Concurrent/Qt6ConcurrentConfigVersionImpl.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "D:/Qt/6.5.0/mingw_64/lib/cmake/Qt6Concurrent/Qt6ConcurrentConfig.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/cmake-3.26.0-rc3-windows-x86_64/cmake-3.26.0-rc3-windows-x86_64/share/cmake-3.26/Modules/CMakeFindDependencyMacro.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "D:/Qt/6.5.0/mingw_64/lib/cmake/Qt6Concurrent/Qt6ConcurrentDependencies.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "D:/Qt/6.5.0/mingw_64/lib/cmake/Qt6Concurrent/Qt6ConcurrentTargets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "D:/Qt/6.5.0/mingw_64/lib/cmake/Qt6Concurrent/Qt6ConcurrentTargets-relwithdebinfo.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "D:/Qt/6.5.0/mingw_64/lib/cmake/Qt6Concurrent/Qt6ConcurrentAdditionalTargetInfo.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "D:/Qt/6.5.0/mingw_64/lib/cmake/Qt6Concurrent/Qt6ConcurrentVersionlessTargets.cmake"
 		}
 	],
 	"kind" : "cmakeFiles",

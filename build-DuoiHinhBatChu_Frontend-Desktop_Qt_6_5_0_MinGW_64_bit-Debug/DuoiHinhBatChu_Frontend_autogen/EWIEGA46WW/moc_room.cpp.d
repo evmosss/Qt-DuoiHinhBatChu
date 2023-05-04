@@ -1,11 +1,20 @@
 D:/Qt-Dev/DuoiHinhBatChu/build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/DuoiHinhBatChu_Frontend_autogen/EWIEGA46WW/moc_room.cpp: D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Frontend/room.h \
   D:/Qt-Dev/DuoiHinhBatChu/build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/DuoiHinhBatChu_Frontend_autogen/moc_predefs.h \
   D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Frontend/protocolSocket.h \
+  D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Frontend/socket.h \
+  D:/Qt/6.5.0/mingw_64/include/QtCore/QFlags \
+  D:/Qt/6.5.0/mingw_64/include/QtCore/QIODevice \
   D:/Qt/6.5.0/mingw_64/include/QtCore/QJsonArray \
   D:/Qt/6.5.0/mingw_64/include/QtCore/QJsonDocument \
   D:/Qt/6.5.0/mingw_64/include/QtCore/QJsonObject \
+  D:/Qt/6.5.0/mingw_64/include/QtCore/QList \
+  D:/Qt/6.5.0/mingw_64/include/QtCore/QMetaType \
+  D:/Qt/6.5.0/mingw_64/include/QtCore/QObject \
+  D:/Qt/6.5.0/mingw_64/include/QtCore/QSharedDataPointer \
   D:/Qt/6.5.0/mingw_64/include/QtCore/QString \
   D:/Qt/6.5.0/mingw_64/include/QtCore/QTimer \
+  D:/Qt/6.5.0/mingw_64/include/QtCore/QUrl \
+  D:/Qt/6.5.0/mingw_64/include/QtCore/QVariant \
   D:/Qt/6.5.0/mingw_64/include/QtCore/q20memory.h \
   D:/Qt/6.5.0/mingw_64/include/QtCore/q20type_traits.h \
   D:/Qt/6.5.0/mingw_64/include/QtCore/qalgorithms.h \
@@ -36,6 +45,7 @@ D:/Qt-Dev/DuoiHinhBatChu/build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64
   D:/Qt/6.5.0/mingw_64/include/QtCore/qcontainerinfo.h \
   D:/Qt/6.5.0/mingw_64/include/QtCore/qcontainertools_impl.h \
   D:/Qt/6.5.0/mingw_64/include/QtCore/qcontiguouscache.h \
+  D:/Qt/6.5.0/mingw_64/include/QtCore/qcryptographichash.h \
   D:/Qt/6.5.0/mingw_64/include/QtCore/qdarwinhelpers.h \
   D:/Qt/6.5.0/mingw_64/include/QtCore/qdatastream.h \
   D:/Qt/6.5.0/mingw_64/include/QtCore/qdatetime.h \
@@ -158,9 +168,23 @@ D:/Qt-Dev/DuoiHinhBatChu/build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64
   D:/Qt/6.5.0/mingw_64/include/QtGui/qtransform.h \
   D:/Qt/6.5.0/mingw_64/include/QtGui/qwindowdefs.h \
   D:/Qt/6.5.0/mingw_64/include/QtGui/qwindowdefs_win.h \
+  D:/Qt/6.5.0/mingw_64/include/QtNetwork/QNetworkAccessManager \
+  D:/Qt/6.5.0/mingw_64/include/QtNetwork/QNetworkReply \
+  D:/Qt/6.5.0/mingw_64/include/QtNetwork/QNetworkRequest \
+  D:/Qt/6.5.0/mingw_64/include/QtNetwork/QSslConfiguration \
+  D:/Qt/6.5.0/mingw_64/include/QtNetwork/QSslPreSharedKeyAuthenticator \
   D:/Qt/6.5.0/mingw_64/include/QtNetwork/QTcpSocket \
   D:/Qt/6.5.0/mingw_64/include/QtNetwork/qabstractsocket.h \
   D:/Qt/6.5.0/mingw_64/include/QtNetwork/qhostaddress.h \
+  D:/Qt/6.5.0/mingw_64/include/QtNetwork/qnetworkaccessmanager.h \
+  D:/Qt/6.5.0/mingw_64/include/QtNetwork/qnetworkreply.h \
+  D:/Qt/6.5.0/mingw_64/include/QtNetwork/qnetworkrequest.h \
+  D:/Qt/6.5.0/mingw_64/include/QtNetwork/qssl.h \
+  D:/Qt/6.5.0/mingw_64/include/QtNetwork/qsslcertificate.h \
+  D:/Qt/6.5.0/mingw_64/include/QtNetwork/qsslconfiguration.h \
+  D:/Qt/6.5.0/mingw_64/include/QtNetwork/qsslerror.h \
+  D:/Qt/6.5.0/mingw_64/include/QtNetwork/qsslpresharedkeyauthenticator.h \
+  D:/Qt/6.5.0/mingw_64/include/QtNetwork/qsslsocket.h \
   D:/Qt/6.5.0/mingw_64/include/QtNetwork/qtcpsocket.h \
   D:/Qt/6.5.0/mingw_64/include/QtNetwork/qtnetwork-config.h \
   D:/Qt/6.5.0/mingw_64/include/QtNetwork/qtnetworkexports.h \

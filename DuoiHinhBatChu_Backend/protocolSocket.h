@@ -10,6 +10,7 @@ enum SocketType {
     NEXT_QUESTION,
     SEND_ANSWER,
     BAD_RESPONSE,
+    FINISH_ROOM,
 };
 
 #endif // PROTOCOLSOCKET_H

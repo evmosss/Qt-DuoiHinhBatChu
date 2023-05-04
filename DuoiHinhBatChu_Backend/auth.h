@@ -15,6 +15,7 @@
 #include <QSqlQuery>
 #include <QUuid>
 #include <QNetworkCookie>
+#include "database.h"
 
 class Auth
 {
@@ -27,6 +28,7 @@ public:
     // For simple services
     bool checkPassword(const QString &password, const QString &hashedPassword);
     QString hashPassword(const QString &password);
+    QSqlDatabase database;
 };
 
 #endif // AUTH_H

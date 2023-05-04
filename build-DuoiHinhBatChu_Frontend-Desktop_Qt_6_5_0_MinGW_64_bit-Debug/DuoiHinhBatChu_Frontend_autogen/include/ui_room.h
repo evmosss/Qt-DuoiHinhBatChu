@@ -102,12 +102,12 @@ public:
         playerOneAvt = new QLabel(RoomDetail);
         playerOneAvt->setObjectName("playerOneAvt");
         playerOneAvt->setGeometry(QRect(10, 490, 91, 91));
-        playerOneAvt->setPixmap(QPixmap(QString::fromUtf8("C:/Users/USER/Desktop/30soccer-ronaldo-1-76fd-mobileMasterAt3x.jpg")));
+        playerOneAvt->setPixmap(QPixmap(QString::fromUtf8("../images/avatarPlayerOne.jpg")));
         playerOneAvt->setScaledContents(true);
         playerTwoAvt = new QLabel(RoomDetail);
         playerTwoAvt->setObjectName("playerTwoAvt");
         playerTwoAvt->setGeometry(QRect(700, 490, 91, 91));
-        playerTwoAvt->setPixmap(QPixmap(QString::fromUtf8("C:/Users/USER/Desktop/avatar-1606916__341.jpg")));
+        playerTwoAvt->setPixmap(QPixmap(QString::fromUtf8("../images/avatarPlayerTwo.jpg")));
         playerTwoAvt->setScaledContents(true);
         userOne = new QLabel(RoomDetail);
         userOne->setObjectName("userOne");

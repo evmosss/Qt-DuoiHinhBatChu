@@ -7,6 +7,7 @@
 *****************************************************************************/
 
 #include "../../../DuoiHinhBatChu_Frontend/room.h"
+#include <QtNetwork/QSslError>
 #include <QtGui/qtextcursor.h>
 #include <QtCore/qmetatype.h>
 
@@ -50,6 +51,7 @@ static constexpr auto qt_meta_stringdata_CLASSRoomENDCLASS = QtMocHelpers::strin
     "on_logoutButton_clicked",
     "on_joinRoom_clicked",
     "on_submitAnswer_clicked",
+    "on_startButton_clicked",
     "alertConnected",
     "handleDataFromServer",
     "handleSocketError",
@@ -59,7 +61,7 @@ static constexpr auto qt_meta_stringdata_CLASSRoomENDCLASS = QtMocHelpers::strin
 );
 #else  // !QT_MOC_HAS_STRING_DATA
 struct qt_meta_stringdata_CLASSRoomENDCLASS_t {
-    uint offsetsAndSizes[34];
+    uint offsetsAndSizes[36];
     char stringdata0[5];
     char stringdata1[14];
     char stringdata2[1];
@@ -71,12 +73,13 @@ struct qt_meta_stringdata_CLASSRoomENDCLASS_t {
     char stringdata8[24];
     char stringdata9[20];
     char stringdata10[24];
-    char stringdata11[15];
-    char stringdata12[21];
-    char stringdata13[18];
-    char stringdata14[29];
-    char stringdata15[6];
-    char stringdata16[11];
+    char stringdata11[23];
+    char stringdata12[15];
+    char stringdata13[21];
+    char stringdata14[18];
+    char stringdata15[29];
+    char stringdata16[6];
+    char stringdata17[11];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_CLASSRoomENDCLASS_t::offsetsAndSizes) + ofs), len 
@@ -93,12 +96,13 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSRoomENDCLASS_t qt_meta_stringda
         QT_MOC_LITERAL(110, 23),  // "on_logoutButton_clicked"
         QT_MOC_LITERAL(134, 19),  // "on_joinRoom_clicked"
         QT_MOC_LITERAL(154, 23),  // "on_submitAnswer_clicked"
-        QT_MOC_LITERAL(178, 14),  // "alertConnected"
-        QT_MOC_LITERAL(193, 20),  // "handleDataFromServer"
-        QT_MOC_LITERAL(214, 17),  // "handleSocketError"
-        QT_MOC_LITERAL(232, 28),  // "QAbstractSocket::SocketError"
-        QT_MOC_LITERAL(261, 5),  // "error"
-        QT_MOC_LITERAL(267, 10)   // "disconnect"
+        QT_MOC_LITERAL(178, 22),  // "on_startButton_clicked"
+        QT_MOC_LITERAL(201, 14),  // "alertConnected"
+        QT_MOC_LITERAL(216, 20),  // "handleDataFromServer"
+        QT_MOC_LITERAL(237, 17),  // "handleSocketError"
+        QT_MOC_LITERAL(255, 28),  // "QAbstractSocket::SocketError"
+        QT_MOC_LITERAL(284, 5),  // "error"
+        QT_MOC_LITERAL(290, 10)   // "disconnect"
     },
     "Room",
     "interactError",
@@ -111,6 +115,7 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSRoomENDCLASS_t qt_meta_stringda
     "on_logoutButton_clicked",
     "on_joinRoom_clicked",
     "on_submitAnswer_clicked",
+    "on_startButton_clicked",
     "alertConnected",
     "handleDataFromServer",
     "handleSocketError",
@@ -128,7 +133,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSRoomENDCLASS[] = {
       11,       // revision
        0,       // classname
        0,    0, // classinfo
-      12,   14, // methods
+      13,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -136,20 +141,21 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSRoomENDCLASS[] = {
        2,       // signalCount
 
  // signals: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    1,   86,    2, 0x06,    1 /* Public */,
-       4,    0,   89,    2, 0x06,    3 /* Public */,
+       1,    1,   92,    2, 0x06,    1 /* Public */,
+       4,    0,   95,    2, 0x06,    3 /* Public */,
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       5,    1,   90,    2, 0x08,    4 /* Private */,
-       6,    0,   93,    2, 0x08,    6 /* Private */,
-       7,    0,   94,    2, 0x08,    7 /* Private */,
-       8,    0,   95,    2, 0x08,    8 /* Private */,
-       9,    0,   96,    2, 0x08,    9 /* Private */,
-      10,    0,   97,    2, 0x08,   10 /* Private */,
-      11,    0,   98,    2, 0x08,   11 /* Private */,
-      12,    0,   99,    2, 0x08,   12 /* Private */,
-      13,    1,  100,    2, 0x08,   13 /* Private */,
-      16,    0,  103,    2, 0x08,   15 /* Private */,
+       5,    1,   96,    2, 0x08,    4 /* Private */,
+       6,    0,   99,    2, 0x08,    6 /* Private */,
+       7,    0,  100,    2, 0x08,    7 /* Private */,
+       8,    0,  101,    2, 0x08,    8 /* Private */,
+       9,    0,  102,    2, 0x08,    9 /* Private */,
+      10,    0,  103,    2, 0x08,   10 /* Private */,
+      11,    0,  104,    2, 0x08,   11 /* Private */,
+      12,    0,  105,    2, 0x08,   12 /* Private */,
+      13,    0,  106,    2, 0x08,   13 /* Private */,
+      14,    1,  107,    2, 0x08,   14 /* Private */,
+      17,    0,  110,    2, 0x08,   16 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QString,    3,
@@ -164,7 +170,8 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSRoomENDCLASS[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 14,   15,
+    QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 15,   16,
     QMetaType::Void,
 
        0        // eod
@@ -197,6 +204,8 @@ Q_CONSTINIT const QMetaObject Room::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'on_submitAnswer_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'on_startButton_clicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'alertConnected'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'handleDataFromServer'
@@ -224,16 +233,17 @@ void Room::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void *
         case 5: _t->on_logoutButton_clicked(); break;
         case 6: _t->on_joinRoom_clicked(); break;
         case 7: _t->on_submitAnswer_clicked(); break;
-        case 8: _t->alertConnected(); break;
-        case 9: _t->handleDataFromServer(); break;
-        case 10: _t->handleSocketError((*reinterpret_cast< std::add_pointer_t<QAbstractSocket::SocketError>>(_a[1]))); break;
-        case 11: _t->disconnect(); break;
+        case 8: _t->on_startButton_clicked(); break;
+        case 9: _t->alertConnected(); break;
+        case 10: _t->handleDataFromServer(); break;
+        case 11: _t->handleSocketError((*reinterpret_cast< std::add_pointer_t<QAbstractSocket::SocketError>>(_a[1]))); break;
+        case 12: _t->disconnect(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
         switch (_id) {
         default: *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType(); break;
-        case 10:
+        case 11:
             switch (*reinterpret_cast<int*>(_a[1])) {
             default: *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType(); break;
             case 0:
@@ -279,13 +289,13 @@ int Room::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 12)
+        if (_id < 13)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 12;
+        _id -= 13;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 12)
+        if (_id < 13)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 12;
+        _id -= 13;
     }
     return _id;
 }

@@ -18,7 +18,7 @@ Auth::Auth()
 
 QHttpServerResponse  Auth::login(QString *username, QString *password)
 {
-    QSqlDatabase database = QSqlDatabase::database(_DATABASE_NAME);
+    database = Database::getInstance().getDatabase();
     QSqlQuery query(database);
 
     query.prepare("SELECT * FROM users WHERE username = :username");
@@ -46,8 +46,6 @@ QHttpServerResponse  Auth::login(QString *username, QString *password)
                 return QHttpServerResponse(QJsonObject{ {"message", query.lastError().text() } }, QHttpServerResponder::StatusCode::InternalServerError);
             }
 
-
-            qInfo() << QDateTime::currentDateTimeUtc().toString();
             if (query.next()) {
                 query.clear();
                 query.prepare("UPDATE user_sessions SET session_id = :session, valid_date = :date WHERE user_id = :id");
@@ -83,7 +81,7 @@ QHttpServerResponse  Auth::login(QString *username, QString *password)
 
 QHttpServerResponse Auth::registerAccount(QString *username, QString *password)
 {
-    QSqlDatabase database = QSqlDatabase::database(_DATABASE_NAME);
+    database = Database::getInstance().getDatabase();
     QSqlQuery query(database);
 
     QString hashedPassword = hashPassword(*password);

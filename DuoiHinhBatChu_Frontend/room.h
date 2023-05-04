@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <QtNetwork/QTcpSocket>
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkReply>
 #include <QJsonObject>
 #include <QJsonDocument>
 #include "protocolSocket.h"
@@ -11,6 +13,8 @@
 #include <QInputDialog>
 #include <QTimer>
 #include <QMessageBox>
+#include <QUrl>
+#include "socket.h"
 
 namespace Ui {
 class Room;
@@ -25,18 +29,27 @@ public:
     ~Room();
     QString sessionId;
     QString roomId;
+    int roomOwnerId;
     int userId;
     void storeData(QString sessionId, int userId);
     void closeWindow();
+    void downloadImage(const QUrl& imageUrl, QLabel* label);
 
 private:
     void handleCreateRoom(QJsonObject data);
     void handleLeaveRoom(QJsonObject data);
     void handleJoinRoom(QJsonObject data);
     void handleSendAnswer(QJsonObject data);
+    void handleStartRoom(QJsonObject data);
+    void handleNextQuestion(QJsonObject data);
+    void handleFinishRoom(QJsonObject data);
+    void renderFullRoom(QJsonObject roomDetail);
+
+    void requestNextQuestion();
 
     Ui::Room *ui;
-    QTcpSocket *socket;
+    QTcpSocket * socket;
+    QTimer* countdownTimer;
 
 signals:
     void interactError(QString message);
@@ -49,11 +62,13 @@ private slots:
     void on_logoutButton_clicked();
     void on_joinRoom_clicked();
     void on_submitAnswer_clicked();
+    void on_startButton_clicked();
 
     void alertConnected();
     void handleDataFromServer();
     void handleSocketError(QAbstractSocket::SocketError error);
     void disconnect(); // Disconnect from server
+
 
 };
 

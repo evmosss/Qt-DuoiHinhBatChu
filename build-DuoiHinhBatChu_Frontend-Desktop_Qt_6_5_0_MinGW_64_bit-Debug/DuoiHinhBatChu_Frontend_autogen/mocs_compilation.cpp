@@ -4,3 +4,4 @@
 #include "EWIEGA46WW/moc_mainwindow.cpp"
 #include "EWIEGA46WW/moc_register.cpp"
 #include "EWIEGA46WW/moc_room.cpp"
+#include "EWIEGA46WW/moc_socket.cpp"

@@ -105,6 +105,14 @@ build CMakeFiles/DuoiHinhBatChu_Frontend.dir/room.cpp.obj: CXX_COMPILER__DuoiHin
   OBJECT_DIR = CMakeFiles\DuoiHinhBatChu_Frontend.dir
   OBJECT_FILE_DIR = CMakeFiles\DuoiHinhBatChu_Frontend.dir
 
+build CMakeFiles/DuoiHinhBatChu_Frontend.dir/socket.cpp.obj: CXX_COMPILER__DuoiHinhBatChu_Frontend_unscanned_Debug D$:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Frontend/socket.cpp || cmake_object_order_depends_target_DuoiHinhBatChu_Frontend
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_NETWORK_LIB -DQT_SQL_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+  DEP_FILE = CMakeFiles\DuoiHinhBatChu_Frontend.dir\socket.cpp.obj.d
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17
+  INCLUDES = -ID:/Qt-Dev/DuoiHinhBatChu/build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/DuoiHinhBatChu_Frontend_autogen/include -isystem D:/Qt/6.5.0/mingw_64/include/QtCore -isystem D:/Qt/6.5.0/mingw_64/include -isystem D:/Qt/6.5.0/mingw_64/mkspecs/win32-g++ -isystem D:/Qt/6.5.0/mingw_64/include/QtWidgets -isystem D:/Qt/6.5.0/mingw_64/include/QtGui -isystem D:/Qt/6.5.0/mingw_64/include/QtSql -isystem D:/Qt/6.5.0/mingw_64/include/QtNetwork
+  OBJECT_DIR = CMakeFiles\DuoiHinhBatChu_Frontend.dir
+  OBJECT_FILE_DIR = CMakeFiles\DuoiHinhBatChu_Frontend.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target DuoiHinhBatChu_Frontend
@@ -113,7 +121,7 @@ build CMakeFiles/DuoiHinhBatChu_Frontend.dir/room.cpp.obj: CXX_COMPILER__DuoiHin
 #############################################
 # Link the executable DuoiHinhBatChu_Frontend.exe
 
-build DuoiHinhBatChu_Frontend.exe: CXX_EXECUTABLE_LINKER__DuoiHinhBatChu_Frontend_Debug CMakeFiles/DuoiHinhBatChu_Frontend.dir/DuoiHinhBatChu_Frontend_autogen/mocs_compilation.cpp.obj CMakeFiles/DuoiHinhBatChu_Frontend.dir/main.cpp.obj CMakeFiles/DuoiHinhBatChu_Frontend.dir/mainwindow.cpp.obj CMakeFiles/DuoiHinhBatChu_Frontend.dir/login.cpp.obj CMakeFiles/DuoiHinhBatChu_Frontend.dir/info.cpp.obj CMakeFiles/DuoiHinhBatChu_Frontend.dir/register.cpp.obj CMakeFiles/DuoiHinhBatChu_Frontend.dir/room.cpp.obj | D$:/Qt/6.5.0/mingw_64/lib/libQt6Widgets.a D$:/Qt/6.5.0/mingw_64/lib/libQt6Sql.a D$:/Qt/6.5.0/mingw_64/lib/libQt6Network.a D$:/Qt/6.5.0/mingw_64/lib/libQt6Gui.a D$:/Qt/6.5.0/mingw_64/lib/libQt6Core.a D$:/Qt/6.5.0/mingw_64/lib/libQt6EntryPoint.a || DuoiHinhBatChu_Frontend_autogen DuoiHinhBatChu_Frontend_autogen_timestamp_deps
+build DuoiHinhBatChu_Frontend.exe: CXX_EXECUTABLE_LINKER__DuoiHinhBatChu_Frontend_Debug CMakeFiles/DuoiHinhBatChu_Frontend.dir/DuoiHinhBatChu_Frontend_autogen/mocs_compilation.cpp.obj CMakeFiles/DuoiHinhBatChu_Frontend.dir/main.cpp.obj CMakeFiles/DuoiHinhBatChu_Frontend.dir/mainwindow.cpp.obj CMakeFiles/DuoiHinhBatChu_Frontend.dir/login.cpp.obj CMakeFiles/DuoiHinhBatChu_Frontend.dir/info.cpp.obj CMakeFiles/DuoiHinhBatChu_Frontend.dir/register.cpp.obj CMakeFiles/DuoiHinhBatChu_Frontend.dir/room.cpp.obj CMakeFiles/DuoiHinhBatChu_Frontend.dir/socket.cpp.obj | D$:/Qt/6.5.0/mingw_64/lib/libQt6Widgets.a D$:/Qt/6.5.0/mingw_64/lib/libQt6Sql.a D$:/Qt/6.5.0/mingw_64/lib/libQt6Network.a D$:/Qt/6.5.0/mingw_64/lib/libQt6Gui.a D$:/Qt/6.5.0/mingw_64/lib/libQt6Core.a D$:/Qt/6.5.0/mingw_64/lib/libQt6EntryPoint.a || DuoiHinhBatChu_Frontend_autogen DuoiHinhBatChu_Frontend_autogen_timestamp_deps
   FLAGS = -DQT_QML_DEBUG -g
   LINK_FLAGS = -mwindows
   LINK_LIBRARIES = D:/Qt/6.5.0/mingw_64/lib/libQt6Widgets.a  D:/Qt/6.5.0/mingw_64/lib/libQt6Sql.a  D:/Qt/6.5.0/mingw_64/lib/libQt6Network.a  D:/Qt/6.5.0/mingw_64/lib/libQt6Gui.a  -ld3d11  -ldxgi  -ldxguid  -ldcomp  D:/Qt/6.5.0/mingw_64/lib/libQt6Core.a  -lmpr  -luserenv  -lmingw32  D:/Qt/6.5.0/mingw_64/lib/libQt6EntryPoint.a  -lshell32  -lws2_32  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
@@ -216,7 +224,7 @@ build DuoiHinhBatChu_Frontend_autogen/timestamp DuoiHinhBatChu_Frontend_autogen/
 #############################################
 # Phony custom command for CMakeFiles\DuoiHinhBatChu_Frontend_autogen_timestamp_deps
 
-build CMakeFiles/DuoiHinhBatChu_Frontend_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/DuoiHinhBatChu_Frontend_autogen_timestamp_deps: phony D$:/Qt/6.5.0/mingw_64/./bin/moc.exe D$:/Qt/6.5.0/mingw_64/./bin/uic.exe D$:/Qt/6.5.0/mingw_64/lib/libQt6Sql.a D$:/Qt/6.5.0/mingw_64/lib/libQt6Core.a D$:/Qt/6.5.0/mingw_64/lib/libQt6Widgets.a D$:/Qt/6.5.0/mingw_64/lib/libQt6Network.a
+build CMakeFiles/DuoiHinhBatChu_Frontend_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/DuoiHinhBatChu_Frontend_autogen_timestamp_deps: phony D$:/Qt/6.5.0/mingw_64/./bin/moc.exe D$:/Qt/6.5.0/mingw_64/./bin/uic.exe D$:/Qt/6.5.0/mingw_64/lib/libQt6Widgets.a D$:/Qt/6.5.0/mingw_64/lib/libQt6Network.a D$:/Qt/6.5.0/mingw_64/lib/libQt6Sql.a D$:/Qt/6.5.0/mingw_64/lib/libQt6Core.a
 
 
 #############################################

@@ -187,7 +187,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>C:/Users/USER/Desktop/30soccer-ronaldo-1-76fd-mobileMasterAt3x.jpg</pixmap>
+      <pixmap>../images/avatarPlayerOne.jpg</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -206,7 +206,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>C:/Users/USER/Desktop/avatar-1606916__341.jpg</pixmap>
+      <pixmap>../images/avatarPlayerTwo.jpg</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>

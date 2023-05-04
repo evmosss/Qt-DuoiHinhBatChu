@@ -13,6 +13,8 @@ DuoiHinhBatChu_Frontend_autogen/timestamp: \
 	D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Frontend/register.h \
 	D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Frontend/room.cpp \
 	D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Frontend/room.h \
+	D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Frontend/socket.cpp \
+	D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Frontend/socket.h \
 	D:/Qt-Dev/DuoiHinhBatChu/build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/.qtc/package-manager/auto-setup.cmake \
 	D:/Qt-Dev/DuoiHinhBatChu/build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/3.26.0-rc3/CMakeCXXCompiler.cmake \
 	D:/Qt-Dev/DuoiHinhBatChu/build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/3.26.0-rc3/CMakeRCCompiler.cmake \

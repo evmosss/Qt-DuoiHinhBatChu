@@ -31,6 +31,8 @@ set(PROJECT_SOURCES
         room.h
         config.h
         protocolSocket.h
+        socket.cpp
+        socket.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

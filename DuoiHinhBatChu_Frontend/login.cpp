@@ -46,7 +46,6 @@ void Login::on_loginButton_clicked()
     manager->post(request, data);
 
     connect(manager, &QNetworkAccessManager::finished, [&](QNetworkReply *reply) {
-        qInfo() << "Run here";
         if (reply->error() == QNetworkReply::NoError) {
             QByteArray response = reply->readAll();
             QJsonDocument jsonDoc(QJsonDocument::fromJson(response));

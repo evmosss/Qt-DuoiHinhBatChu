@@ -10,16 +10,22 @@
 #include <QJsonObject>
 #include <QObject>
 #include "protocolSocket.h"
+#include "database.h"
 
 
 class Room
 {
 public:
+    // Helpers
+    int findUserInArray(int userId, QJsonArray players);
     // For simple activities
     QJsonObject createRoom(int userId, QMap<QString, QJsonObject> *roomData, QString *roomId, QMap<int, QString> * userToRoomId);
     QJsonObject joinRoom(int userId, QMap<QString, QJsonObject> *roomData, QString *roomId, QMap<int, QString> * userToRoomId);
     QJsonObject leaveRoom(int userId, QMap<QString, QJsonObject> *roomData, QString *roomId, QMap<int, QString> * userToRoomId);
     QJsonObject sendAnswer(int userId, QMap<QString, QJsonObject> *roomData, QString *roomId, QMap<int, QString> * userToRoomId, QString content);
+    QJsonObject startRoom(int userId, QMap<QString, QJsonObject> *roomData, QString *roomId, QMap<int, QString> * userToRoomId);
+    QJsonObject nextQuestion(int userId, QMap<QString, QJsonObject> *roomData, QString *roomId, QMap<int, QString> * userToRoomId);
+    QJsonObject finishGame(int userId, QMap<QString, QJsonObject> *roomData, QString *roomId, QMap<int, QString> * userToRoomId);
 
     // For getting question and check result
     QHttpServerResponse startGame(int userId, QMap<QString, QJsonObject> *roomData, QString *roomId, QMap<int, QString> * userToRoomId);

@@ -198,7 +198,16 @@
 		"D:/cmake-3.26.0-rc3-windows-x86_64/cmake-3.26.0-rc3-windows-x86_64/share/cmake-3.26/Modules/CMakeFindDependencyMacro.cmake",
 		"D:/Qt/6.5.0/mingw_64/lib/cmake/Qt6Sql/Qt6QSQLiteDriverPluginTargets.cmake",
 		"D:/Qt/6.5.0/mingw_64/lib/cmake/Qt6Sql/Qt6QSQLiteDriverPluginTargets-relwithdebinfo.cmake",
-		"D:/Qt/6.5.0/mingw_64/lib/cmake/Qt6Sql/Qt6QSQLiteDriverPluginAdditionalTargetInfo.cmake"
+		"D:/Qt/6.5.0/mingw_64/lib/cmake/Qt6Sql/Qt6QSQLiteDriverPluginAdditionalTargetInfo.cmake",
+		"D:/Qt/6.5.0/mingw_64/lib/cmake/Qt6Concurrent/Qt6ConcurrentConfigVersion.cmake",
+		"D:/Qt/6.5.0/mingw_64/lib/cmake/Qt6Concurrent/Qt6ConcurrentConfigVersionImpl.cmake",
+		"D:/Qt/6.5.0/mingw_64/lib/cmake/Qt6Concurrent/Qt6ConcurrentConfig.cmake",
+		"D:/cmake-3.26.0-rc3-windows-x86_64/cmake-3.26.0-rc3-windows-x86_64/share/cmake-3.26/Modules/CMakeFindDependencyMacro.cmake",
+		"D:/Qt/6.5.0/mingw_64/lib/cmake/Qt6Concurrent/Qt6ConcurrentDependencies.cmake",
+		"D:/Qt/6.5.0/mingw_64/lib/cmake/Qt6Concurrent/Qt6ConcurrentTargets.cmake",
+		"D:/Qt/6.5.0/mingw_64/lib/cmake/Qt6Concurrent/Qt6ConcurrentTargets-relwithdebinfo.cmake",
+		"D:/Qt/6.5.0/mingw_64/lib/cmake/Qt6Concurrent/Qt6ConcurrentAdditionalTargetInfo.cmake",
+		"D:/Qt/6.5.0/mingw_64/lib/cmake/Qt6Concurrent/Qt6ConcurrentVersionlessTargets.cmake"
 	],
 	"CMAKE_SOURCE_DIR" : "D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend",
 	"DEP_FILE" : "D:/Qt-Dev/DuoiHinhBatChu/build-DuoiHinhBatChu_Backend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/DuoiHinhBatChu_Backend_autogen/deps",
@@ -209,6 +218,18 @@
 			"D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/auth.h",
 			"MU",
 			"EWIEGA46WW/moc_auth.cpp",
+			null
+		],
+		[
+			"D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/connectionPool.h",
+			"MU",
+			"EWIEGA46WW/moc_connectionPool.cpp",
+			null
+		],
+		[
+			"D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/database.h",
+			"MU",
+			"EWIEGA46WW/moc_database.cpp",
 			null
 		],
 		[
@@ -242,6 +263,7 @@
 	"MOC_DEFINITIONS" : 
 	[
 		"MINGW_HAS_SECURE_API=1",
+		"QT_CONCURRENT_LIB",
 		"QT_CORE_LIB",
 		"QT_HTTPSERVER_LIB",
 		"QT_NETWORK_LIB",
@@ -270,6 +292,7 @@
 		"D:/Qt/6.5.0/mingw_64/include/QtNetwork",
 		"D:/Qt/6.5.0/mingw_64/include/QtWebSockets",
 		"D:/Qt/6.5.0/mingw_64/include/QtSql",
+		"D:/Qt/6.5.0/mingw_64/include/QtConcurrent",
 		"D:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++",
 		"D:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32",
 		"D:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward",
@@ -310,6 +333,11 @@
 	[
 		[
 			"D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/auth.cpp",
+			"MU",
+			null
+		],
+		[
+			"D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/database.cpp",
 			"MU",
 			null
 		],

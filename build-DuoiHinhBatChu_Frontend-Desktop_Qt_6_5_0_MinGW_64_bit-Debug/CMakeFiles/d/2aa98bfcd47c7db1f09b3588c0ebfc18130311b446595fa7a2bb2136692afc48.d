@@ -13,6 +13,8 @@ DuoiHinhBatChu_Frontend_autogen/timestamp: \
   D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Frontend/register.h \
   D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Frontend/room.cpp \
   D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Frontend/room.h \
+  D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Frontend/socket.cpp \
+  D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Frontend/socket.h \
   .qtc/package-manager/auto-setup.cmake \
   CMakeFiles/3.26.0-rc3/CMakeCXXCompiler.cmake \
   CMakeFiles/3.26.0-rc3/CMakeRCCompiler.cmake \

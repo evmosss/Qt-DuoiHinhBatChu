@@ -25,6 +25,7 @@
 #include "auth.h"
 #include "room.h"
 #include "user.h"
+#include "database.h"
 #include "protocolSocket.h"
 
 #define _DATABASE_NAME "SP2"
@@ -64,16 +65,7 @@ void connectToSocket() {
 }
 
 void createDBConnection(QCoreApplication *a) {
-    QSqlDatabase database = QSqlDatabase::addDatabase("QSQLITE", _DATABASE_NAME);
-    database.setDatabaseName("D:/Qt-Dev/DuoiHinhBatChu/altp.db");
-
-    if(!database.open()) {
-        qDebug() << "Error: Unable to open database..";
-    }
-
-    if (database.open()){
-        qInfo() << "Successfully: Connecting to database..";
-    }
+    QSqlDatabase database = Database::getInstance().getDatabase();
 
     QObject::connect(a, &QCoreApplication::aboutToQuit, [&]() {
         database.close();
@@ -234,7 +226,42 @@ void handleIncomingData(QTcpSocket * socket) {
 
         tableData = connectionTable.take(roomId);
 
-        qInfo() << "Sending data..." << data;
+        for (int i = 0; i < tableData.length(); i++) {
+            QTcpSocket* _socket = tableData.at(i);
+
+            // Sử dụng socket ở đây
+            _socket->write(convertJsonToByteArray(data));
+            _socket->flush();
+        }
+
+        connectionTable.insert(roomId, tableData);
+        break;
+    case static_cast<int>(SocketType::START_ROOM):
+        roomId = jsonObj["roomId"].toString();
+
+        data = roomService->startRoom(userId, &roomDataMap, &roomId, &userToRoomId);
+
+        tableData = connectionTable.take(roomId);
+
+        for (int i = 0; i < tableData.length(); i++) {
+            QTcpSocket* _socket = tableData.at(i);
+
+            // Sử dụng socket ở đây
+            _socket->write(convertJsonToByteArray(data));
+            _socket->flush();
+        }
+
+        connectionTable.insert(roomId, tableData);
+        break;
+    case static_cast<int>(SocketType::NEXT_QUESTION):
+        roomId = jsonObj["roomId"].toString();
+
+        data = roomService->nextQuestion(userId, &roomDataMap, &roomId, &userToRoomId);
+
+        qInfo() << "RUN HERE" << data;
+
+        tableData = connectionTable.take(roomId);
+
         for (int i = 0; i < tableData.length(); i++) {
             QTcpSocket* _socket = tableData.at(i);
 
@@ -246,6 +273,8 @@ void handleIncomingData(QTcpSocket * socket) {
         connectionTable.insert(roomId, tableData);
         break;
     }
+
+
 
     qInfo() << socket->readAll();
 }

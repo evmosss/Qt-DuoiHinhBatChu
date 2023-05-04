@@ -52,13 +52,13 @@
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 29,
+				"line" : 30,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 27,
+				"line" : 28,
 				"parent" : 0
 			},
 			{
@@ -222,6 +222,10 @@
 				},
 				{
 					"backtrace" : 3,
+					"define" : "QT_CONCURRENT_LIB"
+				},
+				{
+					"backtrace" : 3,
 					"define" : "QT_CORE_LIB"
 				},
 				{
@@ -305,6 +309,11 @@
 					"backtrace" : 3,
 					"isSystem" : true,
 					"path" : "D:/Qt/6.5.0/mingw_64/include/QtSql"
+				},
+				{
+					"backtrace" : 3,
+					"isSystem" : true,
+					"path" : "D:/Qt/6.5.0/mingw_64/include/QtConcurrent"
 				}
 			],
 			"language" : "CXX",
@@ -376,6 +385,11 @@
 				"role" : "libraries"
 			},
 			{
+				"backtrace" : 3,
+				"fragment" : "D:\\Qt\\6.5.0\\mingw_64\\lib\\libQt6Concurrent.a",
+				"role" : "libraries"
+			},
+			{
 				"backtrace" : 16,
 				"fragment" : "D:\\Qt\\6.5.0\\mingw_64\\lib\\libQt6WebSockets.a",
 				"role" : "libraries"
@@ -441,21 +455,22 @@
 				5,
 				7,
 				9,
-				10
+				10,
+				11
 			]
 		},
 		{
 			"name" : "",
 			"sourceIndexes" : 
 			[
-				11
+				12
 			]
 		},
 		{
 			"name" : "CMake Rules",
 			"sourceIndexes" : 
 			[
-				12
+				13
 			]
 		}
 	],
@@ -521,6 +536,11 @@
 		{
 			"backtrace" : 1,
 			"path" : "protocolSocket.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "connectionPool.h",
 			"sourceGroupIndex" : 1
 		},
 		{

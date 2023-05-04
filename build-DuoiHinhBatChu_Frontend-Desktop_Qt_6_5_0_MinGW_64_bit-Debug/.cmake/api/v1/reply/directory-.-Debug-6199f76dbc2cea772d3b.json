@@ -17,7 +17,7 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 28,
+				"line" : 71,
 				"parent" : 0
 			}
 		]
@@ -30,9 +30,9 @@
 			"destination" : "bin",
 			"paths" : 
 			[
-				"DuoiHinhBatChu_Backend.exe"
+				"DuoiHinhBatChu_Frontend.exe"
 			],
-			"targetId" : "DuoiHinhBatChu_Backend::@6890427a1f51a3e7e1df",
+			"targetId" : "DuoiHinhBatChu_Frontend::@6890427a1f51a3e7e1df",
 			"targetIndex" : 0,
 			"type" : "target"
 		}
