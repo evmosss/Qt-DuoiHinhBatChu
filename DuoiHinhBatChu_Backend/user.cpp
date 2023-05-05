@@ -12,6 +12,27 @@
 
 #define _DATABASE_NAME "SP2"
 
+void User::updateUserAfterAGame(int winnerId, int loserId)
+{
+    QJsonObject response;
+    QSqlDatabase database = Database::getInstance().getDatabase();
+    QSqlQuery query(database);
+
+    query.prepare("UPDATE users SET winner_times = winner_times + 1 WHERE id=:id");
+    query.bindValue(":id", winnerId);
+    if (!query.exec()) {
+        qInfo() << query.lastError().text();
+    };
+
+    query.clear();
+    query.prepare("UPDATE users SET lose_times = lose_times + 1 WHERE id=:id");
+    query.bindValue(":id", loserId);
+    if (!query.exec()) {
+        qInfo() << query.lastError().text();
+    };
+
+}
+
 int User::getUserFromSessionId(QString *sessionId)
 {
     database = Database::getInstance().getDatabase();

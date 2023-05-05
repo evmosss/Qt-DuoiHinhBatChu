@@ -178,6 +178,7 @@ void Room::handleStartRoom(QJsonObject data)
     ui->startButton->setEnabled(false);
     ui->questionIndex->setText("Question: " + QString::number(questionIndex));
     ui->timer->setText("60");
+    ui->submitAnswer->setEnabled(true);
     countdownTimer->start(1000); // Đếm ngược mỗi giây
 }
 

@@ -233,6 +233,12 @@
 			null
 		],
 		[
+			"D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/history.h",
+			"MU",
+			"EWIEGA46WW/moc_history.cpp",
+			null
+		],
+		[
 			"D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/protocolSocket.h",
 			"MU",
 			"EWIEGA46WW/moc_protocolSocket.cpp",
@@ -338,6 +344,11 @@
 		],
 		[
 			"D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/database.cpp",
+			"MU",
+			null
+		],
+		[
+			"D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/history.cpp",
 			"MU",
 			null
 		],

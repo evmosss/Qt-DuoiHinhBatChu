@@ -5,6 +5,8 @@ DuoiHinhBatChu_Backend_autogen/timestamp: \
 	D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/connectionPool.h \
 	D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/database.cpp \
 	D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/database.h \
+	D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/history.cpp \
+	D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/history.h \
 	D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/main.cpp \
 	D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/protocolSocket.h \
 	D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/question.cpp \

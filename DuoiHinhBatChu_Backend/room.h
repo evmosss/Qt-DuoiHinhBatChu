@@ -9,8 +9,11 @@
 #include <QHttpServerResponse>
 #include <QJsonObject>
 #include <QObject>
+#include <QDateTime>
 #include "protocolSocket.h"
 #include "database.h"
+#include "history.h"
+#include "user.h"
 
 
 class Room
@@ -32,6 +35,8 @@ public:
     QHttpServerResponse getAllRoom(QMap<QString, QJsonObject> roomDataMap);
 
     Room();
+private:
+    void handleUpdateFinishGame(int winnerId, int loserId);
 };
 
 #endif // ROOM_H

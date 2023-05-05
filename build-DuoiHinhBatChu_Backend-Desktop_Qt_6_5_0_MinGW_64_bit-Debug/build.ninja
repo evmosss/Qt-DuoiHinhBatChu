@@ -105,6 +105,14 @@ build CMakeFiles/DuoiHinhBatChu_Backend.dir/database.cpp.obj: CXX_COMPILER__Duoi
   OBJECT_DIR = CMakeFiles\DuoiHinhBatChu_Backend.dir
   OBJECT_FILE_DIR = CMakeFiles\DuoiHinhBatChu_Backend.dir
 
+build CMakeFiles/DuoiHinhBatChu_Backend.dir/history.cpp.obj: CXX_COMPILER__DuoiHinhBatChu_Backend_unscanned_Debug D$:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/history.cpp || cmake_object_order_depends_target_DuoiHinhBatChu_Backend
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_HTTPSERVER_LIB -DQT_NETWORK_LIB -DQT_SQL_LIB -DQT_WEBSOCKETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+  DEP_FILE = CMakeFiles\DuoiHinhBatChu_Backend.dir\history.cpp.obj.d
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17
+  INCLUDES = -ID:/Qt-Dev/DuoiHinhBatChu/build-DuoiHinhBatChu_Backend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/DuoiHinhBatChu_Backend_autogen/include -isystem D:/Qt/6.5.0/mingw_64/include/QtCore -isystem D:/Qt/6.5.0/mingw_64/include -isystem D:/Qt/6.5.0/mingw_64/mkspecs/win32-g++ -isystem D:/Qt/6.5.0/mingw_64/include/QtHttpServer -isystem D:/Qt/6.5.0/mingw_64/include/QtNetwork -isystem D:/Qt/6.5.0/mingw_64/include/QtWebSockets -isystem D:/Qt/6.5.0/mingw_64/include/QtSql -isystem D:/Qt/6.5.0/mingw_64/include/QtConcurrent
+  OBJECT_DIR = CMakeFiles\DuoiHinhBatChu_Backend.dir
+  OBJECT_FILE_DIR = CMakeFiles\DuoiHinhBatChu_Backend.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target DuoiHinhBatChu_Backend
@@ -113,7 +121,7 @@ build CMakeFiles/DuoiHinhBatChu_Backend.dir/database.cpp.obj: CXX_COMPILER__Duoi
 #############################################
 # Link the executable DuoiHinhBatChu_Backend.exe
 
-build DuoiHinhBatChu_Backend.exe: CXX_EXECUTABLE_LINKER__DuoiHinhBatChu_Backend_Debug CMakeFiles/DuoiHinhBatChu_Backend.dir/DuoiHinhBatChu_Backend_autogen/mocs_compilation.cpp.obj CMakeFiles/DuoiHinhBatChu_Backend.dir/main.cpp.obj CMakeFiles/DuoiHinhBatChu_Backend.dir/auth.cpp.obj CMakeFiles/DuoiHinhBatChu_Backend.dir/room.cpp.obj CMakeFiles/DuoiHinhBatChu_Backend.dir/user.cpp.obj CMakeFiles/DuoiHinhBatChu_Backend.dir/question.cpp.obj CMakeFiles/DuoiHinhBatChu_Backend.dir/database.cpp.obj | D$:/Qt/6.5.0/mingw_64/lib/libQt6HttpServer.a D$:/Qt/6.5.0/mingw_64/lib/libQt6Sql.a D$:/Qt/6.5.0/mingw_64/lib/libQt6Concurrent.a D$:/Qt/6.5.0/mingw_64/lib/libQt6WebSockets.a D$:/Qt/6.5.0/mingw_64/lib/libQt6Network.a D$:/Qt/6.5.0/mingw_64/lib/libQt6Core.a || DuoiHinhBatChu_Backend_autogen DuoiHinhBatChu_Backend_autogen_timestamp_deps
+build DuoiHinhBatChu_Backend.exe: CXX_EXECUTABLE_LINKER__DuoiHinhBatChu_Backend_Debug CMakeFiles/DuoiHinhBatChu_Backend.dir/DuoiHinhBatChu_Backend_autogen/mocs_compilation.cpp.obj CMakeFiles/DuoiHinhBatChu_Backend.dir/main.cpp.obj CMakeFiles/DuoiHinhBatChu_Backend.dir/auth.cpp.obj CMakeFiles/DuoiHinhBatChu_Backend.dir/room.cpp.obj CMakeFiles/DuoiHinhBatChu_Backend.dir/user.cpp.obj CMakeFiles/DuoiHinhBatChu_Backend.dir/question.cpp.obj CMakeFiles/DuoiHinhBatChu_Backend.dir/database.cpp.obj CMakeFiles/DuoiHinhBatChu_Backend.dir/history.cpp.obj | D$:/Qt/6.5.0/mingw_64/lib/libQt6HttpServer.a D$:/Qt/6.5.0/mingw_64/lib/libQt6Sql.a D$:/Qt/6.5.0/mingw_64/lib/libQt6Concurrent.a D$:/Qt/6.5.0/mingw_64/lib/libQt6WebSockets.a D$:/Qt/6.5.0/mingw_64/lib/libQt6Network.a D$:/Qt/6.5.0/mingw_64/lib/libQt6Core.a || DuoiHinhBatChu_Backend_autogen DuoiHinhBatChu_Backend_autogen_timestamp_deps
   FLAGS = -DQT_QML_DEBUG -g
   LINK_LIBRARIES = D:/Qt/6.5.0/mingw_64/lib/libQt6HttpServer.a  D:/Qt/6.5.0/mingw_64/lib/libQt6Sql.a  D:/Qt/6.5.0/mingw_64/lib/libQt6Concurrent.a  D:/Qt/6.5.0/mingw_64/lib/libQt6WebSockets.a  D:/Qt/6.5.0/mingw_64/lib/libQt6Network.a  -lws2_32  D:/Qt/6.5.0/mingw_64/lib/libQt6Core.a  -lmpr  -luserenv  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\DuoiHinhBatChu_Backend.dir
@@ -215,7 +223,7 @@ build DuoiHinhBatChu_Backend_autogen/timestamp DuoiHinhBatChu_Backend_autogen/mo
 #############################################
 # Phony custom command for CMakeFiles\DuoiHinhBatChu_Backend_autogen_timestamp_deps
 
-build CMakeFiles/DuoiHinhBatChu_Backend_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/DuoiHinhBatChu_Backend_autogen_timestamp_deps: phony D$:/Qt/6.5.0/mingw_64/lib/libQt6Core.a D$:/Qt/6.5.0/mingw_64/./bin/moc.exe D$:/Qt/6.5.0/mingw_64/lib/libQt6HttpServer.a D$:/Qt/6.5.0/mingw_64/lib/libQt6Sql.a D$:/Qt/6.5.0/mingw_64/lib/libQt6Concurrent.a
+build CMakeFiles/DuoiHinhBatChu_Backend_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/DuoiHinhBatChu_Backend_autogen_timestamp_deps: phony D$:/Qt/6.5.0/mingw_64/lib/libQt6Core.a D$:/Qt/6.5.0/mingw_64/./bin/moc.exe D$:/Qt/6.5.0/mingw_64/lib/libQt6Sql.a D$:/Qt/6.5.0/mingw_64/lib/libQt6Concurrent.a D$:/Qt/6.5.0/mingw_64/lib/libQt6HttpServer.a
 
 
 #############################################

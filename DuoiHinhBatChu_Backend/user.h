@@ -13,6 +13,7 @@
 class User
 {
 public:
+    static void updateUserAfterAGame(int winnerId, int loserId);
     int getUserFromSessionId(QString *sessionId);
     QString getSessionIdByUser(int userId);
     User();

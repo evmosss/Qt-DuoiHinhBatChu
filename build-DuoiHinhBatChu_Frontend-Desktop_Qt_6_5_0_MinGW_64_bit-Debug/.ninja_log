@@ -56,3 +56,13 @@
 303	6735	7049185704280197	CMakeFiles/DuoiHinhBatChu_Frontend.dir/login.cpp.obj	3519623b9383d706
 330	7053	7049185707460067	CMakeFiles/DuoiHinhBatChu_Frontend.dir/room.cpp.obj	eed2f14cdb32643a
 7054	7693	7049185713779080	DuoiHinhBatChu_Frontend.exe	aaeff91b3dc8b029
+90	382	7050188767432872	DuoiHinhBatChu_Frontend_autogen/timestamp	24eceea90a0d71fa
+90	382	7050188767432872	DuoiHinhBatChu_Frontend_autogen/mocs_compilation.cpp	24eceea90a0d71fa
+90	382	7050188767432872	D:/Qt-Dev/DuoiHinhBatChu/build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/DuoiHinhBatChu_Frontend_autogen/timestamp	24eceea90a0d71fa
+90	382	7050188767432872	D:/Qt-Dev/DuoiHinhBatChu/build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/DuoiHinhBatChu_Frontend_autogen/mocs_compilation.cpp	24eceea90a0d71fa
+395	4719	7050188810755072	CMakeFiles/DuoiHinhBatChu_Frontend.dir/info.cpp.obj	509002ebce04e309
+417	5551	7050188819115082	CMakeFiles/DuoiHinhBatChu_Frontend.dir/register.cpp.obj	62c2758bc60e683f
+400	5585	7050188819445000	CMakeFiles/DuoiHinhBatChu_Frontend.dir/mainwindow.cpp.obj	6a315e4ba5211360
+406	5725	7050188820855009	CMakeFiles/DuoiHinhBatChu_Frontend.dir/login.cpp.obj	3519623b9383d706
+411	6030	7050188823872930	CMakeFiles/DuoiHinhBatChu_Frontend.dir/room.cpp.obj	eed2f14cdb32643a
+6030	7236	7050188835926550	DuoiHinhBatChu_Frontend.exe	aaeff91b3dc8b029

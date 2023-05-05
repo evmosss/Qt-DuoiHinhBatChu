@@ -126,16 +126,18 @@ QJsonObject Room::leaveRoom(int userId, QMap<QString, QJsonObject> *roomData, QS
         return response;
     }
 
+    QJsonObject json = roomData->take(*roomId);
+    QJsonArray players = json.value("players").toArray();
+    QJsonArray points = json.value("points").toArray();
     if (userToRoomId->contains(userId)) {
+        Room::handleUpdateFinishGame(players.at(1).toInt(), players.at(0).toInt());
+
         userToRoomId->remove(userId);
         roomData->remove(*roomId);
         response["data"] = QJsonValue::Null;
     }
     else {
-        QJsonObject json = roomData->take(*roomId);
-        QJsonArray players = json.value("players").toArray();
-        QJsonArray points = json.value("points").toArray();
-
+        // Avoid clicking two times
         if (players.size() == 1) {
             response["message"] = "You already leave room!";
             response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::Forbidden);
@@ -143,6 +145,8 @@ QJsonObject Room::leaveRoom(int userId, QMap<QString, QJsonObject> *roomData, QS
             response["type"] = SocketType::LEAVE_ROOM;
             return response;
         }
+
+        Room::handleUpdateFinishGame(players.at(0).toInt(), players.at(1).toInt());
 
         int leavePlayerId = players.at(1).toInt();
         points[0] = 0;
@@ -157,9 +161,9 @@ QJsonObject Room::leaveRoom(int userId, QMap<QString, QJsonObject> *roomData, QS
         QJsonObject resData;
         resData["leavePlayerId"] = leavePlayerId;
         response["data"] = resData;
-
-        roomData->insert(*roomId, json);
     }
+
+    roomData->insert(*roomId, json);
 
     response["message"] = "Leave room successfully";
     response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::Ok);
@@ -306,9 +310,13 @@ QJsonObject Room::finishGame(int userId, QMap<QString, QJsonObject> *roomData, Q
 
     if (points.at(0).toInt() < points.at(1).toInt()) {
         responseData["winnerId"] = players.at(1).toInt();
+
+        Room::handleUpdateFinishGame(players.at(1).toInt(), players.at(0).toInt());
     }
     else if (points.at(0).toInt() > points.at(1).toInt()) {
         responseData["winnerId"] = players.at(0).toInt();
+
+        Room::handleUpdateFinishGame(players.at(0).toInt(), players.at(1).toInt());
     }
     else {
         responseData["winnerId"] = 0;
@@ -358,5 +366,11 @@ QHttpServerResponse Room::getAllRoom(QMap<QString, QJsonObject> roomDataMap)
 Room::Room()
 {
 
+}
+
+void Room::handleUpdateFinishGame(int winnerId, int loserId)
+{
+    History::createHistory(winnerId, loserId);
+    User::updateUserAfterAGame(winnerId, loserId);
 }
 

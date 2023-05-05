@@ -330,11 +330,13 @@ D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/database.h
  mdp:D:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include/wctype.h
 D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/protocolSocket.h
 D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/question.h
-D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/user.h
 D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/room.h
+D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/user.h
 D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/auth.cpp
 D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/database.cpp
 D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/main.cpp
 D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/question.cpp
 D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/room.cpp
 D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/user.cpp
+D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/history.h
+D:/Qt-Dev/DuoiHinhBatChu/DuoiHinhBatChu_Backend/history.cpp
