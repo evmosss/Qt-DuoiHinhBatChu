@@ -139,7 +139,7 @@
       <string notr="true">font-size: 24px; color: black;</string>
      </property>
      <property name="text">
-      <string>Time: 9s</string>
+      <string>Waiting..</string>
      </property>
      <property name="scaledContents">
       <bool>false</bool>

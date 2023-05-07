@@ -33,6 +33,8 @@ set(PROJECT_SOURCES
         protocolSocket.h
         socket.cpp
         socket.h
+        networkmanager.cpp
+        networkmanager.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

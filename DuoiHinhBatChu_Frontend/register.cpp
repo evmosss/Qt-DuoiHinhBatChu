@@ -33,7 +33,7 @@ void Register::on_registerButton_clicked()
     QJsonDocument jsonData(json);
     QByteArray data = jsonData.toJson();
 
-    QNetworkAccessManager *manager = new QNetworkAccessManager(this);;
+    manager = new QNetworkAccessManager(this);
 
     QUrl url(API_URL + "auth/register");
     QNetworkRequest request(url);

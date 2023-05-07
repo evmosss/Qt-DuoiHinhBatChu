@@ -11,6 +11,7 @@
 #include "config.h"
 #include <QJsonObject>
 #include <QJsonDocument>
+#include "networkmanager.h"
 
 extern const QString API_URL;
 
@@ -29,6 +30,7 @@ public:
 private:
     Ui::Login *ui;
     void handleError(QString msg);
+    QNetworkAccessManager *manager;
 
 signals:
     void changeToRegisterPage();
