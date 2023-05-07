@@ -37,7 +37,7 @@ void Login::on_loginButton_clicked()
     QJsonDocument jsonData(json);
     QByteArray data = jsonData.toJson();
 
-    QNetworkAccessManager *manager = new QNetworkAccessManager(this);;
+    manager = new QNetworkAccessManager(this);
 
     QUrl url(API_URL + "auth/login");
     QNetworkRequest request(url);
@@ -53,6 +53,10 @@ void Login::on_loginButton_clicked()
             // Xử lý dữ liệu JSON ở đây
             QString sessionId = jsonObj.value("sessionId").toString();
             int userId = jsonObj.value("userId").toInt();
+
+            if (userId == 0) {
+                emit loginFailed("Something went wrong");
+            }
 
             emit loginSuccessfully(sessionId, userId);
         } else {

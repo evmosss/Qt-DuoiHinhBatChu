@@ -67,7 +67,6 @@ void Room::handleCreateRoom(QJsonObject data)
     roomId = userData.value("roomId").toString();
     roomOwnerId = userData.value("ownerId").toInt();
 
-    qInfo() << playerData.at(0);
     QString pointStr = "Point: " + QString::number(pointData.at(0).toDouble());
     QString userStr = "User: " + QString::number(playerData.at(0).toDouble());
 
@@ -81,8 +80,14 @@ void Room::handleCreateRoom(QJsonObject data)
     ui->pointTwo->setText("Point: 0");
     ui->userTwo->setText("Waiting...");
 
+    ui->timer->setText("Waiting...");
+    ui->questionIndex->setText("Question: 0");
+
     ui->startButton->setEnabled(false);
     ui->chatView->clear();
+
+    QUrl url("https://media.front.xoedge.com/images/626affda-17e4-4914-82f5-b2cb7b8aa92d~rs_1080.h?fm=webp&q=90");
+    downloadImage(url, ui->questionImage);
 }
 
 void Room::handleLeaveRoom(QJsonObject data)
@@ -124,6 +129,11 @@ void Room::handleJoinRoom(QJsonObject data)
     renderFullRoom(roomDetail);
 
     ui->chatView->clear();
+    ui->submitAnswer->setEnabled(true);
+
+    ui->timer->setText("Waiting...");
+    QUrl url("https://media.front.xoedge.com/images/626affda-17e4-4914-82f5-b2cb7b8aa92d~rs_1080.h?fm=webp&q=90");
+    downloadImage(url, ui->questionImage);
 }
 
 void Room::handleSendAnswer(QJsonObject data)
@@ -213,7 +223,6 @@ void Room::handleNextQuestion(QJsonObject data)
 
 void Room::handleFinishRoom(QJsonObject data)
 {
-    qInfo() << "RUN HERE BRO THIS IS FOR FINISHING A ROOM" << data;
     QJsonObject responseData = data.value("data").toObject();
     int winnerId = responseData.value("winnerId").toInt();
 
@@ -275,6 +284,7 @@ void Room::handleInteractError(QString message)
 
 void Room::on_createRoom_clicked()
 {
+    qInfo() << "[+] Create Room Clicked" << sessionId;
     QJsonObject json;
     json["sessionId"] = sessionId;
     json["type"] = static_cast<int>(SocketType::CREATE_ROOM);
@@ -288,6 +298,7 @@ void Room::on_createRoom_clicked()
 
 void Room::on_leaveRoom_clicked()
 {
+    qInfo() << "[+] Leave Room Clicked" << sessionId;
     QJsonObject json;
     json["sessionId"] = sessionId;
     json["roomId"] = roomId;
@@ -295,6 +306,8 @@ void Room::on_leaveRoom_clicked()
 
     QJsonDocument jsonDoc(json);
     QString jsonString = jsonDoc.toJson(QJsonDocument::Compact);
+
+    qInfo() << "[+] FE leave room clicked: " << json;
     roomId = nullptr;
     roomOwnerId = 0;
 
@@ -418,9 +431,9 @@ void Room::disconnect()
 
 void Room::downloadImage(const QUrl& imageUrl, QLabel* label)
 {
-    QNetworkAccessManager* networkManager = new QNetworkAccessManager();
+    manager = new QNetworkAccessManager(this);
 
-    QNetworkReply* reply = networkManager->get(QNetworkRequest(imageUrl));
+    QNetworkReply* reply = manager->get(QNetworkRequest(imageUrl));
 
     QObject::connect(reply, &QNetworkReply::finished, [=]() {
         if (reply->error() == QNetworkReply::NoError) {
@@ -433,6 +446,6 @@ void Room::downloadImage(const QUrl& imageUrl, QLabel* label)
         }
 
         reply->deleteLater();
-        networkManager->deleteLater();
+        manager->deleteLater();
     });
 }

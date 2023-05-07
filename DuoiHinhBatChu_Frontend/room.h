@@ -15,6 +15,7 @@
 #include <QMessageBox>
 #include <QUrl>
 #include "socket.h"
+#include "networkmanager.h"
 
 namespace Ui {
 class Room;
@@ -50,6 +51,7 @@ private:
     Ui::Room *ui;
     QTcpSocket * socket;
     QTimer* countdownTimer;
+    QNetworkAccessManager *manager;
 
 signals:
     void interactError(QString message);

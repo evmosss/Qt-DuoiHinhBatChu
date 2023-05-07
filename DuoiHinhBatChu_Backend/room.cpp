@@ -65,6 +65,9 @@ QJsonObject Room::createRoom(int userId, QMap<QString, QJsonObject> *roomData, Q
     roomData->insert(*roomId, roomDataObject);
     userToRoomId->insert(userId, *roomId);
 
+    qInfo() << "[+] Create Room: " << *roomData;
+    qInfo() << "[+] Create Room: " << *userToRoomId;
+
     response["message"] = "Create Room successfully";
     response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::Ok);
     response["data"] = roomDataObject;
@@ -117,6 +120,7 @@ QJsonObject Room::joinRoom(int userId, QMap<QString, QJsonObject> *roomData, QSt
 
 QJsonObject Room::leaveRoom(int userId, QMap<QString, QJsonObject> *roomData, QString *roomId, QMap<int, QString> *userToRoomId)
 {
+    qInfo() << "[+]" << userId;
     QJsonObject response;
     if (!roomData->contains(*roomId)) {
         response["message"] = "Room does not exist";
@@ -129,6 +133,7 @@ QJsonObject Room::leaveRoom(int userId, QMap<QString, QJsonObject> *roomData, QS
     QJsonObject json = roomData->take(*roomId);
     QJsonArray players = json.value("players").toArray();
     QJsonArray points = json.value("points").toArray();
+
     if (userToRoomId->contains(userId)) {
         Room::handleUpdateFinishGame(players.at(1).toInt(), players.at(0).toInt());
 
@@ -161,9 +166,13 @@ QJsonObject Room::leaveRoom(int userId, QMap<QString, QJsonObject> *roomData, QS
         QJsonObject resData;
         resData["leavePlayerId"] = leavePlayerId;
         response["data"] = resData;
+
+        roomData->insert(*roomId, json);
     }
 
-    roomData->insert(*roomId, json);
+
+    qInfo() << "[+] Leave Room: " << *roomData;
+    qInfo() << "[+] Leave Room: " << *userToRoomId;
 
     response["message"] = "Leave room successfully";
     response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::Ok);

@@ -31,6 +31,7 @@ QHttpServerResponse  Auth::login(QString *username, QString *password)
 
     if (query.next()) {
         QString userId = query.value("id").toString();
+        qInfo()  << "[+] User " << userId << " are trying to login!";
         int userIdInteger = query.value("id").toInt();
         QString hashedPassword = query.value("password").toString();
         if (Auth::checkPassword(*password, hashedPassword)) {

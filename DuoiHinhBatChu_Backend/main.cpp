@@ -158,6 +158,8 @@ void handleIncomingData(QTcpSocket * socket) {
     QByteArray clientData = socket->readAll();
     QJsonDocument jsonDoc = QJsonDocument::fromJson(clientData);
     QJsonObject jsonObj = jsonDoc.object();
+
+    qInfo() << "[+] Incoming Data: " << jsonObj;
     QString sessionId = jsonObj["sessionId"].toString();
 
     QJsonObject data;

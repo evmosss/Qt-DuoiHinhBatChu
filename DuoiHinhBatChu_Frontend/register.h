@@ -11,6 +11,7 @@
 #include "config.h"
 #include <QJsonObject>
 #include <QJsonDocument>
+#include "networkmanager.h"
 
 namespace Ui {
 class Register;
@@ -27,6 +28,7 @@ public:
 private:
     Ui::Register *ui;
     void handleError(QString msg);
+    QNetworkAccessManager * manager;
 
 signals:
     void registerSuccessfully();
