@@ -110,7 +110,7 @@
 -DCMAKE_CXX_COMPILER:FILEPATH=%{Compiler:Executable:Cxx}
 -DCMAKE_CXX_FLAGS_INIT:STRING=%{Qt:QML_DEBUG_FLAG}</value>
     <value type="int" key="EnableQmlDebugging">0</value>
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">D:/Qt-Dev/DuoiHinhBatChu/build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">D:/Developer/Qt/DuoiHinhBatChu/build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="QString" key="CMakeProjectManager.MakeStep.BuildPreset"></value>
@@ -166,7 +166,7 @@
 -DCMAKE_C_COMPILER:FILEPATH=%{Compiler:Executable:C}
 -DCMAKE_CXX_COMPILER:FILEPATH=%{Compiler:Executable:Cxx}
 -DCMAKE_CXX_FLAGS_INIT:STRING=%{Qt:QML_DEBUG_FLAG}</value>
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">D:\Qt-Dev\build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-Release</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">D:\Developer\Qt\build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-Release</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="QString" key="CMakeProjectManager.MakeStep.BuildPreset"></value>
@@ -220,7 +220,7 @@
 -DCMAKE_C_COMPILER:FILEPATH=%{Compiler:Executable:C}
 -DCMAKE_CXX_COMPILER:FILEPATH=%{Compiler:Executable:Cxx}
 -DCMAKE_CXX_FLAGS_INIT:STRING=%{Qt:QML_DEBUG_FLAG}</value>
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">D:\Qt-Dev\build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-RelWithDebInfo</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">D:\Developer\Qt\build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-RelWithDebInfo</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="QString" key="CMakeProjectManager.MakeStep.BuildPreset"></value>
@@ -275,7 +275,7 @@
 -DCMAKE_CXX_COMPILER:FILEPATH=%{Compiler:Executable:Cxx}
 -DCMAKE_CXX_FLAGS_INIT:STRING=%{Qt:QML_DEBUG_FLAG}</value>
     <value type="int" key="EnableQmlDebugging">0</value>
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">D:\Qt-Dev\build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-Profile</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">D:\Developer\Qt\build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-Profile</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="QString" key="CMakeProjectManager.MakeStep.BuildPreset"></value>
@@ -329,7 +329,7 @@
 -DCMAKE_C_COMPILER:FILEPATH=%{Compiler:Executable:C}
 -DCMAKE_CXX_COMPILER:FILEPATH=%{Compiler:Executable:Cxx}
 -DCMAKE_CXX_FLAGS_INIT:STRING=%{Qt:QML_DEBUG_FLAG}</value>
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">D:\Qt-Dev\build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-MinSizeRel</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">D:\Developer\Qt\build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-MinSizeRel</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="QString" key="CMakeProjectManager.MakeStep.BuildPreset"></value>
@@ -399,7 +399,7 @@
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">D:/Qt-Dev/DuoiHinhBatChu/build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">D:/Developer/Qt/DuoiHinhBatChu/build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug</value>
    </valuemap>
    <value type="qlonglong" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>

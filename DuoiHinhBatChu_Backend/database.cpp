@@ -16,7 +16,7 @@ Database::Database(QObject *parent)
     : QObject(parent)
 {
     m_database = QSqlDatabase::addDatabase("QSQLITE", _DATABASE_NAME);
-    m_database.setDatabaseName("D:/Qt-Dev/DuoiHinhBatChu/altp.db");
+    m_database.setDatabaseName("D:/Developer/Qt/DuoiHinhBatChu/altp.db");
 
     if(!m_database.open()) {
         qDebug() << "Error: Unable to open database..";
