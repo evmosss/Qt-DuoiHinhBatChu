@@ -262,6 +262,7 @@ QJsonObject Room::startRoom(int userId, QMap<QString, QJsonObject> *roomData, QS
 
 QJsonObject Room::nextQuestion(int userId, QMap<QString, QJsonObject> *roomData, QString *roomId, QMap<int, QString> *userToRoomId)
 {
+    qInfo() << "[+] Caller: " << userId << "[+] Room Data:" << *roomData << "[+] Room Id:" << *roomId;
     QJsonObject response;
     if (!roomData->contains(*roomId)) {
         response["message"] = "Room does not exist";

@@ -1,0 +1,26 @@
+# ninja log v5
+2	924	7051750167132713	DuoiHinhBatChu_Backend_autogen/timestamp	a7400f01af9afd85
+2	924	7051750167132713	DuoiHinhBatChu_Backend_autogen/mocs_compilation.cpp	a7400f01af9afd85
+2	924	7051750167132713	D:/Developer/Qt/Qt-DuoiHinhBatChu/build-DuoiHinhBatChu_Backend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/DuoiHinhBatChu_Backend_autogen/timestamp	a7400f01af9afd85
+2	924	7051750167132713	D:/Developer/Qt/Qt-DuoiHinhBatChu/build-DuoiHinhBatChu_Backend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/DuoiHinhBatChu_Backend_autogen/mocs_compilation.cpp	a7400f01af9afd85
+1066	3180	7051750191522011	CMakeFiles/DuoiHinhBatChu_Backend.dir/database.cpp.obj	54b5055d19989e41
+925	3320	7051750192938476	CMakeFiles/DuoiHinhBatChu_Backend.dir/DuoiHinhBatChu_Backend_autogen/mocs_compilation.cpp.obj	c45c70b1c0576149
+1106	3474	7051750194455911	CMakeFiles/DuoiHinhBatChu_Backend.dir/user.cpp.obj	41251d088e02e647
+1142	3716	7051750196895023	CMakeFiles/DuoiHinhBatChu_Backend.dir/question.cpp.obj	b860b845024bcb7
+1184	3734	7051750197113350	CMakeFiles/DuoiHinhBatChu_Backend.dir/history.cpp.obj	1b559e961eb5b72a
+957	3903	7051750198762421	CMakeFiles/DuoiHinhBatChu_Backend.dir/auth.cpp.obj	6d0ce01476f13bf1
+1030	4579	7051750205412028	CMakeFiles/DuoiHinhBatChu_Backend.dir/room.cpp.obj	caff5b14c232c45c
+992	5255	7051750212277634	CMakeFiles/DuoiHinhBatChu_Backend.dir/main.cpp.obj	cbf1067bc20ca1cd
+5255	6060	7051750220214604	DuoiHinhBatChu_Backend.exe	d31b51741869c510
+6	340	7051750658401171	DuoiHinhBatChu_Backend_autogen/timestamp	a7400f01af9afd85
+6	340	7051750658401171	DuoiHinhBatChu_Backend_autogen/mocs_compilation.cpp	a7400f01af9afd85
+6	340	7051750658401171	D:/Developer/Qt/Qt-DuoiHinhBatChu/build-DuoiHinhBatChu_Backend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/DuoiHinhBatChu_Backend_autogen/timestamp	a7400f01af9afd85
+6	340	7051750658401171	D:/Developer/Qt/Qt-DuoiHinhBatChu/build-DuoiHinhBatChu_Backend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/DuoiHinhBatChu_Backend_autogen/mocs_compilation.cpp	a7400f01af9afd85
+344	1951	7051750674591673	CMakeFiles/DuoiHinhBatChu_Backend.dir/database.cpp.obj	54b5055d19989e41
+1952	2653	7051750681476271	DuoiHinhBatChu_Backend.exe	d31b51741869c510
+7	1083	7051760847054540	DuoiHinhBatChu_Backend_autogen/timestamp	a7400f01af9afd85
+7	1083	7051760847054540	DuoiHinhBatChu_Backend_autogen/mocs_compilation.cpp	a7400f01af9afd85
+7	1083	7051760847054540	D:/Developer/Qt/Qt-DuoiHinhBatChu/build-DuoiHinhBatChu_Backend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/DuoiHinhBatChu_Backend_autogen/timestamp	a7400f01af9afd85
+7	1083	7051760847054540	D:/Developer/Qt/Qt-DuoiHinhBatChu/build-DuoiHinhBatChu_Backend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/DuoiHinhBatChu_Backend_autogen/mocs_compilation.cpp	a7400f01af9afd85
+1089	4235	7051760878590985	CMakeFiles/DuoiHinhBatChu_Backend.dir/room.cpp.obj	caff5b14c232c45c
+4235	5069	7051760886903889	DuoiHinhBatChu_Backend.exe	d31b51741869c510

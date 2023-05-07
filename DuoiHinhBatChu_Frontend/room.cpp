@@ -21,7 +21,7 @@ Room::Room(QWidget *parent) :
 
     countdownTimer = new QTimer(this);
 
-    // Kết nối khe hở QTimer::timeout() để giảm giá trị đếm ngược và cập nhật QLabel
+
     connect(countdownTimer, &QTimer::timeout, [=]() {
         int currentValue = ui->timer->text().toInt();
         if (currentValue > 0) {
@@ -92,13 +92,11 @@ void Room::handleCreateRoom(QJsonObject data)
 
 void Room::handleLeaveRoom(QJsonObject data)
 {
-    qInfo() << "Leave Room" << data;
     if (data["code"].toInt() != 200) {
         emit interactError(data["message"].toString());
         return;
     }
     else {
-        qInfo() << "Touch here";
         if (data.value("data") == QJsonValue::Null) {
             ui->stackedWidget->setCurrentIndex(0);
         }
@@ -116,6 +114,7 @@ void Room::handleLeaveRoom(QJsonObject data)
         }
     }
     ui->chatView->clear();
+    countdownTimer->stop();
 }
 
 void Room::handleJoinRoom(QJsonObject data)
@@ -228,6 +227,7 @@ void Room::handleFinishRoom(QJsonObject data)
 
     ui->timer->setText("END");
     countdownTimer->stop();
+
     ui->submitAnswer->setEnabled(false);
 
     ui->startButton->setEnabled(true);
@@ -284,7 +284,6 @@ void Room::handleInteractError(QString message)
 
 void Room::on_createRoom_clicked()
 {
-    qInfo() << "[+] Create Room Clicked" << sessionId;
     QJsonObject json;
     json["sessionId"] = sessionId;
     json["type"] = static_cast<int>(SocketType::CREATE_ROOM);
@@ -298,7 +297,6 @@ void Room::on_createRoom_clicked()
 
 void Room::on_leaveRoom_clicked()
 {
-    qInfo() << "[+] Leave Room Clicked" << sessionId;
     QJsonObject json;
     json["sessionId"] = sessionId;
     json["roomId"] = roomId;
@@ -307,7 +305,6 @@ void Room::on_leaveRoom_clicked()
     QJsonDocument jsonDoc(json);
     QString jsonString = jsonDoc.toJson(QJsonDocument::Compact);
 
-    qInfo() << "[+] FE leave room clicked: " << json;
     roomId = nullptr;
     roomOwnerId = 0;
 
@@ -327,8 +324,6 @@ void Room::on_joinRoom_clicked()
     QString roomId = QInputDialog::getText(this, tr("Enter Room ID"), tr("Room ID:"), QLineEdit::Normal, QString(), &ok);
 
     if (ok && !roomId.isEmpty()) {
-        // User clicked OK and entered text, handle the roomId
-        qInfo() << "User entered room ID:" << roomId;
         QJsonObject json;
         json["sessionId"] = sessionId;
         json["type"] = static_cast<int>(SocketType::JOIN_ROOM);
@@ -340,8 +335,6 @@ void Room::on_joinRoom_clicked()
         socket->write(jsonString.toUtf8());
         socket->flush();
     } else {
-        // User clicked Cancel or didn't enter any text
-        qInfo() << "User cancelled or didn't enter a room ID";
     }
 }
 
@@ -388,7 +381,7 @@ void Room::handleDataFromServer()
 {
     QByteArray data = socket->readAll();
     QJsonObject jsonData = QJsonDocument::fromJson(data).object();
-    qInfo() << "DATA FROM SERVER" << jsonData;
+    qInfo() << "[+] DATA FROM SERVER" << jsonData;
 
     switch (jsonData["type"].toInt()) {
         case static_cast<int>(SocketType::CREATE_ROOM):
