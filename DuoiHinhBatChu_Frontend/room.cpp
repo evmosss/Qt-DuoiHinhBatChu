@@ -102,18 +102,24 @@ void Room::handleLeaveRoom(QJsonObject data)
         }
         else {
             QJsonObject responseData = data.value("data").toObject();
+            int questionIndex = responseData.value("questionIndex").toInt();
+            qInfo() << "Question Index: " << questionIndex;
+
             int playerId = responseData.value("leavePlayerId").toInt();
             if (playerId != userId) {
                 ui->pointTwo->setText("Point: 0");
                 ui->userTwo->setText("Waiting...");
                 ui->startButton->setEnabled(false);
+                ui->chatView->append("User " + QString::number(playerId) + " has left the game.");
             }
             else {
+                ui->chatView->clear();
                 ui->stackedWidget->setCurrentIndex(0);
             }
         }
     }
-    ui->chatView->clear();
+
+    ui->startButton->setEnabled(true);
     countdownTimer->stop();
 }
 

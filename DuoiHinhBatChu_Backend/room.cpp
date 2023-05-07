@@ -12,6 +12,8 @@
 
 #define _DATABASE_NAME "SP2"
 
+// WE HAVE FOUR STATES FOR ROOM: PENDING, FULL, STARTED, FINISHED
+
 bool validateSession(QString sessionId) {
     QSqlDatabase database = Database::getInstance().getDatabase();
     QSqlQuery query(database);
@@ -133,25 +135,21 @@ QJsonObject Room::leaveRoom(int userId, QMap<QString, QJsonObject> *roomData, QS
     QJsonObject json = roomData->take(*roomId);
     QJsonArray players = json.value("players").toArray();
     QJsonArray points = json.value("points").toArray();
+    QString status = json.value("status").toString();
 
     if (userToRoomId->contains(userId)) {
-        Room::handleUpdateFinishGame(players.at(1).toInt(), players.at(0).toInt());
+        if (status == "STARTED") {
+            Room::handleUpdateFinishGame(players.at(1).toInt(), players.at(0).toInt());
+        }
 
         userToRoomId->remove(userId);
         roomData->remove(*roomId);
         response["data"] = QJsonValue::Null;
     }
     else {
-        // Avoid clicking two times
-        if (players.size() == 1) {
-            response["message"] = "You already leave room!";
-            response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::Forbidden);
-            response["data"] = QJsonValue::Null;
-            response["type"] = SocketType::LEAVE_ROOM;
-            return response;
+        if (status == "STARTED") {
+            Room::handleUpdateFinishGame(players.at(0).toInt(), players.at(1).toInt());
         }
-
-        Room::handleUpdateFinishGame(players.at(0).toInt(), players.at(1).toInt());
 
         int leavePlayerId = players.at(1).toInt();
         points[0] = 0;
@@ -159,8 +157,6 @@ QJsonObject Room::leaveRoom(int userId, QMap<QString, QJsonObject> *roomData, QS
         players.pop_back();
         json["players"] = players;
         json["points"] = points;
-        json["questionIndex"] = 0;
-        json["questionId"] = 0;
         json["status"] = "PENDING";
 
         QJsonObject resData;
@@ -240,9 +236,20 @@ QJsonObject Room::startRoom(int userId, QMap<QString, QJsonObject> *roomData, QS
 
     QJsonObject questionData = Question::getRandomQuestion();
     QJsonObject value = roomData->take(*roomId);
+    QString status = value.value("status").toString();
+
+    if (status != "FULL" && status != "FINISHED") {
+        roomData->insert(*roomId, value);
+        response["message"] = "Room is not in correct state";
+        response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::BadRequest);
+        response["data"] = QJsonValue::Null;
+        response["type"] = SocketType::START_ROOM;
+        return response;
+    }
 
     value["questionData"] = questionData;
     value["questionIndex"] = 1; // Starting with first question
+    value["status"] = "STARTED";
 
     // Assign all points to zero
     QJsonArray pointsArray;
@@ -274,12 +281,24 @@ QJsonObject Room::nextQuestion(int userId, QMap<QString, QJsonObject> *roomData,
 
     QJsonObject value = roomData->take(*roomId);
     int ownerId = value.value("ownerId").toInt();
+    QString status = value.value("status").toString();
 
     if (userId != ownerId) {
+        roomData->insert(*roomId, value);
         response["message"] = "Only owner can get next question";
         response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::Forbidden);
         response["data"] = QJsonValue::Null;
         response["type"] = SocketType::NEXT_QUESTION;
+        return response;
+    }
+
+    if (status != "STARTED") {
+        roomData->insert(*roomId, value);
+        response["message"] = "Room has to be in starting status";
+        response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::Forbidden);
+        response["data"] = QJsonValue::Null;
+        response["type"] = SocketType::NEXT_QUESTION;
+        return response;
     }
 
     int qIndex = value.value("questionIndex").toInt();
@@ -317,6 +336,11 @@ QJsonObject Room::finishGame(int userId, QMap<QString, QJsonObject> *roomData, Q
 
     QJsonArray players = roomDetail.value("players").toArray();
     QJsonArray points = roomDetail.value("points").toArray();
+    QString status = roomDetail.value("status").toString();
+
+    if (status != "STARTED") {
+
+    }
 
     if (points.at(0).toInt() < points.at(1).toInt()) {
         responseData["winnerId"] = players.at(1).toInt();
@@ -331,6 +355,7 @@ QJsonObject Room::finishGame(int userId, QMap<QString, QJsonObject> *roomData, Q
     else {
         responseData["winnerId"] = 0;
     }
+    roomDetail["status"] = "FINISHED";
 
     roomData->insert(*roomId, roomDetail);
 
@@ -357,7 +382,7 @@ QHttpServerResponse Room::startGame(int userId, QMap<QString, QJsonObject> *room
         return QHttpServerResponse(QJsonObject{ {"message", "Room does not have enough participants"} }, QHttpServerResponder::StatusCode::Forbidden);
     }
 
-    json["status"] = "STARTING";
+    json["status"] = "STARTED";
     roomData->insert(*roomId, json);
     return QHttpServerResponse(QJsonObject{ {"message", "Start Game successfully"} }, QHttpServerResponder::StatusCode::Ok);
 }
