@@ -20,6 +20,7 @@
 #include <QtNetwork/QTcpSocket>
 #include <QVector>
 #include <QMetaObject>
+#include <QSslSocket>
 
 // Components
 #include "auth.h"
@@ -63,6 +64,14 @@ void connectToSocket() {
 
     });
 }
+
+//void connectToSslSocket() {
+//    QSslSocket *sslSocket = new QSslSocket();
+//    QSslConfiguration sslConfig = sslSocket->sslConfiguration();
+//    sslConfig.setProtocol(QSsl::TlsV1_2);
+//    sslConfig.setPeerVerifyMode(QSslSocket::VerifyNone);
+//    sslSocket->setSslConfiguration(sslConfig);
+//}
 
 void createDBConnection(QCoreApplication *a) {
     QSqlDatabase database = Database::getInstance().getDatabase();
