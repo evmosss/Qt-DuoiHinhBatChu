@@ -9,7 +9,7 @@ Register::Register(QWidget *parent) :
     ui->setupUi(this);
     ui->passInput->setEchoMode(QLineEdit::Password);
 
-    connect(this, Register::registerFailed, this, Register::handleError);
+    connect(this, &Register::registerFailed, this, &Register::handleError);
 }
 
 Register::~Register()
@@ -17,9 +17,21 @@ Register::~Register()
     delete ui;
 }
 
+void Register::showEvent(QShowEvent *event)
+{
+    // Gọi phương thức showEvent() của lớp cơ sở để xử lý sự kiện mặc định
+    QWidget::showEvent(event);
+
+    // Xóa nội dung
+    ui->userInput->clear();
+    ui->passInput->clear();
+    ui->message->clear();
+}
+
 void Register::handleError(QString msg)
 {
-    ui->message->setText(msg);
+    QString newMsg = "<font color='red'>" + msg + "</font>";
+    ui->message->setText(newMsg);
 }
 
 void Register::on_registerButton_clicked()
@@ -55,5 +67,11 @@ void Register::on_registerButton_clicked()
 
         reply->deleteLater();
     });
+}
+
+
+void Register::on_returnLoginBtn_clicked()
+{
+    emit changeToLogin();
 }
 

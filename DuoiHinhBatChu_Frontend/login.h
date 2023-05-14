@@ -27,6 +27,9 @@ public:
     explicit Login(QWidget *parent = nullptr);
     ~Login();
 
+protected:
+    void showEvent(QShowEvent *event);
+
 private:
     Ui::Login *ui;
     void handleError(QString msg);

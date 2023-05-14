@@ -25,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(loginWidget, &Login::changeToRegisterPage, this, &MainWindow::showRegisterWidget);
     connect(loginWidget, &Login::loginSuccessfully, this, &MainWindow::showRoomWidget);
     connect(registerWidget, &Register::registerSuccessfully, this, &MainWindow::showLoginWidget);
+    connect(registerWidget, &Register::changeToLogin, this, &MainWindow::showLoginWidget);
     connect(roomWidget, &Room::logOutSuccessfully, this, &MainWindow::showLoginWidget);
 
     // Chuyển session id từ widget này sang widget khác
