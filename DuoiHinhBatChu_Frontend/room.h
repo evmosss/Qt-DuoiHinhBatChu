@@ -45,6 +45,7 @@ private:
     void handleNextQuestion(QJsonObject data);
     void handleFinishRoom(QJsonObject data);
     void renderFullRoom(QJsonObject roomDetail);
+    void handleGetAllRoom(QJsonObject data);
 
     void requestNextQuestion();
 
@@ -56,6 +57,7 @@ private:
 signals:
     void interactError(QString message);
     void logOutSuccessfully();
+    void getAllRoom();          // emit to load room
 
 private slots:
     void handleInteractError(QString message);
@@ -65,6 +67,7 @@ private slots:
     void on_joinRoom_clicked();
     void on_submitAnswer_clicked();
     void on_startButton_clicked();
+    void requestGetAllRoom();    // request to server to load room from server
 
     void alertConnected();
     void handleDataFromServer();

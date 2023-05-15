@@ -11,6 +11,7 @@ enum SocketType {
     SEND_ANSWER,
     BAD_RESPONSE,
     FINISH_ROOM,
+    GET_ALL_ROOM,
 };
 
 #endif // PROTOCOLSOCKET_H

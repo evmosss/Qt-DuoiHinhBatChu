@@ -18,6 +18,7 @@ Room::Room(QWidget *parent) :
             this, SLOT(handleSocketError(QAbstractSocket::SocketError)));
     connect(socket, SIGNAL(disconnected()), this, SLOT(disconnect()));
     connect(this, &Room::interactError, this, &Room::handleInteractError);
+    connect(this, &Room::getAllRoom, this, &Room::requestGetAllRoom);
 
     countdownTimer = new QTimer(this);
 
@@ -45,6 +46,9 @@ void Room::storeData(QString sessionId, int userId)
 {
     this->sessionId = sessionId;
     this->userId = userId;
+
+    // emit a signal for load room id
+    emit getAllRoom();
 }
 
 void Room::closeWindow()
@@ -88,6 +92,9 @@ void Room::handleCreateRoom(QJsonObject data)
 
     QUrl url("https://media.front.xoedge.com/images/626affda-17e4-4914-82f5-b2cb7b8aa92d~rs_1080.h?fm=webp&q=90");
     downloadImage(url, ui->questionImage);
+
+    // emit get all room
+    emit getAllRoom();
 }
 
 void Room::handleLeaveRoom(QJsonObject data)
@@ -267,6 +274,25 @@ void Room::renderFullRoom(QJsonObject roomDetail) {
     }
 }
 
+void Room::handleGetAllRoom(QJsonObject data)
+{
+    if (data["code"].toInt() != 200) {
+        emit interactError(data["message"].toString());
+        return;
+    }
+
+    QJsonObject responseData = data.value("data").toObject();
+    QJsonArray roomIds = responseData.value("roomIds").toArray();
+    QJsonArray ownerIds = responseData.value("ownerIds").toArray();
+
+    if(roomIds.size() > 0) {
+        for(int i; i < roomIds.size(); i++) {
+            QString roomItem = ownerIds.at(i).toString() + roomIds.at(i).toString();
+            ui->idRoomList->append(roomItem);
+        }
+    }
+}
+
 void Room::requestNextQuestion()
 {
     QJsonObject json;
@@ -378,6 +404,19 @@ void Room::on_startButton_clicked()
     socket->flush();
 }
 
+void Room::requestGetAllRoom()
+{
+    QJsonObject json;
+    json["sessionId"] = sessionId;
+    json["type"] = static_cast<int>(SocketType::GET_ALL_ROOM);
+
+    QJsonDocument jsonDoc(json);
+    QString jsonString = jsonDoc.toJson(QJsonDocument::Compact);
+
+    socket->write(jsonString.toUtf8());
+    socket->flush();
+}
+
 void Room::alertConnected()
 {
     qInfo() << "Connect to socket server successfully";
@@ -410,6 +449,9 @@ void Room::handleDataFromServer()
             break;
         case static_cast<int>(SocketType::FINISH_ROOM):
             Room::handleFinishRoom(jsonData);
+            break;
+        case static_cast<int>(SocketType::GET_ALL_ROOM):
+            Room::handleGetAllRoom(jsonData);
             break;
     }
 }
