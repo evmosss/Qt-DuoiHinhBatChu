@@ -28,6 +28,8 @@ add_executable(DuoiHinhBatChu_Backend
   database.cpp
   history.h
   history.cpp
+  rank.h
+  rank.cpp
 )
 target_link_libraries(DuoiHinhBatChu_Backend Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::HttpServer Qt${QT_VERSION_MAJOR}::Sql Qt${QT_VERSION_MAJOR}::Concurrent)
 

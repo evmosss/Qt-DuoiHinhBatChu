@@ -26,6 +26,7 @@
 #include "auth.h"
 #include "room.h"
 #include "user.h"
+#include "rank.h"
 #include "database.h"
 #include "protocolSocket.h"
 
@@ -38,6 +39,7 @@ QMap<QString, QList<QTcpSocket*>> connectionTable;
 Auth* authService;
 Room* roomService;
 User* userService;
+Rank* rankService;
 
 void handleIncomingData(QTcpSocket *socket);
 int getUserIdFromSessionId(QString *sessionId);
@@ -118,6 +120,7 @@ int main(int argc, char *argv[])
     authService = new Auth;
     roomService = new Room;
     userService = new User;
+    rankService = new Rank;
 
     createDBConnection(&a);
     connectToSocket();
@@ -156,6 +159,22 @@ int main(int argc, char *argv[])
         return roomService->getAllRoom(roomDataMap);
     });
 
+    // Rank Apis
+    server.route("/api/rank", QHttpServerRequest::Method::Get, [rankService](const QHttpServerRequest &req) {
+        QUrl url = req.url();
+        QUrlQuery query(url.query());
+
+        // Lấy giá trị của tham số "page"
+        QString pageStr = query.queryItemValue("page");
+        int page = pageStr.toInt();
+
+        // Lấy giá trị của tham số "limit"
+        QString limitStr = query.queryItemValue("limit");
+        int limit = limitStr.toInt();
+
+        return rankService->getAllRanks(page, limit);
+    });
+
 
     server.listen(QHostAddress::LocalHost, 8000);
 
@@ -176,6 +195,7 @@ void handleIncomingData(QTcpSocket * socket) {
     QString content;
     QList<QTcpSocket*> tableData;
     int userId = userService->getUserFromSessionId(&sessionId);
+
 
     switch(jsonObj["type"].toInt()) {
     case static_cast<int>(SocketType::CREATE_ROOM):
