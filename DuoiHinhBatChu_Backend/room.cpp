@@ -139,7 +139,7 @@ QJsonObject Room::leaveRoom(int userId, QMap<QString, QJsonObject> *roomData, QS
 
     if (userToRoomId->contains(userId)) {
         if (status == "STARTED") {
-            Room::handleUpdateFinishGame(players.at(1).toInt(), players.at(0).toInt());
+            Room::handleUpdateFinishGame(players.at(1).toInt(), players.at(0).toInt(), true);
         }
 
         userToRoomId->remove(userId);
@@ -148,7 +148,7 @@ QJsonObject Room::leaveRoom(int userId, QMap<QString, QJsonObject> *roomData, QS
     }
     else {
         if (status == "STARTED") {
-            Room::handleUpdateFinishGame(players.at(0).toInt(), players.at(1).toInt());
+            Room::handleUpdateFinishGame(players.at(0).toInt(), players.at(1).toInt(), true);
         }
 
         int leavePlayerId = players.at(1).toInt();
@@ -345,12 +345,12 @@ QJsonObject Room::finishGame(int userId, QMap<QString, QJsonObject> *roomData, Q
     if (points.at(0).toInt() < points.at(1).toInt()) {
         responseData["winnerId"] = players.at(1).toInt();
 
-        Room::handleUpdateFinishGame(players.at(1).toInt(), players.at(0).toInt());
+        Room::handleUpdateFinishGame(players.at(1).toInt(), players.at(0).toInt(), false);
     }
     else if (points.at(0).toInt() > points.at(1).toInt()) {
         responseData["winnerId"] = players.at(0).toInt();
 
-        Room::handleUpdateFinishGame(players.at(0).toInt(), players.at(1).toInt());
+        Room::handleUpdateFinishGame(players.at(0).toInt(), players.at(1).toInt(), false);
     }
     else {
         responseData["winnerId"] = 0;
@@ -403,9 +403,9 @@ Room::Room()
 
 }
 
-void Room::handleUpdateFinishGame(int winnerId, int loserId)
+void Room::handleUpdateFinishGame(int winnerId, int loserId, bool isLeave)
 {
     History::createHistory(winnerId, loserId);
-    User::updateUserAfterAGame(winnerId, loserId);
+    User::updateUserAfterAGame(winnerId, loserId, isLeave);
 }
 

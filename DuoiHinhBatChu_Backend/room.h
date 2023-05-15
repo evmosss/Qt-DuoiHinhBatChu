@@ -36,7 +36,7 @@ public:
 
     Room();
 private:
-    void handleUpdateFinishGame(int winnerId, int loserId);
+    void handleUpdateFinishGame(int winnerId, int loserId, bool isLeave);
 };
 
 #endif // ROOM_H
