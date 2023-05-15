@@ -12,11 +12,11 @@ Room::Room(QWidget *parent) :
     socket = Socket::getInstance().socket();
     socket->connectToHost("127.0.0.1", 9454);
 
-    connect(socket,SIGNAL(connected()),this,SLOT(alertConnected()));
-    connect(socket,SIGNAL(readyRead()),this,SLOT(handleDataFromServer()));
-    connect(socket,SIGNAL(errorOccurred(QAbstractSocket::SocketError)),
-            this,SLOT(handleSocketError(QAbstractSocket::SocketError)));
-    connect(socket,SIGNAL(disconnected()),this,SLOT(disconnect()));
+    connect(socket, SIGNAL(connected()), this, SLOT(alertConnected()));
+    connect(socket, SIGNAL(readyRead()), this, SLOT(handleDataFromServer()));
+    connect(socket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)),
+            this, SLOT(handleSocketError(QAbstractSocket::SocketError)));
+    connect(socket, SIGNAL(disconnected()), this, SLOT(disconnect()));
     connect(this, &Room::interactError, this, &Room::handleInteractError);
 
     countdownTimer = new QTimer(this);
@@ -387,30 +387,30 @@ void Room::handleDataFromServer()
 {
     QByteArray data = socket->readAll();
     QJsonObject jsonData = QJsonDocument::fromJson(data).object();
-    qInfo() << "[+] DATA FROM SERVER" << jsonData;
+    qInfo() << "[+] DATA FROM SERVER:\n" << jsonData << "\n\n";
 
     switch (jsonData["type"].toInt()) {
         case static_cast<int>(SocketType::CREATE_ROOM):
-        Room::handleCreateRoom(jsonData);
-        break;
+            Room::handleCreateRoom(jsonData);
+            break;
         case static_cast<int>(SocketType::LEAVE_ROOM):
-        Room::handleLeaveRoom(jsonData);
-        break;
+            Room::handleLeaveRoom(jsonData);
+            break;
         case static_cast<int>(SocketType::JOIN_ROOM):
-        Room::handleJoinRoom(jsonData);
-        break;
+            Room::handleJoinRoom(jsonData);
+            break;
         case static_cast<int>(SocketType::SEND_ANSWER):
-        Room::handleSendAnswer(jsonData);
-        break;
+            Room::handleSendAnswer(jsonData);
+            break;
         case static_cast<int>(SocketType::START_ROOM):
-        Room::handleStartRoom(jsonData);
-        break;
+            Room::handleStartRoom(jsonData);
+            break;
         case static_cast<int>(SocketType::NEXT_QUESTION):
-        Room::handleNextQuestion(jsonData);
-        break;
+            Room::handleNextQuestion(jsonData);
+            break;
         case static_cast<int>(SocketType::FINISH_ROOM):
-        Room::handleFinishRoom(jsonData);
-        break;
+            Room::handleFinishRoom(jsonData);
+            break;
     }
 }
 

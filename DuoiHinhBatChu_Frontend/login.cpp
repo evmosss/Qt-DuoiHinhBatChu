@@ -8,7 +8,7 @@ Login::Login(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    connect(this, Login::loginFailed, this, Login::handleError);
+    connect(this, &Login::loginFailed, this, &Login::handleError);
 }
 
 Login::~Login()
@@ -16,9 +16,21 @@ Login::~Login()
     delete ui;
 }
 
+void Login::showEvent(QShowEvent *event)
+{
+    // Gọi phương thức showEvent() của lớp cơ sở để xử lý sự kiện mặc định
+    QWidget::showEvent(event);
+
+    // Xóa nội dung
+    ui->userInput->clear();
+    ui->passInput->clear();
+    ui->message->clear();
+}
+
 void Login::handleError(QString msg)
 {
-    ui->message->setText(msg);
+    QString newMsg = "<font color='red'>" + msg + "</font>";
+    ui->message->setText(newMsg);
 }
 
 void Login::on_registerButton_clicked()

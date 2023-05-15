@@ -42,8 +42,8 @@
   <widget class="QLineEdit" name="userInput">
    <property name="geometry">
     <rect>
-     <x>200</x>
-     <y>210</y>
+     <x>260</x>
+     <y>190</y>
      <width>391</width>
      <height>41</height>
     </rect>
@@ -55,7 +55,7 @@
   <widget class="QLineEdit" name="passInput">
    <property name="geometry">
     <rect>
-     <x>200</x>
+     <x>260</x>
      <y>270</y>
      <width>391</width>
      <height>41</height>
@@ -68,14 +68,56 @@
   <widget class="QLabel" name="message">
    <property name="geometry">
     <rect>
-     <x>200</x>
+     <x>140</x>
      <y>330</y>
-     <width>391</width>
+     <width>511</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>190</y>
+     <width>101</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Username:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>270</y>
+     <width>91</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Password:</string>
    </property>
   </widget>
  </widget>
