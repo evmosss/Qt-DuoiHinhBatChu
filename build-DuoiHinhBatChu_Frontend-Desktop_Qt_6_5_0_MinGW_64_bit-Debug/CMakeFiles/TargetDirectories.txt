@@ -1,9 +1,0 @@
-D:/Developer/Qt/Qt-DuoiHinhBatChu/build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/DuoiHinhBatChu_Frontend.dir
-D:/Developer/Qt/Qt-DuoiHinhBatChu/build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/edit_cache.dir
-D:/Developer/Qt/Qt-DuoiHinhBatChu/build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/rebuild_cache.dir
-D:/Developer/Qt/Qt-DuoiHinhBatChu/build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/list_install_components.dir
-D:/Developer/Qt/Qt-DuoiHinhBatChu/build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/install.dir
-D:/Developer/Qt/Qt-DuoiHinhBatChu/build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/install/local.dir
-D:/Developer/Qt/Qt-DuoiHinhBatChu/build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/install/strip.dir
-D:/Developer/Qt/Qt-DuoiHinhBatChu/build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/DuoiHinhBatChu_Frontend_autogen_timestamp_deps.dir
-D:/Developer/Qt/Qt-DuoiHinhBatChu/build-DuoiHinhBatChu_Frontend-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/CMakeFiles/DuoiHinhBatChu_Frontend_autogen.dir
