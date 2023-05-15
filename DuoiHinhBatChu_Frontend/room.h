@@ -71,7 +71,6 @@ private slots:
     void handleSocketError(QAbstractSocket::SocketError error);
     void disconnect(); // Disconnect from server
 
-
 };
 
 #endif // ROOM_H
