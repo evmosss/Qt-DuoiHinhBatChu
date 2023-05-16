@@ -311,6 +311,12 @@ void Room::handleGetAllRoom(QJsonObject data)
     ui->idRoomList->setRowCount(roomIds.size());
     ui->idRoomList->setColumnCount(3);
     ui->idRoomList->setHorizontalHeaderLabels({"Room Id", "Total Player", "Status"});
+    QFont font;
+    font.setBold(true);
+    ui->idRoomList->horizontalHeader()->setFont(font);
+
+    ui->idRoomList->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
+    ui->idRoomList->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     QJsonObject roomData;
     int ownerId;
@@ -331,6 +337,13 @@ void Room::handleGetAllRoom(QJsonObject data)
             ui->idRoomList->setItem(i, 1, item3);
             QTableWidgetItem* item4 = new QTableWidgetItem(status);
             ui->idRoomList->setItem(i, 2, item4);
+
+            item1->setTextAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+            item1->setFlags(item1->flags() & ~Qt::ItemIsEditable);
+            item3->setTextAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+            item3->setFlags(item3->flags() & ~Qt::ItemIsEditable);
+            item4->setTextAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+            item4->setFlags(item4->flags() & ~Qt::ItemIsEditable);
         }
     }
 }
@@ -497,12 +510,26 @@ void Room::requestGetAllRank(int page)
                     ui->rankWidget->horizontalHeader()->setFont(font);
                     ui->rankWidget->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
                     ui->rankWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-                    resRankList.size() == resLimit ? ui->rankWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch) : void();
-                    for(int i = 0; i < row; i++) {
+                    ui->rankWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+//                    if(resRankList.size() >= 10) {
+//                        qInfo() << "hi\n\n";
+//                        ui->rankWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+//                    } else {
+//                        ui->rankWidget->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+//                    }
+
+                    for(int i = 0; i < 10; i++) {
                         for(int j = 0; j < columnKeyList.count(); j++) {
-                            QString key = columnKeyList.at(j);
-                            QString itemContent = QString::number(resRankList.at(i).toObject().value(key).toDouble());
+                            QString itemContent = "4";
+//                            if(i < row) {
+//                                QString key = columnKeyList.at(j);
+//                                itemContent = QString::number(resRankList.at(i).toObject().value(key).toDouble());
+//                            } else {
+
+//                                itemContent = QString("4");
+//                            }
                             QTableWidgetItem *item = new QTableWidgetItem(itemContent);
+                            qInfo() << item->text() << "run\n\n";
                             item->setTextAlignment(Qt::AlignCenter | Qt::AlignVCenter);
                             item->setFlags(item->flags() & ~Qt::ItemIsEditable);
                             ui->rankWidget->setItem(i, j, item);
