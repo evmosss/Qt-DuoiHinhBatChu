@@ -63,6 +63,7 @@ void Room::closeWindow()
     if (roomId != nullptr) {
         Room::on_leaveRoom_clicked();
         Room::on_logoutButton_clicked();
+        emit requestAllRoom(false);
     }
 }
 
@@ -441,6 +442,8 @@ void Room::sendRequestGetAllRoom(bool isSendToCaller)
     json["sessionId"] = sessionId;
     json["isSendToCaller"] = isSendToCaller;
     json["type"] = static_cast<int>(SocketType::SEND_REQUEST_ALL_ROOM);
+
+    qInfo() << "RUN SEND REQUEST GET ALL ROOM";
 
     socket->write(convertJsonToByteArray(json));
     socket->flush();
