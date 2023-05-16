@@ -18,7 +18,11 @@ Room::Room(QWidget *parent) :
             this, SLOT(handleSocketError(QAbstractSocket::SocketError)));
     connect(socket, SIGNAL(disconnected()), this, SLOT(disconnect()));
     connect(this, &Room::interactError, this, &Room::handleInteractError);
+
     connect(this, &Room::requestAllRoom, this, &Room::sendRequestGetAllRoom);
+
+    connect(this, &Room::getAllRank, this, &Room::requestGetAllRank);
+
 
     countdownTimer = new QTimer(this);
 
@@ -449,6 +453,73 @@ void Room::sendRequestGetAllRoom(bool isSendToCaller)
     socket->flush();
 }
 
+void Room::requestGetAllRank(int page)
+{
+    if(page > 0) {
+        manager = new QNetworkAccessManager(this);
+
+        QUrl url(API_URL + "rank");
+        QUrlQuery query;
+        query.addQueryItem("page", QString::number(page));
+        query.addQueryItem("limit", QString::number(10));
+        url.setQuery(query);
+
+        QNetworkRequest request(url);
+        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+        manager->get(request);
+
+        connect(manager, &QNetworkAccessManager::finished, [&](QNetworkReply *reply) {
+            if (reply->error() == QNetworkReply::NoError) {
+                QByteArray response = reply->readAll();
+                QJsonDocument jsonDoc(QJsonDocument::fromJson(response));
+                QJsonObject jsonObj = jsonDoc.object();
+                QJsonObject jsonData = jsonObj.value("data").toObject();
+
+                if(jsonData.value("data").toArray().size() > 0) {
+                    // Xử lý dữ liệu JSON ở đây
+                    qInfo() << "[+] DATA FROM SERVER:\n" << jsonData << "\n\n";
+                    double resPage = jsonData.value("page").toDouble();
+                    double resLimit = jsonData.value("limit").toDouble();
+                    QJsonArray resRankList = jsonData.value("data").toArray();
+
+                    ui->stackedWidget->setCurrentWidget(ui->ListRoom);
+
+                    QStringList headerLabels;
+                    int row = resRankList.size();
+                    QStringList columnKeyList = resRankList.at(0).toObject().keys();
+                    headerLabels << "Id" << "Point" << "Total games" << "Win count" << "Win ratio";
+                    QFont font;
+                    font.setBold(true);
+                    ui->rankWidget->setRowCount(row);
+                    ui->rankWidget->setColumnCount(columnKeyList.count());
+                    ui->rankWidget->setHorizontalHeaderLabels(headerLabels);
+                    ui->rankWidget->horizontalHeader()->setFont(font);
+                    ui->rankWidget->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
+                    ui->rankWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+                    resRankList.size() == resLimit ? ui->rankWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch) : void();
+                    for(int i = 0; i < row; i++) {
+                        for(int j = 0; j < columnKeyList.count(); j++) {
+                            QString key = columnKeyList.at(j);
+                            QString itemContent = QString::number(resRankList.at(i).toObject().value(key).toDouble());
+                            QTableWidgetItem *item = new QTableWidgetItem(itemContent);
+                            item->setTextAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+                            item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+                            ui->rankWidget->setItem(i, j, item);
+                        }
+                    }
+
+                    ui->pageValue->setText(QString::number(resPage));
+                }
+            } else {
+                qInfo() << "[+] DATA ERROR \n\n";
+            }
+
+            reply->deleteLater();
+        });
+    }
+}
+
 void Room::alertConnected()
 {
     // Send message Login to server
@@ -534,3 +605,29 @@ void Room::downloadImage(const QUrl& imageUrl, QLabel* label)
         manager->deleteLater();
     });
 }
+
+void Room::on_rankBtn_clicked()
+{
+    emit getAllRank(1);
+}
+
+
+void Room::on_listBackHome_clicked()
+{
+    ui->stackedWidget->setCurrentWidget(ui->MainRoom);
+}
+
+
+void Room::on_previousWidget_clicked()
+{
+    int page = ui->pageValue->text().toInt() - 1;
+    emit getAllRank(page);
+}
+
+
+void Room::on_nextWidget_clicked()
+{
+    int page = ui->pageValue->text().toInt() + 1;
+    emit getAllRank(page);
+}
+
