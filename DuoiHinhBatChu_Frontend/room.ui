@@ -17,13 +17,13 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>0</y>
-     <width>801</width>
-     <height>601</height>
+     <y>10</y>
+     <width>800</width>
+     <height>600</height>
     </rect>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="MainRoom">
     <widget class="QLabel" name="label">
@@ -110,26 +110,13 @@
       </rect>
      </property>
     </widget>
-    <widget class="QPushButton" name="rankBtn">
-     <property name="geometry">
-      <rect>
-       <x>50</x>
-       <y>30</y>
-       <width>161</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Rank</string>
-     </property>
-    </widget>
    </widget>
    <widget class="QWidget" name="ListRoom">
     <widget class="QPushButton" name="listBackHome">
      <property name="geometry">
       <rect>
-       <x>40</x>
-       <y>30</y>
+       <x>10</x>
+       <y>20</y>
        <width>151</width>
        <height>51</height>
       </rect>
@@ -138,11 +125,21 @@
       <string>Back To Home</string>
      </property>
     </widget>
+    <widget class="QTableWidget" name="rankWidget">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>20</y>
+       <width>571</width>
+       <height>421</height>
+      </rect>
+     </property>
+    </widget>
     <widget class="QPushButton" name="previousWidget">
      <property name="geometry">
       <rect>
-       <x>100</x>
-       <y>520</y>
+       <x>270</x>
+       <y>480</y>
        <width>141</width>
        <height>51</height>
       </rect>
@@ -154,8 +151,8 @@
     <widget class="QPushButton" name="nextWidget">
      <property name="geometry">
       <rect>
-       <x>550</x>
-       <y>520</y>
+       <x>540</x>
+       <y>480</y>
        <width>141</width>
        <height>51</height>
       </rect>
@@ -167,8 +164,8 @@
     <widget class="QLabel" name="pageText">
      <property name="geometry">
       <rect>
-       <x>360</x>
-       <y>530</y>
+       <x>20</x>
+       <y>140</y>
        <width>51</width>
        <height>24</height>
       </rect>
@@ -180,8 +177,8 @@
     <widget class="QLabel" name="pageValue">
      <property name="geometry">
       <rect>
-       <x>420</x>
-       <y>530</y>
+       <x>80</x>
+       <y>140</y>
        <width>71</width>
        <height>24</height>
       </rect>
@@ -190,53 +187,31 @@
       <string>0</string>
      </property>
     </widget>
-    <widget class="QTableWidget" name="rankWidget">
+    <widget class="QLabel" name="totalText">
      <property name="geometry">
       <rect>
-       <x>40</x>
-       <y>100</y>
-       <width>711</width>
-       <height>391</height>
+       <x>20</x>
+       <y>180</y>
+       <width>51</width>
+       <height>24</height>
       </rect>
      </property>
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>1</horstretch>
-       <verstretch>1</verstretch>
-      </sizepolicy>
+     <property name="text">
+      <string>Total</string>
      </property>
-     <property name="font">
-      <font>
-       <pointsize>9</pointsize>
-      </font>
+    </widget>
+    <widget class="QLabel" name="totalValue">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>180</y>
+       <width>71</width>
+       <height>24</height>
+      </rect>
      </property>
-     <property name="verticalScrollBarPolicy">
-      <enum>Qt::ScrollBarAlwaysOff</enum>
+     <property name="text">
+      <string>0</string>
      </property>
-     <property name="horizontalScrollBarPolicy">
-      <enum>Qt::ScrollBarAlwaysOff</enum>
-     </property>
-     <property name="sizeAdjustPolicy">
-      <enum>QAbstractScrollArea::AdjustToContents</enum>
-     </property>
-     <property name="dragDropOverwriteMode">
-      <bool>true</bool>
-     </property>
-     <property name="alternatingRowColors">
-      <bool>false</bool>
-     </property>
-     <property name="sortingEnabled">
-      <bool>false</bool>
-     </property>
-     <property name="rowCount">
-      <number>0</number>
-     </property>
-     <property name="columnCount">
-      <number>0</number>
-     </property>
-     <attribute name="horizontalHeaderCascadingSectionResizes">
-      <bool>false</bool>
-     </attribute>
     </widget>
    </widget>
    <widget class="QWidget" name="RoomDetail">
@@ -244,9 +219,9 @@
      <property name="geometry">
       <rect>
        <x>160</x>
-       <y>20</y>
+       <y>10</y>
        <width>471</width>
-       <height>291</height>
+       <height>301</height>
       </rect>
      </property>
      <property name="text">
@@ -263,7 +238,7 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>20</y>
+       <y>10</y>
        <width>83</width>
        <height>29</height>
       </rect>
@@ -483,7 +458,7 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>70</y>
+       <y>60</y>
        <width>141</width>
        <height>31</height>
       </rect>
