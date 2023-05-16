@@ -508,6 +508,7 @@ void Room::requestGetAllRank(int page)
                     ui->rankWidget->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
                     ui->rankWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
                     ui->rankWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+                    
                     for(int i = 0; i < 10; i++) {
                         for(int j = 0; j < columnKeyList.count(); j++) {
                             QString itemContent = "";
