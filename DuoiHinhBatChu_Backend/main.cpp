@@ -34,7 +34,8 @@
 
 QMap<QString, QJsonObject> roomDataMap;
 QMap<int, QString> userToRoomId;
-QMap<QString, QList<QTcpSocket*>> connectionTable;
+QMap<QString, QList<QTcpSocket*>> connectionTable; // Store Mapping roomId => joinUsersInARoom
+QList<QTcpSocket*> activeUsers;
 
 Auth* authService;
 Room* roomService;
@@ -184,138 +185,165 @@ int main(int argc, char *argv[])
 
 void handleIncomingData(QTcpSocket * socket) {
     QByteArray clientData = socket->readAll();
-    QJsonDocument jsonDoc = QJsonDocument::fromJson(clientData);
-    QJsonObject jsonObj = jsonDoc.object();
+    QList<QByteArray> byteArrays = clientData.split('\n');
+    qInfo() << "[+] Byte Arrays: " << clientData;
 
-    qInfo() << "[+] Incoming Data: " << jsonObj;
-    QString sessionId = jsonObj["sessionId"].toString();
+    for (int i = 0; i < byteArrays.size() - 1; i++) {
+        qInfo() << "[+] Client Data: " << byteArrays.at(i);
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(byteArrays.at(i));
+        QJsonObject jsonObj = jsonDoc.object();
 
-    QJsonObject data;
-    QString roomId;
-    QString content;
-    QList<QTcpSocket*> tableData;
-    int userId = userService->getUserFromSessionId(&sessionId);
+        qInfo() << "[+] Incoming Data: " << jsonObj;
+        QString sessionId = jsonObj["sessionId"].toString();
+        bool isSendToCaller = jsonObj["isSendToCaller"].toBool();
+
+        QJsonObject data;
+        QString roomId;
+        QString content;
+        QList<QTcpSocket*> tableData;
+        int userId = userService->getUserFromSessionId(&sessionId);
 
 
-    switch(jsonObj["type"].toInt()) {
-    case static_cast<int>(SocketType::GET_ALL_ROOM):
+        switch(jsonObj["type"].toInt()) {
+        case static_cast<int>(SocketType::REQUEST_SAVE_ACTIVE_USER):
+            data = userService->addActiveUser(userId, socket, &activeUsers);
+            socket->write(convertJsonToByteArray(data));
+            socket->flush();
+            break;
+        case static_cast<int>(SocketType::REQUEST_DELETE_ACTIVE_USER):
+            userService->removeActiveUser(userId, socket, &activeUsers);
+            break;
+        case static_cast<int>(SocketType::SEND_REQUEST_ALL_ROOM):
+            data = roomService->getAllCurrentRoom(userId, roomDataMap);
 
-        break;
+            for (int i = 0; i < activeUsers.length(); i++) {
+                QTcpSocket* _socket = activeUsers.at(i);
 
-    case static_cast<int>(SocketType::CREATE_ROOM):
-        roomId = nullptr;
-        do {
-            roomId = generateRoomId();
-        } while (roomDataMap.contains(roomId));
+                if (!isSendToCaller && socket == _socket) {
+                    continue;
+                }
+                // Sử dụng socket ở đây
+                _socket->write(convertJsonToByteArray(data));
+                _socket->flush();
+            }
 
-        tableData = connectionTable.take(roomId);
-        tableData.append(socket);
-        connectionTable.insert(roomId, tableData);
+            break;
+        case static_cast<int>(SocketType::CREATE_ROOM):
+            roomId = nullptr;
+            do {
+                roomId = generateRoomId();
+            } while (roomDataMap.contains(roomId));
 
-        data = roomService->createRoom(userId, &roomDataMap, &roomId, &userToRoomId);
+            tableData = connectionTable.take(roomId);
+            tableData.append(socket);
+            connectionTable.insert(roomId, tableData);
 
-        socket->write(convertJsonToByteArray(data));
-        break;
+            data = roomService->createRoom(userId, &roomDataMap, &roomId, &userToRoomId);
 
-    case static_cast<int>(SocketType::LEAVE_ROOM):
-        roomId = jsonObj["roomId"].toString();
+            socket->write(convertJsonToByteArray(data));
+            break;
 
-        data = roomService->leaveRoom(userId, &roomDataMap, &roomId, &userToRoomId);
+        case static_cast<int>(SocketType::LEAVE_ROOM):
+            roomId = jsonObj["roomId"].toString();
 
-        tableData = connectionTable.take(roomId);
+            data = roomService->leaveRoom(userId, &roomDataMap, &roomId, &userToRoomId);
 
-        for (int i = 0; i < tableData.length(); i++) {
-            QTcpSocket* _socket = tableData.at(i);
+            tableData = connectionTable.take(roomId);
 
-            // Sử dụng socket ở đây
-            _socket->write(convertJsonToByteArray(data));
-            _socket->flush();
+            for (int i = 0; i < tableData.length(); i++) {
+                QTcpSocket* _socket = tableData.at(i);
+
+                // Sử dụng socket ở đây
+                _socket->write(convertJsonToByteArray(data));
+                _socket->flush();
+            }
+
+            tableData.removeAt(tableData.indexOf(socket));
+            connectionTable.insert(roomId, tableData);
+            break;
+        case static_cast<int>(SocketType::JOIN_ROOM):
+            roomId = jsonObj["roomId"].toString();
+
+            data = roomService->joinRoom(userId, &roomDataMap, &roomId, &userToRoomId);
+
+            tableData = connectionTable.take(roomId);
+            tableData.append(socket);
+
+            for (int i = 0; i < tableData.length(); i++) {
+                QTcpSocket* _socket = tableData.at(i);
+
+                // Sử dụng socket ở đây
+                _socket->write(convertJsonToByteArray(data));
+                _socket->flush();
+            }
+
+            connectionTable.insert(roomId, tableData);
+            break;
+        case static_cast<int>(SocketType::SEND_ANSWER):
+            roomId = jsonObj["roomId"].toString();
+            content = jsonObj["content"].toString();
+
+            data = roomService->sendAnswer(userId, &roomDataMap, &roomId, &userToRoomId, content);
+
+            tableData = connectionTable.take(roomId);
+
+            for (int i = 0; i < tableData.length(); i++) {
+                QTcpSocket* _socket = tableData.at(i);
+
+                // Sử dụng socket ở đây
+                _socket->write(convertJsonToByteArray(data));
+                _socket->flush();
+            }
+
+            connectionTable.insert(roomId, tableData);
+            break;
+        case static_cast<int>(SocketType::START_ROOM):
+            roomId = jsonObj["roomId"].toString();
+
+            data = roomService->startRoom(userId, &roomDataMap, &roomId, &userToRoomId);
+
+            tableData = connectionTable.take(roomId);
+
+            for (int i = 0; i < tableData.length(); i++) {
+                QTcpSocket* _socket = tableData.at(i);
+
+                // Sử dụng socket ở đây
+                _socket->write(convertJsonToByteArray(data));
+                _socket->flush();
+            }
+
+            connectionTable.insert(roomId, tableData);
+            break;
+        case static_cast<int>(SocketType::NEXT_QUESTION):
+            roomId = jsonObj["roomId"].toString();
+
+            data = roomService->nextQuestion(userId, &roomDataMap, &roomId, &userToRoomId);
+
+            qInfo() << "RUN HERE" << data;
+
+            tableData = connectionTable.take(roomId);
+
+            for (int i = 0; i < tableData.length(); i++) {
+                QTcpSocket* _socket = tableData.at(i);
+
+                // Sử dụng socket ở đây
+                _socket->write(convertJsonToByteArray(data));
+                _socket->flush();
+            }
+
+            connectionTable.insert(roomId, tableData);
+            break;
+        default:
+            qInfo() << "Running into Default case";
+            qInfo() << "[+] Default Data: " << jsonObj;
+            break;
         }
-
-        tableData.removeAt(tableData.indexOf(socket));
-        connectionTable.insert(roomId, tableData);
-        break;
-    case static_cast<int>(SocketType::JOIN_ROOM):
-        roomId = jsonObj["roomId"].toString();
-
-        data = roomService->joinRoom(userId, &roomDataMap, &roomId, &userToRoomId);
-
-        tableData = connectionTable.take(roomId);
-        tableData.append(socket);
-
-        for (int i = 0; i < tableData.length(); i++) {
-            QTcpSocket* _socket = tableData.at(i);
-
-            // Sử dụng socket ở đây
-            _socket->write(convertJsonToByteArray(data));
-            _socket->flush();
-        }
-
-        connectionTable.insert(roomId, tableData);
-        break;
-    case static_cast<int>(SocketType::SEND_ANSWER):
-        roomId = jsonObj["roomId"].toString();
-        content = jsonObj["content"].toString();
-
-        data = roomService->sendAnswer(userId, &roomDataMap, &roomId, &userToRoomId, content);
-
-        tableData = connectionTable.take(roomId);
-
-        for (int i = 0; i < tableData.length(); i++) {
-            QTcpSocket* _socket = tableData.at(i);
-
-            // Sử dụng socket ở đây
-            _socket->write(convertJsonToByteArray(data));
-            _socket->flush();
-        }
-
-        connectionTable.insert(roomId, tableData);
-        break;
-    case static_cast<int>(SocketType::START_ROOM):
-        roomId = jsonObj["roomId"].toString();
-
-        data = roomService->startRoom(userId, &roomDataMap, &roomId, &userToRoomId);
-
-        tableData = connectionTable.take(roomId);
-
-        for (int i = 0; i < tableData.length(); i++) {
-            QTcpSocket* _socket = tableData.at(i);
-
-            // Sử dụng socket ở đây
-            _socket->write(convertJsonToByteArray(data));
-            _socket->flush();
-        }
-
-        connectionTable.insert(roomId, tableData);
-        break;
-    case static_cast<int>(SocketType::NEXT_QUESTION):
-        roomId = jsonObj["roomId"].toString();
-
-        data = roomService->nextQuestion(userId, &roomDataMap, &roomId, &userToRoomId);
-
-        qInfo() << "RUN HERE" << data;
-
-        tableData = connectionTable.take(roomId);
-
-        for (int i = 0; i < tableData.length(); i++) {
-            QTcpSocket* _socket = tableData.at(i);
-
-            // Sử dụng socket ở đây
-            _socket->write(convertJsonToByteArray(data));
-            _socket->flush();
-        }
-
-        connectionTable.insert(roomId, tableData);
-        break;
     }
 
-
-
-    qInfo() << socket->readAll();
 }
 
 QByteArray convertJsonToByteArray(QJsonObject val) {
     QJsonDocument jsonDoc(val);
     QByteArray byteArray = jsonDoc.toJson(QJsonDocument::Compact);
-    return byteArray;
+    return byteArray + "\n";
 }

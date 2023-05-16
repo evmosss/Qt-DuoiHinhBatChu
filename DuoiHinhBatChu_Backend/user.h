@@ -8,11 +8,17 @@
 #include <QSqlDriver>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QJsonObject>
 #include "database.h"
+#include <QTcpSocket>
+#include "protocolSocket.h"
 
 class User
 {
 public:
+    QJsonObject addActiveUser(int userId, QTcpSocket * socket, QList<QTcpSocket *>* activeUsers);
+    void removeActiveUser(int userId, QTcpSocket * socket, QList<QTcpSocket *>* activeUsers);
+
     static void updateUserAfterAGame(int winnerId, int loserId, bool isLeave);
     int getUserFromSessionId(QString *sessionId);
     QString getSessionIdByUser(int userId);

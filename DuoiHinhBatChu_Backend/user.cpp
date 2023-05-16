@@ -12,6 +12,26 @@
 
 #define _DATABASE_NAME "SP2"
 
+QJsonObject User::addActiveUser(int userId, QTcpSocket *socket, QList<QTcpSocket *> *activeUsers)
+{
+    qInfo() << "Login from user: " << userId;
+    activeUsers->append(socket);
+    QJsonObject response;
+    response["message"] = "Add active user successfully";
+    response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::Ok);
+    response["data"] = QJsonValue::Null;
+    response["type"] = SocketType::FINISH_SAVE_ACTIVE_USER;
+    return response;
+}
+
+void User::removeActiveUser(int userId, QTcpSocket *socket, QList<QTcpSocket *> *activeUsers)
+{
+    qInfo() << "Logout from user: " << userId;
+    if (activeUsers->contains(socket)) {
+        activeUsers->removeOne(socket);
+    }
+}
+
 void User::updateUserAfterAGame(int winnerId, int loserId, bool isLeave)
 {
     QJsonObject response;

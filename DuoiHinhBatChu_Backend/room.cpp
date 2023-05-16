@@ -366,6 +366,24 @@ QJsonObject Room::finishGame(int userId, QMap<QString, QJsonObject> *roomData, Q
     return response;
 }
 
+QJsonObject Room::getAllCurrentRoom(int userId, QMap<QString, QJsonObject> roomData)
+{
+    qInfo() << "[+] Send all room to user: " << userId;
+
+    QJsonObject response;
+    QJsonObject obj;
+    for (auto it = roomData.begin(); it != roomData.end(); ++it) {
+        obj.insert(it.key(), it.value());
+    }
+
+    response["message"] = "Get All Room Successfully";
+    response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::Ok);
+    response["data"] = obj;
+    response["type"] = SocketType::REQUEST_ALL_ROOM;
+
+    return response;
+}
+
 QHttpServerResponse Room::startGame(int userId, QMap<QString, QJsonObject> *roomData, QString *roomId, QMap<int, QString> *userToRoomId)
 {
     if (!roomData->contains(*roomId)) {
