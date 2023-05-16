@@ -198,6 +198,10 @@ void handleIncomingData(QTcpSocket * socket) {
 
 
     switch(jsonObj["type"].toInt()) {
+    case static_cast<int>(SocketType::GET_ALL_ROOM):
+
+        break;
+
     case static_cast<int>(SocketType::CREATE_ROOM):
         roomId = nullptr;
         do {
