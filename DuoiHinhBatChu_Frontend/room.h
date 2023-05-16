@@ -14,8 +14,10 @@
 #include <QTimer>
 #include <QMessageBox>
 #include <QUrl>
+#include <QUrlQuery>
 #include "socket.h"
 #include "networkmanager.h"
+#include "config.h"
 
 namespace Ui {
 class Room;
@@ -59,7 +61,11 @@ private:
 signals:
     void interactError(QString message);
     void logOutSuccessfully();
+
     void requestAllRoom(bool isSendToCaller);          // emit to load room
+
+
+    void getAllRank(int page);  // get all rank in number page
 
 private slots:
     void handleInteractError(QString message);
@@ -70,12 +76,17 @@ private slots:
     void on_submitAnswer_clicked();
     void on_startButton_clicked();
     void sendRequestGetAllRoom(bool isSendToCaller);
+    void requestGetAllRank(int page);   // request to get all rank
 
     void alertConnected();
     void handleDataFromServer();
     void handleSocketError(QAbstractSocket::SocketError error);
     void disconnect(); // Disconnect from server
 
+    void on_rankBtn_clicked();
+    void on_listBackHome_clicked();
+    void on_previousWidget_clicked();
+    void on_nextWidget_clicked();
 };
 
 #endif // ROOM_H

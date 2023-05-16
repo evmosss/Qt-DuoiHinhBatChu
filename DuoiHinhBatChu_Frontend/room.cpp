@@ -18,7 +18,11 @@ Room::Room(QWidget *parent) :
             this, SLOT(handleSocketError(QAbstractSocket::SocketError)));
     connect(socket, SIGNAL(disconnected()), this, SLOT(disconnect()));
     connect(this, &Room::interactError, this, &Room::handleInteractError);
+
     connect(this, &Room::requestAllRoom, this, &Room::sendRequestGetAllRoom);
+
+    connect(this, &Room::getAllRank, this, &Room::requestGetAllRank);
+
 
     countdownTimer = new QTimer(this);
 
@@ -307,6 +311,12 @@ void Room::handleGetAllRoom(QJsonObject data)
     ui->idRoomList->setRowCount(roomIds.size());
     ui->idRoomList->setColumnCount(3);
     ui->idRoomList->setHorizontalHeaderLabels({"Room Id", "Total Player", "Status"});
+    QFont font;
+    font.setBold(true);
+    ui->idRoomList->horizontalHeader()->setFont(font);
+
+    ui->idRoomList->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
+    ui->idRoomList->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     QJsonObject roomData;
     int ownerId;
@@ -327,6 +337,13 @@ void Room::handleGetAllRoom(QJsonObject data)
             ui->idRoomList->setItem(i, 1, item3);
             QTableWidgetItem* item4 = new QTableWidgetItem(status);
             ui->idRoomList->setItem(i, 2, item4);
+
+            item1->setTextAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+            item1->setFlags(item1->flags() & ~Qt::ItemIsEditable);
+            item3->setTextAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+            item3->setFlags(item3->flags() & ~Qt::ItemIsEditable);
+            item4->setTextAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+            item4->setFlags(item4->flags() & ~Qt::ItemIsEditable);
         }
     }
 }
@@ -449,6 +466,87 @@ void Room::sendRequestGetAllRoom(bool isSendToCaller)
     socket->flush();
 }
 
+void Room::requestGetAllRank(int page)
+{
+    if(page > 0) {
+        manager = new QNetworkAccessManager(this);
+
+        QUrl url(API_URL + "rank");
+        QUrlQuery query;
+        query.addQueryItem("page", QString::number(page));
+        query.addQueryItem("limit", QString::number(10));
+        url.setQuery(query);
+
+        QNetworkRequest request(url);
+        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+        manager->get(request);
+
+        connect(manager, &QNetworkAccessManager::finished, [&](QNetworkReply *reply) {
+            if (reply->error() == QNetworkReply::NoError) {
+                QByteArray response = reply->readAll();
+                QJsonDocument jsonDoc(QJsonDocument::fromJson(response));
+                QJsonObject jsonObj = jsonDoc.object();
+                QJsonObject jsonData = jsonObj.value("data").toObject();
+
+                if(jsonData.value("data").toArray().size() > 0) {
+                    // Xử lý dữ liệu JSON ở đây
+                    qInfo() << "[+] DATA FROM SERVER:\n" << jsonData << "\n\n";
+                    double resPage = jsonData.value("page").toDouble();
+                    double resLimit = jsonData.value("limit").toDouble();
+                    QJsonArray resRankList = jsonData.value("data").toArray();
+
+                    ui->stackedWidget->setCurrentWidget(ui->ListRoom);
+
+                    QStringList headerLabels;
+                    int row = resRankList.size();
+                    QStringList columnKeyList = resRankList.at(0).toObject().keys();
+                    headerLabels << "Id" << "Point" << "Total games" << "Win count" << "Win ratio";
+                    QFont font;
+                    font.setBold(true);
+                    ui->rankWidget->setRowCount(row);
+                    ui->rankWidget->setColumnCount(columnKeyList.count());
+                    ui->rankWidget->setHorizontalHeaderLabels(headerLabels);
+                    ui->rankWidget->horizontalHeader()->setFont(font);
+                    ui->rankWidget->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
+                    ui->rankWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+                    ui->rankWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+//                    if(resRankList.size() >= 10) {
+//                        qInfo() << "hi\n\n";
+//                        ui->rankWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+//                    } else {
+//                        ui->rankWidget->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+//                    }
+
+                    for(int i = 0; i < 10; i++) {
+                        for(int j = 0; j < columnKeyList.count(); j++) {
+                            QString itemContent = "4";
+//                            if(i < row) {
+//                                QString key = columnKeyList.at(j);
+//                                itemContent = QString::number(resRankList.at(i).toObject().value(key).toDouble());
+//                            } else {
+
+//                                itemContent = QString("4");
+//                            }
+                            QTableWidgetItem *item = new QTableWidgetItem(itemContent);
+                            qInfo() << item->text() << "run\n\n";
+                            item->setTextAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+                            item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+                            ui->rankWidget->setItem(i, j, item);
+                        }
+                    }
+
+                    ui->pageValue->setText(QString::number(resPage));
+                }
+            } else {
+                qInfo() << "[+] DATA ERROR \n\n";
+            }
+
+            reply->deleteLater();
+        });
+    }
+}
+
 void Room::alertConnected()
 {
     // Send message Login to server
@@ -534,3 +632,29 @@ void Room::downloadImage(const QUrl& imageUrl, QLabel* label)
         manager->deleteLater();
     });
 }
+
+void Room::on_rankBtn_clicked()
+{
+    emit getAllRank(1);
+}
+
+
+void Room::on_listBackHome_clicked()
+{
+    ui->stackedWidget->setCurrentWidget(ui->MainRoom);
+}
+
+
+void Room::on_previousWidget_clicked()
+{
+    int page = ui->pageValue->text().toInt() - 1;
+    emit getAllRank(page);
+}
+
+
+void Room::on_nextWidget_clicked()
+{
+    int page = ui->pageValue->text().toInt() + 1;
+    emit getAllRank(page);
+}
+
