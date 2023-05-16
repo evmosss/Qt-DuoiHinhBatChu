@@ -49,6 +49,8 @@ private:
 
     void requestNextQuestion();
 
+    QByteArray convertJsonToByteArray(QJsonObject val);
+
     Ui::Room *ui;
     QTcpSocket * socket;
     QTimer* countdownTimer;
@@ -57,7 +59,7 @@ private:
 signals:
     void interactError(QString message);
     void logOutSuccessfully();
-    void getAllRoom();          // emit to load room
+    void requestAllRoom(bool isSendToCaller);          // emit to load room
 
 private slots:
     void handleInteractError(QString message);
@@ -67,7 +69,7 @@ private slots:
     void on_joinRoom_clicked();
     void on_submitAnswer_clicked();
     void on_startButton_clicked();
-    void requestGetAllRoom();    // request to server to load room from server
+    void sendRequestGetAllRoom(bool isSendToCaller);
 
     void alertConnected();
     void handleDataFromServer();

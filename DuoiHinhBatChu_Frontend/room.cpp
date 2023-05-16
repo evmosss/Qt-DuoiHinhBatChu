@@ -18,7 +18,7 @@ Room::Room(QWidget *parent) :
             this, SLOT(handleSocketError(QAbstractSocket::SocketError)));
     connect(socket, SIGNAL(disconnected()), this, SLOT(disconnect()));
     connect(this, &Room::interactError, this, &Room::handleInteractError);
-    connect(this, &Room::getAllRoom, this, &Room::requestGetAllRoom);
+    connect(this, &Room::requestAllRoom, this, &Room::sendRequestGetAllRoom);
 
     countdownTimer = new QTimer(this);
 
@@ -47,14 +47,22 @@ void Room::storeData(QString sessionId, int userId)
     this->sessionId = sessionId;
     this->userId = userId;
 
-    // emit a signal for load room id
-    emit getAllRoom();
+    qInfo() << this->sessionId;
+    if (socket) {
+        QJsonObject json;
+        json["sessionId"] = sessionId;
+        json["type"] = static_cast<int>(SocketType::REQUEST_SAVE_ACTIVE_USER);
+
+        socket->write(convertJsonToByteArray(json));
+        socket->flush();
+    }
 }
 
 void Room::closeWindow()
 {
     if (roomId != nullptr) {
         Room::on_leaveRoom_clicked();
+        Room::on_logoutButton_clicked();
     }
 }
 
@@ -93,8 +101,7 @@ void Room::handleCreateRoom(QJsonObject data)
     QUrl url("https://media.front.xoedge.com/images/626affda-17e4-4914-82f5-b2cb7b8aa92d~rs_1080.h?fm=webp&q=90");
     downloadImage(url, ui->questionImage);
 
-    // emit get all room
-    emit getAllRoom();
+    emit requestAllRoom(false);
 }
 
 void Room::handleLeaveRoom(QJsonObject data)
@@ -128,6 +135,8 @@ void Room::handleLeaveRoom(QJsonObject data)
 
     ui->startButton->setEnabled(true);
     countdownTimer->stop();
+
+    emit requestAllRoom(true);
 }
 
 void Room::handleJoinRoom(QJsonObject data)
@@ -146,6 +155,8 @@ void Room::handleJoinRoom(QJsonObject data)
     ui->timer->setText("Waiting...");
     QUrl url("https://media.front.xoedge.com/images/626affda-17e4-4914-82f5-b2cb7b8aa92d~rs_1080.h?fm=webp&q=90");
     downloadImage(url, ui->questionImage);
+
+    emit requestAllRoom(false);
 }
 
 void Room::handleSendAnswer(QJsonObject data)
@@ -202,6 +213,8 @@ void Room::handleStartRoom(QJsonObject data)
     ui->timer->setText("60");
     ui->submitAnswer->setEnabled(true);
     countdownTimer->start(1000); // Đếm ngược mỗi giây
+
+    emit requestAllRoom(false);
 }
 
 void Room::handleNextQuestion(QJsonObject data)
@@ -245,6 +258,8 @@ void Room::handleFinishRoom(QJsonObject data)
 
     ui->startButton->setEnabled(true);
     ui->chatView->append("User " + QString::number(winnerId) + " win this game.");
+
+    emit requestAllRoom(false);
 }
 
 
@@ -276,19 +291,38 @@ void Room::renderFullRoom(QJsonObject roomDetail) {
 
 void Room::handleGetAllRoom(QJsonObject data)
 {
+    qInfo() << "Get All Room" << data;
     if (data["code"].toInt() != 200) {
         emit interactError(data["message"].toString());
         return;
     }
 
     QJsonObject responseData = data.value("data").toObject();
-    QJsonArray roomIds = responseData.value("roomIds").toArray();
-    QJsonArray ownerIds = responseData.value("ownerIds").toArray();
+    QList<QString> roomIds = responseData.keys().toList();
 
-    if(roomIds.size() > 0) {
-        for(int i; i < roomIds.size(); i++) {
-            QString roomItem = ownerIds.at(i).toString() + roomIds.at(i).toString();
-            ui->idRoomList->append(roomItem);
+    ui->idRoomList->setRowCount(roomIds.size());
+    ui->idRoomList->setColumnCount(3);
+    ui->idRoomList->setHorizontalHeaderLabels({"Room Id", "Total Player", "Status"});
+
+    QJsonObject roomData;
+    int ownerId;
+    QJsonArray players;
+    QString status;
+    QString playerLength;
+
+    if (roomIds.size() > 0) {
+        for(int i = 0; i < roomIds.size(); i++) {
+            roomData = responseData.value(roomIds.at(i)).toObject();
+            players = roomData.value("players").toArray();
+            playerLength = QString::number(players.size());
+            status = roomData.value("status").toString();
+
+            QTableWidgetItem* item1 = new QTableWidgetItem(roomIds.at(i));
+            ui->idRoomList->setItem(i, 0, item1);
+            QTableWidgetItem* item3 = new QTableWidgetItem(playerLength);
+            ui->idRoomList->setItem(i, 1, item3);
+            QTableWidgetItem* item4 = new QTableWidgetItem(status);
+            ui->idRoomList->setItem(i, 2, item4);
         }
     }
 }
@@ -300,13 +334,15 @@ void Room::requestNextQuestion()
     json["roomId"] = roomId;
     json["type"] = static_cast<int>(SocketType::NEXT_QUESTION);
 
-    QJsonDocument jsonDoc(json);
-    QString jsonString = jsonDoc.toJson(QJsonDocument::Compact);
-
-    socket->write(jsonString.toUtf8());
+    socket->write(convertJsonToByteArray(json));
     socket->flush();
 }
 
+QByteArray Room::convertJsonToByteArray(QJsonObject val) {
+    QJsonDocument jsonDoc(val);
+    QByteArray byteArray = jsonDoc.toJson(QJsonDocument::Compact);
+    return byteArray + "\n";
+}
 
 void Room::handleInteractError(QString message)
 {
@@ -320,10 +356,7 @@ void Room::on_createRoom_clicked()
     json["sessionId"] = sessionId;
     json["type"] = static_cast<int>(SocketType::CREATE_ROOM);
 
-    QJsonDocument jsonDoc(json);
-    QString jsonString = jsonDoc.toJson(QJsonDocument::Compact);
-
-    socket->write(jsonString.toUtf8());
+    socket->write(convertJsonToByteArray(json));
     socket->flush();
 }
 
@@ -334,18 +367,22 @@ void Room::on_leaveRoom_clicked()
     json["roomId"] = roomId;
     json["type"] = static_cast<int>(SocketType::LEAVE_ROOM);
 
-    QJsonDocument jsonDoc(json);
-    QString jsonString = jsonDoc.toJson(QJsonDocument::Compact);
-
     roomId = nullptr;
     roomOwnerId = 0;
 
-    socket->write(jsonString.toUtf8());
+    socket->write(convertJsonToByteArray(json));
     socket->flush();
 }
 
 void Room::on_logoutButton_clicked()
 {
+    QJsonObject json;
+    json["sessionId"] = sessionId;
+    json["type"] = static_cast<int>(SocketType::REQUEST_DELETE_ACTIVE_USER);
+
+    socket->write(convertJsonToByteArray(json));
+    socket->flush();
+
     sessionId = nullptr;
     emit logOutSuccessfully();
 }
@@ -361,10 +398,7 @@ void Room::on_joinRoom_clicked()
         json["type"] = static_cast<int>(SocketType::JOIN_ROOM);
         json["roomId"] = roomId;
 
-        QJsonDocument jsonDoc(json);
-        QString jsonString = jsonDoc.toJson(QJsonDocument::Compact);
-
-        socket->write(jsonString.toUtf8());
+        socket->write(convertJsonToByteArray(json));
         socket->flush();
     } else {
     }
@@ -382,10 +416,7 @@ void Room::on_submitAnswer_clicked()
         json["roomId"] = roomId;
         json["content"] = text;
 
-        QJsonDocument jsonDoc(json);
-        QString jsonString = jsonDoc.toJson(QJsonDocument::Compact);
-
-        socket->write(jsonString.toUtf8());
+        socket->write(convertJsonToByteArray(json));
         socket->flush();
     }
 }
@@ -397,38 +428,41 @@ void Room::on_startButton_clicked()
     json["type"] = static_cast<int>(SocketType::START_ROOM);
     json["roomId"] = roomId;
 
-    QJsonDocument jsonDoc(json);
-    QString jsonString = jsonDoc.toJson(QJsonDocument::Compact);
-
-    socket->write(jsonString.toUtf8());
+    socket->write(convertJsonToByteArray(json));
     socket->flush();
 }
 
-void Room::requestGetAllRoom()
+void Room::sendRequestGetAllRoom(bool isSendToCaller)
 {
     QJsonObject json;
     json["sessionId"] = sessionId;
-    json["type"] = static_cast<int>(SocketType::GET_ALL_ROOM);
+    json["isSendToCaller"] = isSendToCaller;
+    json["type"] = static_cast<int>(SocketType::SEND_REQUEST_ALL_ROOM);
 
-    QJsonDocument jsonDoc(json);
-    QString jsonString = jsonDoc.toJson(QJsonDocument::Compact);
-
-    socket->write(jsonString.toUtf8());
+    socket->write(convertJsonToByteArray(json));
     socket->flush();
 }
 
 void Room::alertConnected()
 {
-    qInfo() << "Connect to socket server successfully";
+    // Send message Login to server
+    qInfo() << "Socket Connected";
 }
 
 void Room::handleDataFromServer()
 {
     QByteArray data = socket->readAll();
-    QJsonObject jsonData = QJsonDocument::fromJson(data).object();
-    qInfo() << "[+] DATA FROM SERVER:\n" << jsonData << "\n\n";
 
-    switch (jsonData["type"].toInt()) {
+    QJsonObject jsonData;
+
+    QList<QByteArray> byteArrays = data.split('\n');
+    qInfo() << "[+] Byte Array:\n" << byteArrays;
+
+    for (int i = 0; i < byteArrays.size() - 1; i++) {
+        jsonData = QJsonDocument::fromJson(byteArrays.at(i)).object();
+        qInfo() << "[+] DATA FROM SERVER:\n" << jsonData << "\n\n";
+
+        switch (jsonData["type"].toInt()) {
         case static_cast<int>(SocketType::CREATE_ROOM):
             Room::handleCreateRoom(jsonData);
             break;
@@ -450,9 +484,13 @@ void Room::handleDataFromServer()
         case static_cast<int>(SocketType::FINISH_ROOM):
             Room::handleFinishRoom(jsonData);
             break;
-        case static_cast<int>(SocketType::GET_ALL_ROOM):
+        case static_cast<int>(SocketType::REQUEST_ALL_ROOM):
             Room::handleGetAllRoom(jsonData);
             break;
+        case static_cast<int>(SocketType::FINISH_SAVE_ACTIVE_USER):
+            Room::sendRequestGetAllRoom(true);
+            break;
+        }
     }
 }
 

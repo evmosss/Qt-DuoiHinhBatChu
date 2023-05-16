@@ -29,6 +29,7 @@ public:
     QJsonObject startRoom(int userId, QMap<QString, QJsonObject> *roomData, QString *roomId, QMap<int, QString> * userToRoomId);
     QJsonObject nextQuestion(int userId, QMap<QString, QJsonObject> *roomData, QString *roomId, QMap<int, QString> * userToRoomId);
     QJsonObject finishGame(int userId, QMap<QString, QJsonObject> *roomData, QString *roomId, QMap<int, QString> * userToRoomId);
+    QJsonObject getAllCurrentRoom(int userId, QMap<QString, QJsonObject> roomData);
 
     // For getting question and check result
     QHttpServerResponse startGame(int userId, QMap<QString, QJsonObject> *roomData, QString *roomId, QMap<int, QString> * userToRoomId);
