@@ -287,6 +287,9 @@ void Room::renderFullRoom(QJsonObject roomDetail) {
     if (userId == playerData.at(0).toInt()) {
         ui->startButton->setEnabled(true);
     }
+    else {
+        ui->startButton->setEnabled(false);
+    }
 }
 
 void Room::handleGetAllRoom(QJsonObject data)
