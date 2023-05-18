@@ -490,8 +490,6 @@ void Room::requestGetAllRank(int page)
                 QJsonObject jsonData = jsonObj.value("data").toObject();
 
                 if(jsonData.value("data").toArray().size() > 0) {
-                    // Xử lý dữ liệu JSON ở đây
-                    qInfo() << "[+] DATA FROM SERVER:\n" << jsonData << "\n\n";
                     double resPage = jsonData.value("page").toDouble();
                     double resLimit = jsonData.value("limit").toDouble();
                     QJsonArray resRankList = jsonData.value("data").toArray();
@@ -504,32 +502,21 @@ void Room::requestGetAllRank(int page)
                     headerLabels << "Id" << "Point" << "Total games" << "Win count" << "Win ratio";
                     QFont font;
                     font.setBold(true);
-                    ui->rankWidget->setRowCount(row);
+                    ui->rankWidget->setRowCount(10);
                     ui->rankWidget->setColumnCount(columnKeyList.count());
                     ui->rankWidget->setHorizontalHeaderLabels(headerLabels);
                     ui->rankWidget->horizontalHeader()->setFont(font);
                     ui->rankWidget->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
                     ui->rankWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
                     ui->rankWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-//                    if(resRankList.size() >= 10) {
-//                        qInfo() << "hi\n\n";
-//                        ui->rankWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-//                    } else {
-//                        ui->rankWidget->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-//                    }
-
                     for(int i = 0; i < 10; i++) {
                         for(int j = 0; j < columnKeyList.count(); j++) {
-                            QString itemContent = "4";
-//                            if(i < row) {
-//                                QString key = columnKeyList.at(j);
-//                                itemContent = QString::number(resRankList.at(i).toObject().value(key).toDouble());
-//                            } else {
-
-//                                itemContent = QString("4");
-//                            }
+                            QString itemContent = "";
+                            if(i < row) {
+                                QString key = columnKeyList.at(j);
+                                itemContent = QString::number(resRankList.at(i).toObject().value(key).toDouble());
+                            }
                             QTableWidgetItem *item = new QTableWidgetItem(itemContent);
-                            qInfo() << item->text() << "run\n\n";
                             item->setTextAlignment(Qt::AlignCenter | Qt::AlignVCenter);
                             item->setFlags(item->flags() & ~Qt::ItemIsEditable);
                             ui->rankWidget->setItem(i, j, item);

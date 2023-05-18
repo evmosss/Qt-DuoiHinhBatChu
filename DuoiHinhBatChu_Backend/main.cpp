@@ -21,6 +21,7 @@
 #include <QVector>
 #include <QMetaObject>
 #include <QSslSocket>
+#include <QThread>
 
 // Components
 #include "auth.h"
@@ -57,14 +58,14 @@ void connectToSocket() {
     qInfo() << "Server socket started on" << server->serverAddress().toString() << ":" << server->serverPort();
 
     QObject::connect(server, &QTcpServer::newConnection, [=]() {
-        QTcpSocket* socket = server->nextPendingConnection();
-
-        if (socket != nullptr) {
+        QThread* thread = new QThread();
+        QObject::connect(thread, &QThread::started, [=]() {
+            QTcpSocket* socket = server->nextPendingConnection();
             QObject::connect(socket, &QTcpSocket::readyRead, [=]() {
                 handleIncomingData(socket);
             });
-        }
-
+        });
+        thread->start();
     });
 }
 
