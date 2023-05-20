@@ -493,6 +493,7 @@
      </property>
     </widget>
    </widget>
+   <widget class="QWidget" name="TrainRoom"/>
   </widget>
  </widget>
  <resources/>

@@ -21,3 +21,16 @@ export interface RoomData {
     questionIndex: number,
     maxQuestions: number,
 }
+
+/**
+ * @dev Use to send answer (whether the answer is true) to all client 
+ * in a room when a participant send a answer
+ * @param roomDetail: for updating point
+ * @param isTrue: check whether the answer from client is true
+ * @param content: message will be appended to chat board of that room
+ */
+export interface SendAnswer {
+    roomDetail: RoomData,
+    isTrue: boolean,
+    content: string,
+}
