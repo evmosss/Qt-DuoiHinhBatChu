@@ -1,5 +1,5 @@
-import { SocketType } from "./socket"
-import { RoomData } from "./room"
+import { SocketType } from "../socket"
+import { RoomData, SendAnswer } from "./room"
 
 /**
  * @param code: http status code
@@ -11,5 +11,5 @@ export interface Message {
     code: number,
     message: string,
     type: SocketType,
-    data: RoomData | null
+    data: RoomData | SendAnswer | null 
 }
