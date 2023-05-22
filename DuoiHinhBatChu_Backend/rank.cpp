@@ -5,7 +5,7 @@ QHttpServerResponse Rank::getAllRanks(int page, int limit)
     QJsonObject response;
     QSqlQuery query(database);
 
-    query.prepare("SELECT u.id, u.point, COUNT(h.id) AS total_games, SUM(CASE WHEN h.winner_id = u.id THEN 1 ELSE 0 END) AS win_count, 1.0 * SUM(CASE WHEN h.winner_id = u.id THEN 1 ELSE 0 END) / COUNT(h.id) AS win_ratio FROM users AS u LEFT JOIN histories AS h ON h.winner_id = u.id OR h.loser_id = u.id GROUP BY u.id ORDER BY u.point DESC LIMIT :limit OFFSET :offset");
+    query.prepare("SELECT u.id, u.point, COUNT(h.id) AS total_games, SUM(CASE WHEN h.winner_id = u.id THEN 1 ELSE 0 END) AS win_count, 100 * SUM(CASE WHEN h.winner_id = u.id THEN 1 ELSE 0 END) / COUNT(h.id) AS win_ratio FROM users AS u LEFT JOIN histories AS h ON h.winner_id = u.id OR h.loser_id = u.id GROUP BY u.id ORDER BY u.point DESC LIMIT :limit OFFSET :offset");
     query.bindValue(":limit", limit);
     query.bindValue(":offset", (page - 1) * limit);
 
