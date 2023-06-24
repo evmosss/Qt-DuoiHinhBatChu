@@ -601,7 +601,7 @@ void Room::disconnect()
 
 void Room::downloadImage(const QUrl& imageUrl, QLabel* label)
 {
-    manager = new QNetworkAccessManager(this);
+    QNetworkAccessManager * manager = new QNetworkAccessManager(this);
 
     QNetworkReply* reply = manager->get(QNetworkRequest(imageUrl));
 
@@ -643,5 +643,75 @@ void Room::on_nextWidget_clicked()
 {
     int page = ui->pageValue->text().toInt() + 1;
     emit getAllRank(page);
+}
+
+void Room::on_playWithComputerBtn_clicked()
+{
+    ui->stackedWidget->setCurrentWidget(ui->TrainRoom);
+    QUrl url("https://media.front.xoedge.com/images/626affda-17e4-4914-82f5-b2cb7b8aa92d~rs_1080.h?fm=webp&q=90");
+    downloadImage(url, ui->questionTrain);
+}
+
+void Room::on_leaveTrain_clicked()
+{
+    ui->stackedWidget->setCurrentWidget(ui->MainRoom);
+    ui->chatTrain->clear();
+}
+
+void Room::on_nextQTrain_clicked()
+{
+    ui->chatTrain->append("Getting next question...");
+    QString url = API_URL + "question/random";
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    manager = new QNetworkAccessManager(this);
+    manager->get(request);
+
+    connect(manager, &QNetworkAccessManager::finished, [&](QNetworkReply *reply) {
+        if (reply->error() == QNetworkReply::NoError) {
+            QByteArray response = reply->readAll();
+            QJsonDocument jsonDoc(QJsonDocument::fromJson(response));
+            QJsonObject jsonObj = jsonDoc.object();
+            QJsonObject jsonData = jsonObj.value("data").toObject();
+            QString imageUrl = jsonData.value("image_url").toString();
+            qInfo() << "Image url: " << imageUrl;
+            QUrl url(imageUrl);
+            downloadImage(url, ui->questionTrain);
+            ui->chatTrain->append("Got next question, please answer!");
+            currentQuestionData = jsonData;
+            qInfo() << "[+] Next Question Train: " << jsonData;
+        } else {
+            qInfo() << "[+] DATA ERROR \n";
+        }
+
+        reply->deleteLater();
+        manager->deleteLater();
+    });
+}
+
+void Room::on_getQTrain_clicked()
+{
+    if (currentQuestionData.size() != 0) {
+        QString answer = currentQuestionData.value("answer").toString();
+        ui->chatTrain->append("Result: " + answer + " (Please click on Next button to get next question.)");
+    }
+}
+
+void Room::on_submitTrain_clicked()
+{
+    QString text = ui->inputTrain->text();
+
+    if (currentQuestionData.size() != 0) {
+        QString answer = currentQuestionData.value("answer").toString();
+        if (text.toLower() == answer.toLower()) {
+            ui->chatTrain->append("Reply: " + text + " (Correct)");
+            ui->inputTrain->clear();
+            return;
+        }
+    }
+
+    ui->chatTrain->append("Reply: " + text);
+    ui->inputTrain->clear();
 }
 

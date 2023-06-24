@@ -15,6 +15,7 @@ QJsonObject Question::getRandomQuestion()
         qInfo() << query.lastError().text();
     }
     if (query.next()) {
+        response["id"] = query.value("id").toInt();
         response["image_url"] = query.value("image_url").toString();
         response["answer"] = query.value("answer").toString();
         response["level"] = query.value("level").toInt();

@@ -30,6 +30,7 @@ class Room : public QWidget
 public:
     explicit Room(QWidget *parent = nullptr);
     ~Room();
+    QJsonObject currentQuestionData;
     QString sessionId;
     QString roomId;
     int roomOwnerId;
@@ -87,6 +88,12 @@ private slots:
     void on_listBackHome_clicked();
     void on_previousWidget_clicked();
     void on_nextWidget_clicked();
+
+    void on_playWithComputerBtn_clicked();
+    void on_leaveTrain_clicked();
+    void on_nextQTrain_clicked();
+    void on_getQTrain_clicked();
+    void on_submitTrain_clicked();
 };
 
 #endif // ROOM_H

@@ -28,6 +28,7 @@
 #include "room.h"
 #include "user.h"
 #include "rank.h"
+#include "question.h"
 #include "database.h"
 #include "protocolSocket.h"
 
@@ -177,6 +178,11 @@ int main(int argc, char *argv[])
         return rankService->getAllRanks(page, limit);
     });
 
+    // Random Questions
+    server.route("/api/question/random", QHttpServerRequest::Method::Get, [](const QHttpServerRequest &req) {
+        QJsonObject data = Question::getRandomQuestion();
+        return QHttpServerResponse(QJsonObject{ {"message", "Get all rank successfully" }, {"data", data} }, QHttpServerResponder::StatusCode::Ok);
+    });
 
     server.listen(QHostAddress::LocalHost, 8000);
 
