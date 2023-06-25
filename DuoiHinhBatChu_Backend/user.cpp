@@ -32,6 +32,30 @@ void User::removeActiveUser(int userId, QTcpSocket *socket, QList<QTcpSocket *> 
     }
 }
 
+QJsonObject User::getUserfromUserId(int userId)
+{
+    QJsonObject response;
+    QSqlDatabase database = Database::getInstance().getDatabase();
+    QSqlQuery query(database);
+
+    query.prepare("SELECT id, username, point FROM users where id=:id");
+    query.bindValue(":id", userId);
+
+    if (!query.exec()) {
+        return QJsonObject{};
+    }
+
+    QJsonObject res;
+
+    if (query.next()) {
+        res["id"] = query.value(0).toInt();
+        res["username"] = query.value(1).toString();
+        res["point"] = query.value(2).toInt();
+    }
+
+    return res;
+}
+
 void User::updateUserAfterAGame(int winnerId, int loserId, bool isLeave)
 {
     QJsonObject response;

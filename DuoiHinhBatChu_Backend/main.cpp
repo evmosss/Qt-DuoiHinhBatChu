@@ -208,6 +208,7 @@ void handleIncomingData(QTcpSocket * socket) {
         QString roomId;
         QString content;
         QList<QTcpSocket*> tableData;
+        int status;
         int userId = userService->getUserFromSessionId(&sessionId);
 
 
@@ -272,6 +273,7 @@ void handleIncomingData(QTcpSocket * socket) {
             roomId = jsonObj["roomId"].toString();
 
             data = roomService->joinRoom(userId, &roomDataMap, &roomId, &userToRoomId);
+            status = data.value("code").toInt();
 
             tableData = connectionTable.take(roomId);
             tableData.append(socket);
@@ -280,6 +282,10 @@ void handleIncomingData(QTcpSocket * socket) {
                 QTcpSocket* _socket = tableData.at(i);
 
                 // Sử dụng socket ở đây
+                if (i == 0 && status != 200) {
+                    continue;
+                }
+
                 _socket->write(convertJsonToByteArray(data));
                 _socket->flush();
             }

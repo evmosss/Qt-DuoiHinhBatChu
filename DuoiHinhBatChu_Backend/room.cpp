@@ -9,8 +9,10 @@
 #include <QVariantList>
 #include <QVector>
 #include "question.h"
+#include "util.h"
 
 #define _DATABASE_NAME "SP2"
+extern int DEFAULT_MAX_QUESTIONS;
 
 // WE HAVE FOUR STATES FOR ROOM: PENDING, FULL, STARTED, FINISHED
 
@@ -54,6 +56,9 @@ QJsonObject Room::createRoom(int userId, QMap<QString, QJsonObject> *roomData, Q
         return response;
     }
 
+    QJsonObject ownerData = User::getUserfromUserId(userId);
+    int ownerPoint = ownerData.value("point").toInt();
+
     QJsonObject roomDataObject;
     roomDataObject["players"] = QJsonArray::fromVariantList(QVariantList() << userId);
     roomDataObject["points"] = QJsonArray::fromVariantList(QVariantList() << 0);
@@ -61,8 +66,9 @@ QJsonObject Room::createRoom(int userId, QMap<QString, QJsonObject> *roomData, Q
     roomDataObject["status"] = "PENDING";
     roomDataObject["questionIndex"] = 0;
     roomDataObject["questionData"] = QJsonValue::Null;
-    roomDataObject["maxQuestions"] = 10;
+    roomDataObject["maxQuestions"] = DEFAULT_MAX_QUESTIONS;
     roomDataObject["roomId"] = *roomId;
+    roomDataObject["difficulty"] = static_cast<int>(getRoomDifficultyFromPoint(ownerPoint));
 
     roomData->insert(*roomId, roomDataObject);
     userToRoomId->insert(userId, *roomId);
@@ -79,13 +85,14 @@ QJsonObject Room::createRoom(int userId, QMap<QString, QJsonObject> *roomData, Q
 
 QJsonObject Room::joinRoom(int userId, QMap<QString, QJsonObject> *roomData, QString *roomId, QMap<int, QString> *userToRoomId)
 {
+    bool error = false;
     QJsonObject response;
     if (!roomData->contains(*roomId)) {
         response["message"] = "Room does not exist";
         response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::BadRequest);
         response["data"] = QJsonValue::Null;
         response["type"] = SocketType::JOIN_ROOM;
-        return response;
+        error = true;
     }
     QJsonObject value = roomData->take(*roomId);
     if (value["status"].toString() == "FULL") {
@@ -94,13 +101,28 @@ QJsonObject Room::joinRoom(int userId, QMap<QString, QJsonObject> *roomData, QSt
         response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::Forbidden);
         response["data"] = QJsonValue::Null;
         response["type"] = SocketType::JOIN_ROOM;
-        return response;
+        error = true;
     }
     if (value["ownerId"].toInt() == userId) {
         response["message"] = "You are owner of this room";
         response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::Forbidden);
         response["data"] = QJsonValue::Null;
         response["type"] = SocketType::JOIN_ROOM;
+        error = true;
+    }
+
+    QJsonObject joinData = User::getUserfromUserId(userId);
+    int joinPoint = joinData.value("point").toInt();
+    if (!canJoinRoom(static_cast<RoomDifficulty>(value["difficulty"].toInt()),joinPoint)) {
+        response["message"] = "You are not in this difficulty class";
+        response["code"] = static_cast<int>(QHttpServerResponder::StatusCode::Forbidden);
+        response["data"] = QJsonValue::Null;
+        response["type"] = SocketType::JOIN_ROOM;
+        error = true;
+    }
+
+    if (error) {
+        roomData->insert(*roomId, value);
         return response;
     }
 

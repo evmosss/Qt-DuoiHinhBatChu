@@ -30,6 +30,7 @@ set(PROJECT_SOURCES
         room.cpp
         room.h
         config.h
+        config.cpp
         protocolSocket.h
         socket.cpp
         socket.h

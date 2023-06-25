@@ -19,9 +19,11 @@ public:
     QJsonObject addActiveUser(int userId, QTcpSocket * socket, QList<QTcpSocket *>* activeUsers);
     void removeActiveUser(int userId, QTcpSocket * socket, QList<QTcpSocket *>* activeUsers);
 
+    static QJsonObject getUserfromUserId(int userId);
     static void updateUserAfterAGame(int winnerId, int loserId, bool isLeave);
     int getUserFromSessionId(QString *sessionId);
     QString getSessionIdByUser(int userId);
+
     User();
     QSqlDatabase database;
 };

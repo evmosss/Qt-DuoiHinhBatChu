@@ -1,6 +1,7 @@
 #include "room.h"
 #include "ui_room.h"
 #include "socket.h"
+#include "config.h"
 
 Room::Room(QWidget *parent) :
     QWidget(parent),
@@ -310,7 +311,7 @@ void Room::handleGetAllRoom(QJsonObject data)
 
     ui->idRoomList->setRowCount(roomIds.size());
     ui->idRoomList->setColumnCount(3);
-    ui->idRoomList->setHorizontalHeaderLabels({"Room Id", "Total Player", "Status"});
+    ui->idRoomList->setHorizontalHeaderLabels({"Room Id", "Difficulty", "Status"});
     QFont font;
     font.setBold(true);
     ui->idRoomList->horizontalHeader()->setFont(font);
@@ -320,30 +321,28 @@ void Room::handleGetAllRoom(QJsonObject data)
 
     QJsonObject roomData;
     int ownerId;
-    QJsonArray players;
     QString status;
-    QString playerLength;
+    int difficulty;
 
     if (roomIds.size() > 0) {
         for(int i = 0; i < roomIds.size(); i++) {
             roomData = responseData.value(roomIds.at(i)).toObject();
-            players = roomData.value("players").toArray();
-            playerLength = QString::number(players.size());
+            difficulty = responseData.value("difficulty").toInt();
             status = roomData.value("status").toString();
 
             QTableWidgetItem* item1 = new QTableWidgetItem(roomIds.at(i));
             ui->idRoomList->setItem(i, 0, item1);
-            QTableWidgetItem* item3 = new QTableWidgetItem(playerLength);
-            ui->idRoomList->setItem(i, 1, item3);
-            QTableWidgetItem* item4 = new QTableWidgetItem(status);
-            ui->idRoomList->setItem(i, 2, item4);
+            QTableWidgetItem* item2 = new QTableWidgetItem(getRoomDifficultyInString(static_cast<RoomDifficulty>(difficulty)));
+            ui->idRoomList->setItem(i, 1, item2);
+            QTableWidgetItem* item3 = new QTableWidgetItem(status);
+            ui->idRoomList->setItem(i, 2, item3);
 
             item1->setTextAlignment(Qt::AlignCenter | Qt::AlignVCenter);
             item1->setFlags(item1->flags() & ~Qt::ItemIsEditable);
+            item2->setTextAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+            item2->setFlags(item2->flags() & ~Qt::ItemIsEditable);
             item3->setTextAlignment(Qt::AlignCenter | Qt::AlignVCenter);
             item3->setFlags(item3->flags() & ~Qt::ItemIsEditable);
-            item4->setTextAlignment(Qt::AlignCenter | Qt::AlignVCenter);
-            item4->setFlags(item4->flags() & ~Qt::ItemIsEditable);
         }
     }
 }
