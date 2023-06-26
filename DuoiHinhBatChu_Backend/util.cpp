@@ -24,3 +24,13 @@ bool canJoinRoom(RoomDifficulty roomDiff, int point) {
     }
     return true;
 }
+
+QJsonObject createSocketResponse(QJsonObject data, QHttpServerResponse::StatusCode status, QString message, SocketType type)
+{
+    QJsonObject response;
+    response["data"] = data;
+    response["code"] = static_cast<int>(status);
+    response["message"] = message;
+    response["type"] = type;
+    return response;
+}

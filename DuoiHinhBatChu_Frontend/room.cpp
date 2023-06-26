@@ -117,7 +117,7 @@ void Room::handleLeaveRoom(QJsonObject data)
         return;
     }
     else {
-        if (data.value("data") == QJsonValue::Null) {
+        if (data.value("data") == QJsonObject {}) {
             ui->stackedWidget->setCurrentIndex(0);
         }
         else {
