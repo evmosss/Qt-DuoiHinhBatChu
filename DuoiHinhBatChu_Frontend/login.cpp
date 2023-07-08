@@ -72,7 +72,10 @@ void Login::on_loginButton_clicked()
 
             emit loginSuccessfully(sessionId, userId);
         } else {
-            emit loginFailed(reply->errorString());
+            QByteArray response = reply->readAll();
+            QJsonDocument jsonDoc(QJsonDocument::fromJson(response));
+            QJsonObject jsonObj = jsonDoc.object();
+            emit loginFailed(jsonObj.value("message").toString());
         }
 
         reply->deleteLater();

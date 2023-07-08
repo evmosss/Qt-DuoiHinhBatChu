@@ -70,6 +70,10 @@ void Room::closeWindow()
         Room::on_logoutButton_clicked();
         emit requestAllRoom(false);
     }
+    else {
+        Room::on_logoutButton_clicked();
+        emit requestAllRoom(false);
+    }
 }
 
 void Room::handleCreateRoom(QJsonObject data)
@@ -327,8 +331,10 @@ void Room::handleGetAllRoom(QJsonObject data)
     if (roomIds.size() > 0) {
         for(int i = 0; i < roomIds.size(); i++) {
             roomData = responseData.value(roomIds.at(i)).toObject();
-            difficulty = responseData.value("difficulty").toInt();
+            difficulty = roomData.value("difficulty").toInt();
             status = roomData.value("status").toString();
+
+            qInfo() << "Difficulty: " << difficulty;
 
             QTableWidgetItem* item1 = new QTableWidgetItem(roomIds.at(i));
             ui->idRoomList->setItem(i, 0, item1);
@@ -345,6 +351,13 @@ void Room::handleGetAllRoom(QJsonObject data)
             item3->setFlags(item3->flags() & ~Qt::ItemIsEditable);
         }
     }
+}
+
+void Room::forceLogout()
+{
+    emit interactError("Someone login to your account");
+    sessionId = nullptr;
+    emit logOutSuccessfully();
 }
 
 void Room::requestNextQuestion()
@@ -598,6 +611,8 @@ void Room::handleSocketError(QAbstractSocket::SocketError error)
 
 void Room::disconnect()
 {
+
+
     if(socket->isOpen())
     {
         socket->close();

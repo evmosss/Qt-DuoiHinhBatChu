@@ -16,7 +16,7 @@ Auth::Auth()
 
 }
 
-QHttpServerResponse  Auth::login(QString *username, QString *password)
+QHttpServerResponse Auth::login(QString *username, QString *password)
 {
     database = Database::getInstance().getDatabase();
     QSqlQuery query(database);
@@ -46,10 +46,15 @@ QHttpServerResponse  Auth::login(QString *username, QString *password)
                 qDebug() << "Failed to execute query:" << query.lastError().text();
                 return QHttpServerResponse(QJsonObject{ {"message", query.lastError().text() } }, QHttpServerResponder::StatusCode::InternalServerError);
             }
-
             if (query.next()) {
+                bool isLogin = query.value("status").toBool();
+                qInfo() << "Login status: " << isLogin << query.value("user_id").toInt();
+
+                if (isLogin) {
+                    return QHttpServerResponse(QJsonObject{ {"message", "This account is on login status!" } }, QHttpServerResponder::StatusCode::InternalServerError);
+                }
                 query.clear();
-                query.prepare("UPDATE user_sessions SET session_id = :session, valid_date = :date WHERE user_id = :id");
+                query.prepare("UPDATE user_sessions SET session_id = :session, valid_date = :date, status = true WHERE user_id = :id");
                 query.bindValue(":id", userId);
                 query.bindValue(":session", sessionToken);
                 query.bindValue(":date", QDateTime::currentDateTimeUtc().addDays(1).toString());

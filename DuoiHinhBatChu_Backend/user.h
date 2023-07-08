@@ -21,7 +21,7 @@ public:
 
     static QJsonObject getUserfromUserId(int userId);
     static void updateUserAfterAGame(int winnerId, int loserId, bool isLeave);
-    int getUserFromSessionId(QString *sessionId);
+    int getUserFromSessionId(QString *sessionId, QList<QTcpSocket *> activeUsers, QTcpSocket *socket);
     QString getSessionIdByUser(int userId);
 
     User();

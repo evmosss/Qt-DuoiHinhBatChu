@@ -209,8 +209,14 @@ void handleIncomingData(QTcpSocket * socket) {
         QString content;
         QList<QTcpSocket*> tableData;
         int status;
-        int userId = userService->getUserFromSessionId(&sessionId);
+        int userId = userService->getUserFromSessionId(&sessionId, activeUsers, socket);
 
+        if (userId == 0) {
+            if (activeUsers.contains(socket)) {
+                userService->removeActiveUser(userId, socket, &activeUsers);
+            }
+            return;
+        }
 
         switch(jsonObj["type"].toInt()) {
         case static_cast<int>(SocketType::REQUEST_SAVE_ACTIVE_USER):
@@ -282,7 +288,7 @@ void handleIncomingData(QTcpSocket * socket) {
                 QTcpSocket* _socket = tableData.at(i);
 
                 // Sử dụng socket ở đây
-                if (i == 0 && status != 200) {
+                if ((i == 0 || i == 1) && status != 200) {
                     continue;
                 }
 

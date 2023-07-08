@@ -55,6 +55,7 @@ QJsonObject Room::createRoom(int userId, QMap<QString, QJsonObject> *roomData, Q
 
     QJsonObject ownerData = User::getUserfromUserId(userId);
     int ownerPoint = ownerData.value("point").toInt();
+    qInfo() << "Owner point" << ownerPoint;
 
     QJsonObject roomDataObject;
     roomDataObject["players"] = QJsonArray::fromVariantList(QVariantList() << userId);
@@ -66,6 +67,8 @@ QJsonObject Room::createRoom(int userId, QMap<QString, QJsonObject> *roomData, Q
     roomDataObject["maxQuestions"] = DEFAULT_MAX_QUESTIONS;
     roomDataObject["roomId"] = *roomId;
     roomDataObject["difficulty"] = static_cast<int>(getRoomDifficultyFromPoint(ownerPoint));
+
+    qInfo() << "Owner class" << static_cast<int>(getRoomDifficultyFromPoint(ownerPoint));
 
     roomData->insert(*roomId, roomDataObject);
     userToRoomId->insert(userId, *roomId);
@@ -92,6 +95,7 @@ QJsonObject Room::joinRoom(int userId, QMap<QString, QJsonObject> *roomData, QSt
         error = true;
     }
     if (value["ownerId"].toInt() == userId) {
+        roomData->insert(*roomId, value);
         response = createSocketResponse(QJsonObject {}, QHttpServerResponder::StatusCode::Forbidden, "You are owner of this room", SocketType::JOIN_ROOM);
         error = true;
     }

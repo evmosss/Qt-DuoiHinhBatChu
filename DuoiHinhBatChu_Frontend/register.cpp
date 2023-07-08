@@ -62,6 +62,7 @@ void Register::on_registerButton_clicked()
             QString sessionId = jsonObj.value("sessionId").toString();
             emit registerSuccessfully();
         } else {
+            qInfo() << reply->errorString();
             emit registerFailed(reply->errorString());
         }
 

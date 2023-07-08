@@ -27,6 +27,18 @@ QJsonObject User::addActiveUser(int userId, QTcpSocket *socket, QList<QTcpSocket
 void User::removeActiveUser(int userId, QTcpSocket *socket, QList<QTcpSocket *> *activeUsers)
 {
     qInfo() << "Logout from user: " << userId;
+    if (userId != 0) {
+        QJsonObject response;
+        QSqlDatabase database = Database::getInstance().getDatabase();
+        QSqlQuery query(database);
+        query.prepare("UPDATE user_sessions SET status = 0 WHERE user_id=:id");
+        query.bindValue(":id", userId);
+        if (!query.exec()) {
+            qInfo() << query.lastError().text();
+        };
+
+        query.clear();
+    }
     if (activeUsers->contains(socket)) {
         activeUsers->removeOne(socket);
     }
@@ -85,7 +97,7 @@ void User::updateUserAfterAGame(int winnerId, int loserId, bool isLeave)
 
 }
 
-int User::getUserFromSessionId(QString *sessionId)
+int User::getUserFromSessionId(QString *sessionId,  QList<QTcpSocket *> activeUsers, QTcpSocket *socket)
 {
     database = Database::getInstance().getDatabase();
     QSqlQuery query(database);
@@ -100,7 +112,7 @@ int User::getUserFromSessionId(QString *sessionId)
         QDateTime currentDate = QDateTime::currentDateTime();
 
         // Check for session
-        if (currentDate > date) {
+        if (currentDate > date && !activeUsers.contains(socket)) {
             return 0;
         }
 

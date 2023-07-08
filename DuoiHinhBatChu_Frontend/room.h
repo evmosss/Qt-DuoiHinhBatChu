@@ -49,6 +49,7 @@ private:
     void handleFinishRoom(QJsonObject data);
     void renderFullRoom(QJsonObject roomDetail);
     void handleGetAllRoom(QJsonObject data);
+    void forceLogout();
 
     void requestNextQuestion();
 
