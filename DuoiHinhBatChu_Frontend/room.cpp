@@ -431,6 +431,8 @@ void Room::on_joinRoom_clicked()
         json["type"] = static_cast<int>(SocketType::JOIN_ROOM);
         json["roomId"] = roomId;
 
+        qInfo() << "Request Join room" << roomId;
+
         socket->write(convertJsonToByteArray(json));
         socket->flush();
     } else {
@@ -580,6 +582,7 @@ void Room::handleDataFromServer()
             Room::handleLeaveRoom(jsonData);
             break;
         case static_cast<int>(SocketType::JOIN_ROOM):
+            qInfo() << "Touch join room here";
             Room::handleJoinRoom(jsonData);
             break;
         case static_cast<int>(SocketType::SEND_ANSWER):

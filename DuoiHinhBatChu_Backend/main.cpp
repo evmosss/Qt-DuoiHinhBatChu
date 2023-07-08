@@ -276,27 +276,31 @@ void handleIncomingData(QTcpSocket * socket) {
             connectionTable.insert(roomId, tableData);
             break;
         case static_cast<int>(SocketType::JOIN_ROOM):
+            qInfo() << "Touch here \n\n";
             roomId = jsonObj["roomId"].toString();
 
             data = roomService->joinRoom(userId, &roomDataMap, &roomId, &userToRoomId);
             status = data.value("code").toInt();
 
-            tableData = connectionTable.take(roomId);
-            tableData.append(socket);
+            if (status != 200) {
+                socket->write(convertJsonToByteArray(data));
+                socket->flush();
+            }
+            else {
+                tableData = connectionTable.take(roomId);
+                tableData.append(socket);
 
-            for (int i = 0; i < tableData.length(); i++) {
-                QTcpSocket* _socket = tableData.at(i);
+                for (int i = 0; i < tableData.length(); i++) {
+                    QTcpSocket* _socket = tableData.at(i);
 
-                // Sử dụng socket ở đây
-                if ((i == 0 || i == 1) && status != 200) {
-                    continue;
+                    qInfo() << "\nSend data" << data;
+                    _socket->write(convertJsonToByteArray(data));
+                    _socket->flush();
                 }
 
-                _socket->write(convertJsonToByteArray(data));
-                _socket->flush();
+                connectionTable.insert(roomId, tableData);
             }
 
-            connectionTable.insert(roomId, tableData);
             break;
         case static_cast<int>(SocketType::SEND_ANSWER):
             roomId = jsonObj["roomId"].toString();
