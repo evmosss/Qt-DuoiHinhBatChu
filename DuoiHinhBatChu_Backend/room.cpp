@@ -87,6 +87,7 @@ QJsonObject Room::joinRoom(int userId, QMap<QString, QJsonObject> *roomData, QSt
     if (!roomData->contains(*roomId)) {
         response = createSocketResponse(QJsonObject {}, QHttpServerResponder::StatusCode::BadRequest, "Room does not exist", SocketType::JOIN_ROOM);
         error = true;
+        return;
     }
     QJsonObject value = roomData->take(*roomId);
     if (value["status"].toString() != "PENDING") {
