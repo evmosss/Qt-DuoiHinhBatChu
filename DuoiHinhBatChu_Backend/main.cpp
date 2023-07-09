@@ -22,6 +22,7 @@
 #include <QMetaObject>
 #include <QSslSocket>
 #include <QThread>
+#include <QMutex>
 
 // Components
 #include "auth.h"
@@ -38,6 +39,8 @@ QMap<QString, QJsonObject> roomDataMap;
 QMap<int, QString> userToRoomId;
 QMap<QString, QList<QTcpSocket*>> connectionTable; // Store Mapping roomId => joinUsersInARoom
 QList<QTcpSocket*> activeUsers;
+QMutex mutex;
+
 
 Auth* authService;
 Room* roomService;
@@ -195,6 +198,7 @@ void handleIncomingData(QTcpSocket * socket) {
     QList<QByteArray> byteArrays = clientData.split('\n');
     qInfo() << "[+] Byte Arrays: " << clientData;
 
+    mutex.lock();
     for (int i = 0; i < byteArrays.size() - 1; i++) {
         qInfo() << "[+] Client Data: " << byteArrays.at(i);
         QJsonDocument jsonDoc = QJsonDocument::fromJson(byteArrays.at(i));
@@ -217,7 +221,6 @@ void handleIncomingData(QTcpSocket * socket) {
             }
             return;
         }
-
         switch(jsonObj["type"].toInt()) {
         case static_cast<int>(SocketType::REQUEST_SAVE_ACTIVE_USER):
             data = userService->addActiveUser(userId, socket, &activeUsers);
@@ -255,6 +258,7 @@ void handleIncomingData(QTcpSocket * socket) {
             data = roomService->createRoom(userId, &roomDataMap, &roomId, &userToRoomId);
 
             socket->write(convertJsonToByteArray(data));
+
             break;
 
         case static_cast<int>(SocketType::LEAVE_ROOM):
@@ -276,7 +280,6 @@ void handleIncomingData(QTcpSocket * socket) {
             connectionTable.insert(roomId, tableData);
             break;
         case static_cast<int>(SocketType::JOIN_ROOM):
-            qInfo() << "Touch here \n\n";
             roomId = jsonObj["roomId"].toString();
 
             data = roomService->joinRoom(userId, &roomDataMap, &roomId, &userToRoomId);
@@ -362,6 +365,7 @@ void handleIncomingData(QTcpSocket * socket) {
             break;
         }
     }
+    mutex.unlock();
 
 }
 
