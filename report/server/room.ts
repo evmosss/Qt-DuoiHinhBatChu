@@ -29,6 +29,7 @@ export interface RoomData {
   questionIndex: number;
   maxQuestions: number;
   difficulty: RoomDifficulty;
+  winnerId?: number; // Only show up at the end of a match.
 }
 
 /**
