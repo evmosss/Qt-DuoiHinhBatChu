@@ -267,7 +267,11 @@ void Room::handleFinishRoom(QJsonObject data)
     ui->submitAnswer->setEnabled(false);
 
     ui->startButton->setEnabled(true);
-    ui->chatView->append("User " + QString::number(winnerId) + " win this game.");
+    if(winnerId == 0) {
+        ui->chatView->append("Draw...!");
+    } else {
+        ui->chatView->append("User " + QString::number(winnerId) + " win this game.");
+    }
 
     emit requestAllRoom(false);
 }
