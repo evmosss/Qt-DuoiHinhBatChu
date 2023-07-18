@@ -236,9 +236,11 @@ void handleIncomingData(QTcpSocket * socket) {
             for (int i = 0; i < activeUsers.length(); i++) {
                 QTcpSocket* _socket = activeUsers.at(i);
 
+                // Nếu như thằng create room thì sẽ k nhận cái socket này
                 if (!isSendToCaller && socket == _socket) {
                     continue;
                 }
+
                 // Sử dụng socket ở đây
                 _socket->write(convertJsonToByteArray(data));
                 _socket->flush();
