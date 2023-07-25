@@ -361,6 +361,11 @@ void handleIncomingData(QTcpSocket * socket) {
 
             connectionTable.insert(roomId, tableData);
             break;
+        case static_cast<int>(SocketType::GET_USER_INFO):
+            data = userService->getUserInfo(userId);
+            socket->write(convertJsonToByteArray(data));
+            socket->flush();
+            break;
         default:
             qInfo() << "Running into Default case";
             qInfo() << "[+] Default Data: " << jsonObj;
