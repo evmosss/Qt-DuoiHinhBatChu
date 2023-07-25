@@ -514,12 +514,15 @@ void Room::requestGetAllRank(int page)
 
                     ui->stackedWidget->setCurrentWidget(ui->ListRoom);
 
-                    qInfo() << "[+] DATA FROM SERVER:\n" << resRankList << "\n\n";
+//                    qInfo() << "[+] DATA FROM SERVER:\n" << resRankList << "\n\n";
 
                     QStringList headerLabels;
                     int row = resRankList.size();
                     QStringList columnKeyList = resRankList.at(0).toObject().keys();
-                    headerLabels << "Id" << "Username" << "Point" << "Total games" << "Win count" << "Win ratio";
+                    headerLabels << "Id" << "Username" << "Point" << "Rank" << "Total games" << "Win count" << "Win ratio";
+
+                    qInfo() << "[+] DATA FROM SERVER:\n" << columnKeyList << "\n\n";
+
                     QFont font;
                     font.setBold(true);
                     ui->rankWidget->setRowCount(10);
@@ -535,9 +538,10 @@ void Room::requestGetAllRank(int page)
                             QString itemContent = "";
                             QString key = columnKeyList.at(j);
                             if(i < row) {
-                                if(j == 1) {
+                                if(j == 1 || j == 3) {
                                     itemContent = resRankList.at(i).toObject().value(key).toString();
-                                } else {
+                                }
+                                else {
                                     itemContent = QString::number(resRankList.at(i).toObject().value(key).toDouble());
                                 }
                             }
