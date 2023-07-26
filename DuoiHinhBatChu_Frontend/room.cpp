@@ -408,12 +408,15 @@ void Room::on_createRoom_clicked()
     json["sessionId"] = sessionId;
     json["type"] = static_cast<int>(SocketType::CREATE_ROOM);
 
+    qInfo() << "Create room clicked" << "with data:" << json;
+
     socket->write(convertJsonToByteArray(json));
     socket->flush();
 }
 
 void Room::on_leaveRoom_clicked()
 {
+    
     QJsonObject json;
     json["sessionId"] = sessionId;
     json["roomId"] = roomId;
@@ -421,6 +424,8 @@ void Room::on_leaveRoom_clicked()
 
     roomId = nullptr;
     roomOwnerId = 0;
+
+    qInfo() << "Leave room clicked" << "with data:" << json;
 
     socket->write(convertJsonToByteArray(json));
     socket->flush();
@@ -450,7 +455,8 @@ void Room::on_joinRoom_clicked()
         json["type"] = static_cast<int>(SocketType::JOIN_ROOM);
         json["roomId"] = roomId;
 
-        qInfo() << "Request Join room" << roomId;
+        qInfo() << "Join room clicked" << "with data:" << json;
+
 
         socket->write(convertJsonToByteArray(json));
         socket->flush();
