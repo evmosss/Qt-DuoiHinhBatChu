@@ -21,17 +21,17 @@ QHttpServerResponse Rank::getAllRanks(int page, int limit)
         row["id"] = query.value(0).toInt();
         row["id_username"] = query.value(1).toString();
         row["point"] = query.value(2).toInt();
-//        row["rank"] = getRoomDifficultyFromPoint(static_cast<RoomDifficulty>(query.value(2).toInt()));
-        if(query.value(2).toInt() <= 10) {
-            row["rank"] = "Easy";
-        } else if (query.value(2).toInt() > 10 && query.value(2).toInt() <= 20) {
-            row["rank"] = "Medium";
-        } else if (query.value(2).toInt() > 20 && query.value(2).toInt() <= 30) {
-            row["rank"] = "Hard";
-        }
-        else {
-            row["rank"] = "Advanced";
-        }
+        row["rank"] = getRoomDifficultyFromPoint(static_cast<RoomDifficulty>(query.value(2).toInt()));
+//        if(query.value(2).toInt() <= 10) {
+//            row["rank"] = "Easy";
+//        } else if (query.value(2).toInt() > 10 && query.value(2).toInt() <= 20) {
+//            row["rank"] = "Medium";
+//        } else if (query.value(2).toInt() > 20 && query.value(2).toInt() <= 30) {
+//            row["rank"] = "Hard";
+//        }
+//        else {
+//            row["rank"] = "Advanced";
+//        }
         row["total_games"] = query.value(3).toInt();
         row["win_count"] = query.value(4).toInt();
         row["win_ratio"] = query.value(5).toDouble();

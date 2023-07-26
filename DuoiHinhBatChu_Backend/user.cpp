@@ -44,6 +44,16 @@ void User::removeActiveUser(int userId, QTcpSocket *socket, QList<QTcpSocket *> 
     }
 }
 
+QJsonObject User::getUserInfo(int userId)
+{
+    QJsonObject info = getUserfromUserId(userId);
+    info["rank"] = getRoomDifficultyFromPoint(static_cast<RoomDifficulty>(info.value("point").toInt()));
+    qInfo() << "\nUser info:\n" << info << "\n";
+
+    QJsonObject response = createSocketResponse(info, QHttpServerResponder::StatusCode::Ok, "Get user info successfully", SocketType::GET_USER_INFO);
+    return response;
+}
+
 QJsonObject User::getUserfromUserId(int userId)
 {
     QJsonObject response;

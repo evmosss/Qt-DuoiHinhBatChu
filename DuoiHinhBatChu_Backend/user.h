@@ -12,12 +12,14 @@
 #include "database.h"
 #include <QTcpSocket>
 #include "protocolSocket.h"
+#include "util.h"
 
 class User
 {
 public:
     QJsonObject addActiveUser(int userId, QTcpSocket * socket, QList<QTcpSocket *>* activeUsers);
     void removeActiveUser(int userId, QTcpSocket * socket, QList<QTcpSocket *>* activeUsers);
+    QJsonObject getUserInfo(int userId);
 
     static QJsonObject getUserfromUserId(int userId);
     static void updateUserAfterAGame(int winnerId, int loserId, bool isLeave);

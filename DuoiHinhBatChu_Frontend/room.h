@@ -49,6 +49,7 @@ private:
     void handleFinishRoom(QJsonObject data);
     void renderFullRoom(QJsonObject roomDetail);
     void handleGetAllRoom(QJsonObject data);
+    void handleRequestGetUserInfo(QJsonObject data);
     void forceLogout();
 
     void requestNextQuestion();
@@ -68,6 +69,7 @@ signals:
 
 
     void getAllRank(int page);  // get all rank in number page
+    void gettUserInfo(int userId);    // get user info
 
 private slots:
     void handleInteractError(QString message);
@@ -79,6 +81,7 @@ private slots:
     void on_startButton_clicked();
     void sendRequestGetAllRoom(bool isSendToCaller);
     void requestGetAllRank(int page);   // request to get all rank
+    void requestGetUserInfo(int userId);    // request to get userInfo
 
     void alertConnected();
     void handleDataFromServer();

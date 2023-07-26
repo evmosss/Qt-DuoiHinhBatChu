@@ -12,6 +12,7 @@
 #include "QHttpServerResponse"
 #include "database.h"
 #include <QJsonArray>
+#include "util.h"
 
 class Rank
 {

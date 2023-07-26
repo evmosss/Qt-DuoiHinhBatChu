@@ -23,6 +23,7 @@ Room::Room(QWidget *parent) :
     connect(this, &Room::requestAllRoom, this, &Room::sendRequestGetAllRoom);
 
     connect(this, &Room::getAllRank, this, &Room::requestGetAllRank);
+    connect(this, &Room::gettUserInfo, this, &Room::requestGetUserInfo);
 
 
     countdownTimer = new QTimer(this);
@@ -60,6 +61,8 @@ void Room::storeData(QString sessionId, int userId)
 
         socket->write(convertJsonToByteArray(json));
         socket->flush();
+
+        emit gettUserInfo(this->userId);
     }
 }
 
@@ -147,6 +150,7 @@ void Room::handleLeaveRoom(QJsonObject data)
     countdownTimer->stop();
 
     emit requestAllRoom(true);
+    emit gettUserInfo(userId);
 }
 
 void Room::handleJoinRoom(QJsonObject data)
@@ -274,6 +278,7 @@ void Room::handleFinishRoom(QJsonObject data)
     }
 
     emit requestAllRoom(false);
+    emit gettUserInfo(userId);
 }
 
 
@@ -355,6 +360,16 @@ void Room::handleGetAllRoom(QJsonObject data)
             item3->setFlags(item3->flags() & ~Qt::ItemIsEditable);
         }
     }
+}
+
+void Room::handleRequestGetUserInfo(QJsonObject data)
+{
+    qInfo() << "\n\nData:\n" << data << "\n\n";
+    QJsonObject userInfo = data.value("data").toObject();
+    ui->userId->setText(QString::number(userInfo.value("id").toInt()));
+    ui->username->setText(userInfo.value("username").toString());
+    ui->userRank->setText(getRoomDifficultyInString(static_cast<RoomDifficulty>(userInfo.value("rank").toInt())));
+    ui->userPoint->setText(QString::number(userInfo.value("point").toInt()));
 }
 
 void Room::forceLogout()
@@ -514,14 +529,14 @@ void Room::requestGetAllRank(int page)
 
                     ui->stackedWidget->setCurrentWidget(ui->ListRoom);
 
-//                    qInfo() << "[+] DATA FROM SERVER:\n" << resRankList << "\n\n";
+                    qInfo() << "[+] DATA FROM SERVER:\n" << resRankList << "\n\n";
 
                     QStringList headerLabels;
                     int row = resRankList.size();
                     QStringList columnKeyList = resRankList.at(0).toObject().keys();
                     headerLabels << "Id" << "Username" << "Point" << "Rank" << "Total games" << "Win count" << "Win ratio";
 
-                    qInfo() << "[+] DATA FROM SERVER:\n" << columnKeyList << "\n\n";
+//                    qInfo() << "[+] DATA FROM SERVER:\n" << columnKeyList << "\n\n";
 
                     QFont font;
                     font.setBold(true);
@@ -538,8 +553,11 @@ void Room::requestGetAllRank(int page)
                             QString itemContent = "";
                             QString key = columnKeyList.at(j);
                             if(i < row) {
-                                if(j == 1 || j == 3) {
+                                if(j == 1) {
                                     itemContent = resRankList.at(i).toObject().value(key).toString();
+                                } else if (j == 3) {
+                                    int difficulty = resRankList.at(i).toObject().value(key).toInt();
+                                    itemContent = getRoomDifficultyInString(static_cast<RoomDifficulty>(difficulty));
                                 }
                                 else {
                                     itemContent = QString::number(resRankList.at(i).toObject().value(key).toDouble());
@@ -561,6 +579,19 @@ void Room::requestGetAllRank(int page)
             reply->deleteLater();
         });
     }
+}
+
+void Room::requestGetUserInfo(int userId)
+{
+    QJsonObject json;
+    json["sessionId"] = sessionId;
+    json["userId"] = userId;
+    json["type"] = static_cast<int>(SocketType::GET_USER_INFO);
+
+    qInfo() << "RUN SEND REQUEST GET USER INFO\n";
+
+    socket->write(convertJsonToByteArray(json));
+    socket->flush();
 }
 
 void Room::alertConnected()
@@ -610,6 +641,9 @@ void Room::handleDataFromServer()
             break;
         case static_cast<int>(SocketType::FINISH_SAVE_ACTIVE_USER):
             Room::sendRequestGetAllRoom(true);
+            break;
+        case static_cast<int>(SocketType::GET_USER_INFO):
+            Room::handleRequestGetUserInfo(jsonData);
             break;
         }
     }
@@ -661,6 +695,7 @@ void Room::on_rankBtn_clicked()
 void Room::on_listBackHome_clicked()
 {
     ui->stackedWidget->setCurrentWidget(ui->MainRoom);
+    emit gettUserInfo(userId);
 }
 
 
@@ -688,6 +723,7 @@ void Room::on_leaveTrain_clicked()
 {
     ui->stackedWidget->setCurrentWidget(ui->MainRoom);
     ui->chatTrain->clear();
+    emit gettUserInfo(userId);
 }
 
 void Room::on_nextQTrain_clicked()

@@ -54,7 +54,7 @@ private:
     {
         // Initialize your database settings here
         QSqlDatabase database = QSqlDatabase::addDatabase("QSQLITE", "CPool");
-        database.setDatabaseName("D:/Qt-Dev/DuoiHinhBatChu/altp.db");
+        database.setDatabaseName("./altp.db");
     }
 
     QSqlDatabase createConnection()
